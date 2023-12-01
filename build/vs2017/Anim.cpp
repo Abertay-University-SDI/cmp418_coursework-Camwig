@@ -67,6 +67,11 @@ void Anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_)
 	sprite_animation_->Update(frame,sprite_,position_);
 }
 
+void Anim::Render(gef::Sprite* sprite_)
+{
+	sprite_animation_->Render(sprite_);
+}
+
 //void Anim::SetupAnimSheet2D(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
 //{
 //	//screen_x = platform_->width() * 0.5f;
@@ -88,9 +93,9 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 	sprite_animation_ = nullptr;
 
 	const rapidjson::Value& ske_array = ske_document["armature"];
-	std::string bums = ske_array[0]["type"].GetString();
+	std::string test_string = ske_array[0]["type"].GetString();
 
-	if (bums.find("Sheet") != std::string::npos)
+	if (test_string.find("Sheet") != std::string::npos)
 	{
 		//Need to put something in here to tell it that it is a 2D sprite sheet animation
 		//To run all there stuff!

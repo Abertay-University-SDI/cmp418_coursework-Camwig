@@ -56,7 +56,9 @@ void Character::Update(std::string tex_string, int frame)
 	animations.at(tex_string)->Update(frame, sprite_,Position);
 }
 
-gef::Sprite* Character::Render()
+gef::Sprite* Character::Render(std::string tex_string)
 {
+	//return sprite_;
+	animations.at(tex_string)->Render(sprite_);
 	return sprite_;
 }

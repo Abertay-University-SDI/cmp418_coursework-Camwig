@@ -66,6 +66,7 @@ public:
 	void Load_sprite_and_texture_3(std::string, rapidjson::Document&, rapidjson::Document&);
 
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_);
+	virtual gef::Sprite* Render(gef::Sprite* sprite);
 
 };
 

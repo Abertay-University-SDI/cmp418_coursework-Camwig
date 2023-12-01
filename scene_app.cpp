@@ -310,7 +310,7 @@ void SceneApp::Render()
 	//anim->Update(frame);
 	//anim->Update(4, &sprite_);
 
-	sprite_renderer_->DrawSprite(*character->Render());
+	sprite_renderer_->DrawSprite(*character->Render(this_s));
 
 
 	DrawHUD();

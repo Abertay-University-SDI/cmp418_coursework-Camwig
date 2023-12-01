@@ -35,6 +35,8 @@ public:
 
 	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, int& FrameRate,int& Duration);
 
+	void Render(gef::Sprite* sprite_);
+
 	float FrameRate;
 	float Duration;
 private:

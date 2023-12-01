@@ -1,4 +1,4 @@
-#include "TempSkeletalAnim.h"
+#include "Skeletal_Sprite_anim.h"
 
 #include <iostream>
 #include <string>
@@ -7,145 +7,35 @@
 #include "load_json.h"
 
 
-TempSkeletalAnim::TempSkeletalAnim()
+Skeletal_Sprite_anim::Skeletal_Sprite_anim()
 {
 }
-TempSkeletalAnim::~TempSkeletalAnim()
+Skeletal_Sprite_anim::~Skeletal_Sprite_anim()
 {
 
 }
 
-void TempSkeletalAnim::Init(/*gef::Texture* sprite_texture_, gef::Platform* platform_*/)
-{
-	//std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
+//void Skeletal_Sprite_anim::Init(/*gef::Texture* sprite_texture_, gef::Platform* platform_*/)
+//{
+//	//std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
+//
+//	//for (auto i : parts)
+//	//{
+//	//	bone_parts.push_back(i);
+//	//}
+//
+//	anim_pars = new Animation_Parser;
+//
+//	skin_slots = ReadSkinSlotsDataFromJSON(doc_dragon_ske);
+//	bones_ = ReadBonesFromJSON(doc_dragon_ske);
+//
+//	//Does not like it returning it this way
+//	new_anim = ReadAnimationDataFromJSON(doc_dragon_ske);
+//
+//	text_atlas = *ReadTextureAtlasFromJSON(rapidjson_doc);
+//}
 
-	//for (auto i : parts)
-	//{
-	//	bone_parts.push_back(i);
-	//}
-
-	sprite_speed = 1 / 30.0f;
-
-	anim_pars = new Animation_Parser;
-
-	char* JSON_Doc = LoadJSON("Dragon_tex.json");
-	std::ifstream ifs("Dragon_tex.json");
-	rapidjson::IStreamWrapper isw(ifs);
-	rapidjson::Document rapidjson_doc;
-	rapidjson_doc.ParseStream(isw);
-
-	std::ifstream ifs2("Dragon_ske.json");
-	rapidjson::IStreamWrapper isw2(ifs2);
-	rapidjson::Document doc_dragon_ske;
-	doc_dragon_ske.ParseStream(isw2);
-
-	skin_slots = ReadSkinSlotsDataFromJSON(doc_dragon_ske);
-	bones_ = ReadBonesFromJSON(doc_dragon_ske);
-
-	//Does not like it returning it this way
-	new_anim = ReadAnimationDataFromJSON(doc_dragon_ske);
-
-	text_atlas = *ReadTextureAtlasFromJSON(rapidjson_doc);
-}
-
-TextureAtlas* TempSkeletalAnim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_document)
-{
-	TextureAtlas* tex_atlas = new TextureAtlas();
-	tex_atlas->name_ = tex_document["name"].GetString();
-	tex_atlas->width_ = tex_document["width"].GetFloat();
-	tex_atlas->height_ = tex_document["height"].GetFloat();
-
-	const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
-	for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
-	{
-		TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
-		//tex_atlas->subtextures.push_back(*texdata);
-
-		tex_atlas->subtex_atlas.insert(std::make_pair(texdata->name_, *texdata));
-
-		delete texdata;
-	}
-
-	return tex_atlas;
-}
-
-TexData* TempSkeletalAnim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_array)
-{
-	TexData* subTextData = new TexData;
-	subTextData->name_ = subtecture_array["name"].GetString();
-	subTextData->width_ = subtecture_array["width"].GetFloat();
-	subTextData->height_ = subtecture_array["height"].GetFloat();
-	subTextData->x_ = subtecture_array["x"].GetFloat();
-	subTextData->y_ = subtecture_array["y"].GetFloat();
-
-	if (subtecture_array.HasMember("frameX"))
-	{
-		subTextData->frame_x_ = subtecture_array["frameX"].GetFloat();
-	}
-	else
-	{
-		subTextData->frame_x_ = 0;
-	}
-
-	if (subtecture_array.HasMember("frameY"))
-	{
-		subTextData->frame_y_ = subtecture_array["frameY"].GetFloat();
-	}
-	else
-	{
-		subTextData->frame_y_ = 0;
-	}
-
-	if (subtecture_array.HasMember("frameWidth"))
-	{
-		subTextData->frame_width_ = subtecture_array["frameWidth"].GetFloat();
-	}
-	else
-	{
-		subTextData->frame_width_ = subTextData->width_;
-	}
-
-	if (subtecture_array.HasMember("frameHeight"))
-	{
-		subTextData->frame_height_ = subtecture_array["frameHeight"].GetFloat();
-	}
-	else
-	{
-		subTextData->frame_height_ = subTextData->height_;
-	}
-
-	subTextData->BuildTransform();
-
-	return subTextData;
-}
-
-void TempSkeletalAnim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, TextureAtlas* texture_atlas, std::string subtext_name)
-{
-	float width = texture_atlas->subtex_atlas.at(subtext_name).width_;
-	float height = texture_atlas->subtex_atlas.at(subtext_name).height_;
-	float x = texture_atlas->subtex_atlas.at(subtext_name).x_;
-	float y = texture_atlas->subtex_atlas.at(subtext_name).y_;
-	float frame_width = texture_atlas->subtex_atlas.at(subtext_name).frame_width_;
-	float frame_height = texture_atlas->subtex_atlas.at(subtext_name).frame_height_;
-	float frame_x = texture_atlas->subtex_atlas.at(subtext_name).frame_x_;
-	float frame_y = texture_atlas->subtex_atlas.at(subtext_name).frame_y_;
-
-	sprite->set_width(width);
-	sprite->set_height(height);
-	sprite->set_uv_width(width / texture_atlas->width_);
-	sprite->set_uv_height(height / texture_atlas->height_);
-
-	float u = x / texture_atlas->width_;
-	float v = y / texture_atlas->height_;
-	sprite->set_uv_position(gef::Vector2(u, v));
-
-	float sprite_x = width * 0.5f - (frame_width * 0.5f + frame_x);
-	float sprite_y = height * 0.5f - (frame_height * 0.5f + frame_y);
-
-	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
-}
-
-std::map <std::string, SkinSlot> TempSkeletalAnim::ReadSkinSlotsDataFromJSON(rapidjson::Document& ske_document)
+std::map <std::string, SkinSlot> Skeletal_Sprite_anim::ReadSkinSlotsDataFromJSON(rapidjson::Document& ske_document)
 {
 	const rapidjson::Value& slots_array = ske_document["armature"][0]["skin"][0]["slot"];
 
@@ -178,7 +68,7 @@ std::map <std::string, SkinSlot> TempSkeletalAnim::ReadSkinSlotsDataFromJSON(rap
 
 }
 
-std::map<std::string, Animation> TempSkeletalAnim::ReadAnimationDataFromJSON(rapidjson::Document& ske_document)
+std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON(rapidjson::Document& ske_document)
 {
 	const rapidjson::Value& anims_array = ske_document["armature"][0]["animation"];
 
@@ -268,7 +158,7 @@ std::map<std::string, Animation> TempSkeletalAnim::ReadAnimationDataFromJSON(rap
 	return anims;
 }
 
-std::map<std::string, Bone> TempSkeletalAnim::ReadBonesFromJSON(rapidjson::Document& ske_document)
+std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::Document& ske_document)
 {
 	const rapidjson::Value& bones_array = ske_document["armature"][0]["bone"];
 
@@ -314,7 +204,7 @@ std::map<std::string, Bone> TempSkeletalAnim::ReadBonesFromJSON(rapidjson::Docum
 	return bones;
 }
 
-void TempSkeletalAnim::SetParentsOfBones(std::map<std::string, Bone>* bones)
+void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 {
 	for (auto bone_ : *bones)
 	{
@@ -323,7 +213,7 @@ void TempSkeletalAnim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 			std::string parent_name, name;
 			parent_name = bone_.second.parent_name_;
 			name = bone_.first;
-			for (auto i: *bones)
+			for (auto i : *bones)
 			{
 				//Changes with the pointer changing
 				if (i.first == parent_name)
@@ -353,7 +243,7 @@ void TempSkeletalAnim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 	}
 }
 
-void TempSkeletalAnim::CalculateWorldBoneTransform(Animation* anim, int current_frame)
+void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int current_frame)
 {
 	/*Un sure how this has been setup so unsure how to continue*/
 
@@ -547,24 +437,58 @@ void TempSkeletalAnim::CalculateWorldBoneTransform(Animation* anim, int current_
 
 }
 
-void TempSkeletalAnim::RenderUpdate(const gef::Vector2 sprite_pos_,gef::Sprite& sprite_, const std::string part, gef::Matrix33& sprite_offset_transform_m, gef::Matrix33& world_bone_transforming_m, gef::Matrix33& sub_texture_transform_m, gef::Matrix33& local_home_transform_m)
+//void Skeletal_Sprite_anim::RenderUpdate(const gef::Vector2 sprite_pos_, gef::Sprite& sprite_, const std::string part, gef::Matrix33& sprite_offset_transform_m, gef::Matrix33& world_bone_transforming_m, gef::Matrix33& sub_texture_transform_m, gef::Matrix33& local_home_transform_m)
+//{
+//	sprite_offset_transform_m = skin_slots.at(part).transform_m_;
+//	world_bone_transforming_m = bones_.at(part).world_transform_m;
+//	std::string part_name = skin_slots.at(part).part_name_;
+//	sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
+//	local_home_transform_m = bones_.at(part).local_transform_m;
+//
+//	SetSpriteSizeAndPositionForFrame(&sprite_, sprite_pos_.x, sprite_pos_.y, &text_atlas, part_name);
+//
+//
+//	//sprite_renderer_->DrawSprite(sprite_, sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_);
+//
+//}
+
+void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_)
 {
-	sprite_offset_transform_m = skin_slots.at(part).transform_m_;
-	world_bone_transforming_m = bones_.at(part).world_transform_m;
-	std::string part_name = skin_slots.at(part).part_name_;
-	sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
-	local_home_transform_m = bones_.at(part).local_transform_m;
+	for (auto part : bone_parts)
+	{
+		gef::Matrix33 sprite_offset_transform_m;
+		gef::Matrix33 world_bone_transforming_m;
+		gef::Matrix33 sub_texture_transform_m;
+		gef::Matrix33 local_home_transform_m;
+		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
+		world_bone_transforming_m = bones_.at(part).world_transform_m;
+		std::string part_name = skin_slots.at(part).part_name_;
+		sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
+		local_home_transform_m = bones_.at(part).local_transform_m;
 
-	SetSpriteSizeAndPositionForFrame(&sprite_, sprite_pos_.x, sprite_pos_.y, &text_atlas, part_name);
-		
-
-	//sprite_renderer_->DrawSprite(sprite_, sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_);
-		
+		//Having issues with the generic
+		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, &text_atlas, 0/*part_name*/);
+	}
 }
 
-void TempSkeletalAnim::SetupRig(gef::Vector2 sprite_pos_)
+void Skeletal_Sprite_anim::SetupRig(gef::Vector2 sprite_pos_)
 {
 	rig_transform_m_.SetIdentity();
 	rig_transform_m_.Scale(gef::Vector2(scale, scale));
 	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
+}
+
+gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
+{
+	anim_pars = new Animation_Parser;
+
+	skin_slots = ReadSkinSlotsDataFromJSON(ske_document);
+	bones_ = ReadBonesFromJSON(ske_document);
+
+	//Does not like it returning it this way
+	new_anim = ReadAnimationDataFromJSON(ske_document);
+
+	text_atlas = *ReadTextureAtlasFromJSON(tex_document);
+
+	return sprite_;
 }

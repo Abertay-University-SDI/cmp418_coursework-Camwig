@@ -23,7 +23,7 @@ public:
 
 	void Update(std::string tex_string, int frame);
 
-	gef::Sprite* Render();
+	gef::Sprite* Render(std::string tex_string);
 
 	std::map<std::string, Anim*> animations;
 

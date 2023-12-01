@@ -36,25 +36,19 @@
     <ClCompile Include="Animation_Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sheet_Sprite_anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkinSlot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite_anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TempSkeletalAnim.cpp">
+    <ClCompile Include="..\..\load_json.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\load_json.cpp">
+    <ClCompile Include="Skeletal_Sprite_anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,25 +68,19 @@
     <ClInclude Include="Animation_Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sheet_Sprite_anim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SkinSlot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite_anim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TempSkeletalAnim.h">
+    <ClInclude Include="..\..\load_json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\load_json.h">
+    <ClInclude Include="Skeletal_Sprite_anim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
