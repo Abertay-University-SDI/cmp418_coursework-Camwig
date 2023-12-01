@@ -1,0 +1,171 @@
+#include "Sheet_Sprite_anim.h"
+
+#include "load_texture.h"
+#include "load_json.h"
+#include <fstream>
+
+Sheet_Sprite_anim::Sheet_Sprite_anim()
+{
+	text_atlas = new TextureAtlas;
+}
+
+Sheet_Sprite_anim::~Sheet_Sprite_anim()
+{
+	delete text_atlas;
+	text_atlas = NULL;
+}
+
+//TextureAtlas* Sheet_Sprite_anim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_document)
+//{
+//	TextureAtlas* tex_atlas = new TextureAtlas();
+//	tex_atlas->name_ = tex_document["name"].GetString();
+//	//Something to with this?
+//	tex_atlas->width_ = tex_document["width"].GetFloat();
+//	tex_atlas->height_ = tex_document["height"].GetFloat();
+//	///--------------------------------------------
+//
+//	const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
+//	for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
+//	{
+//		TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
+//		tex_atlas->subtextures.push_back(*texdata);
+//		delete texdata;
+//	}
+//
+//	return tex_atlas;
+//}
+//
+//TexData* Sheet_Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_array)
+//{
+//	TexData* subTextData = new TexData;
+//	subTextData->name_ = subtecture_array["name"].GetString();
+//	subTextData->width_ = subtecture_array["width"].GetFloat();
+//	subTextData->height_ = subtecture_array["height"].GetFloat();
+//	subTextData->x_ = subtecture_array["x"].GetFloat();
+//	subTextData->y_ = subtecture_array["y"].GetFloat();
+//	subTextData->frame_x_ = subtecture_array["frameX"].GetFloat();
+//	subTextData->frame_y_ = subtecture_array["frameY"].GetFloat();
+//	subTextData->frame_width_ = subtecture_array["frameWidth"].GetFloat();
+//	subTextData->frame_height_ = subtecture_array["frameHeight"].GetFloat();
+//
+//	return subTextData;
+//}
+//
+//void Sheet_Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame)
+//{
+//
+//	float width = text_atlas->subtextures.at(frame).width_;
+//	float height = text_atlas->subtextures.at(frame).height_;
+//	float x = text_atlas->subtextures.at(frame).x_;
+//	float y = text_atlas->subtextures.at(frame).y_;
+//	float frame_width = text_atlas->subtextures.at(frame).frame_width_;
+//	float frame_height = text_atlas->subtextures.at(frame).frame_height_;
+//	float frame_x = text_atlas->subtextures.at(frame).frame_x_;
+//	float frame_y = text_atlas->subtextures.at(frame).frame_y_;
+//
+//	sprite->set_width(width);
+//	sprite->set_height(height);
+//	//This guy here
+//	sprite->set_uv_width(width / text_atlas->width_);
+//	sprite->set_uv_height(height / text_atlas->height_);
+//	///////////////////////////
+//
+//	float u = x / text_atlas->width_;
+//	float v = y / text_atlas->height_;
+//	sprite->set_uv_position(gef::Vector2(u, v));
+//
+//
+//	float sprite_x = width * 0.5f - (frame_width * 0.5f + frame_x);
+//	float sprite_y = height * 0.5f - (frame_height * 0.5f + frame_y);
+//
+//	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
+//}
+
+void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_)
+{
+	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas,frame);
+}
+
+gef::Sprite* Sheet_Sprite_anim::Load_sprite_and_texture_2(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string)
+{
+	//We can then move this to the sprite sheet version and load the tex
+
+	std::string tex_string_temp = tex_string + "_tex.png";
+
+	sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
+
+	tex_string_temp = tex_string + "_tex.json";
+
+	char* JSON_Doc = LoadJSON(tex_string_temp.c_str());
+	//std::ifstream ifs(tex_string_temp.c_str());
+	//rapidjson::IStreamWrapper isw(ifs);
+	rapidjson::Document rapidjson_doc;
+	//rapidjson_doc.ParseStream(isw);
+	rapidjson_doc.Parse(JSON_Doc);
+
+	tex_string_temp = tex_string + "_ske.json";
+
+	std::ifstream ifs2(tex_string_temp.c_str());
+	rapidjson::IStreamWrapper isw2(ifs2);
+	rapidjson::Document this_ske;
+	this_ske.ParseStream(isw2);
+
+	text_atlas = ReadTextureAtlasFromJSON(rapidjson_doc);
+	sprite_->set_texture(sprite_texture_);
+
+	run_order = SetupOrder(this_ske);
+
+	text_atlas->subtextures = ReOrganiseSubtextures();
+
+	return sprite_;
+}
+
+gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
+{
+	std::string tex_string_temp = tex_string + "_tex.png";
+
+	sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
+
+	text_atlas = ReadTextureAtlasFromJSON(tex_document);
+	sprite_->set_texture(sprite_texture_);
+
+	run_order = SetupOrder(ske_document);
+
+	text_atlas->subtextures = ReOrganiseSubtextures();
+
+	return sprite_;
+}
+
+std::map<int, std::string> Sheet_Sprite_anim::SetupOrder(rapidjson::Document& ske_document)
+{
+	const rapidjson::Value& order_array = ske_document["armature"][0]["skin"][0]["slot"][0]["display"];
+	std::string s = order_array[0]["name"].GetString();
+	std::map<int,std::string> new_order;
+	
+	for (int order_num = 0; order_num < (int)order_array.Size(); ++order_num)
+	{
+		//new_order.push_back(order_array[order_num].GetString());
+		new_order.insert(std::make_pair(order_num, order_array[order_num]["name"].GetString()));
+	}
+	
+	return new_order;
+
+}
+
+std::vector<TexData> Sheet_Sprite_anim::ReOrganiseSubtextures()
+{
+	std::vector<TexData> new_vec;
+	for (int i = 0; i < run_order.size(); i++)
+	{
+		for (int j = 0; j < text_atlas->subtextures.size(); j++)
+		{
+			if (text_atlas->subtextures.at(j).name_ == run_order[i])
+			{
+				new_vec.push_back(text_atlas->subtextures.at(j));
+			}
+		}
+	}
+
+	return new_vec;
+
+}

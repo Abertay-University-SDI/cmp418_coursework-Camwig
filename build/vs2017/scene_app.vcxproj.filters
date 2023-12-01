@@ -27,12 +27,72 @@
     <ClCompile Include="..\..\load_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Anim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Anim_Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation_Parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sheet_Sprite_anim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite_anim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TempSkeletalAnim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\load_json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\load_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Anim_Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation_Parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sheet_Sprite_anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite_anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TempSkeletalAnim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\load_json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
