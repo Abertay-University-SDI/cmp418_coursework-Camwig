@@ -456,10 +456,13 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 {
 	for (auto part : bone_parts)
 	{
+		//Will need to save these values to be used for the sprite of each part
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
 		gef::Matrix33 sub_texture_transform_m;
 		gef::Matrix33 local_home_transform_m;
+
+
 		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
 		world_bone_transforming_m = bones_.at(part).world_transform_m;
 		std::string part_name = skin_slots.at(part).part_name_;

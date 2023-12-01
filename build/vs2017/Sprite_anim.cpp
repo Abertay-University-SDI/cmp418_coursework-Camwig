@@ -163,5 +163,8 @@ gef::Sprite* Sprite_anim::Render(gef::Sprite* sprite)
 	return sprite;
 }
 
+
+//Dont know why this wouldnt work?
+//Does not work with string!!!! FUN
 template void Sprite_anim::SetSpriteSizeAndPositionForFrame<int>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, int subtext_);
-//template void Sprite_anim::SetSpriteSizeAndPositionForFrame<std::string>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, std::string subtext_);
+template void Sprite_anim::SetSpriteSizeAndPositionForFrame<float>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, float subtext_);
