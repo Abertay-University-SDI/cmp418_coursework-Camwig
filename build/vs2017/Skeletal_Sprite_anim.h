@@ -2,10 +2,10 @@
 #include "Sprite_anim.h"
 
 //#include <maths/matrix33.h>
-#include <math.h>
-#include <string>
-#include "maths/math_utils.h"
-#include <maths/vector2.h>
+//#include <math.h>
+//#include <string>
+//#include "maths/math_utils.h"
+//#include <maths/vector2.h>
 #include <Animation_Parser.h>
 
 struct SkinSlot
@@ -65,6 +65,7 @@ struct Bone
 
 class Skeletal_Sprite_anim : public Sprite_anim
 {
+public:
 	Skeletal_Sprite_anim();
 	~Skeletal_Sprite_anim();
 
@@ -107,12 +108,14 @@ class Skeletal_Sprite_anim : public Sprite_anim
 
 	TextureAtlas text_atlas;
 
-	std::vector<std::string> bone_parts;
+	std::vector<std::string> bone_parts1;
 	//void SetupRig(gef::Vector2);
 
 	std::map<std::string, Animation> new_anim;
 
 	std::map<std::string, gef::Matrix33> Transforms_for_bone_1;
+	void DeleteTransforms();
+
 
 
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_) override;

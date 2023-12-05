@@ -2,6 +2,7 @@
 
 
 #include "Sheet_Sprite_anim.h"
+#include "Skeletal_Sprite_anim.h"
 //#include <graphics/sprite.h>
 
 //#include "rapidjson\document.h"

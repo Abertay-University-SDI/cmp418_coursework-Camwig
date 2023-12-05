@@ -135,7 +135,8 @@ void SceneApp::Init()
 
 	frame = 0;
 
-	this_s = "boy-attack";
+	//this_s = "boy-attack";	
+	this_s = "Dragon";
 
 	//anim = new Anim(/*std::string("boy-attack_ske.json"), &platform_, &sprite_, this_s,frame*/);
 	//anim->Init(std::string("boy-attack_ske.json"), &platform_, &sprite_, this_s, frame);

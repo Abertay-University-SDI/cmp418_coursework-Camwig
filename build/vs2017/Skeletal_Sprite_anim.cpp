@@ -1,7 +1,5 @@
 #include "Skeletal_Sprite_anim.h"
 
-#include <iostream>
-#include <string>
 #include <fstream>
 #include "load_texture.h"
 #include "load_json.h"
@@ -9,6 +7,7 @@
 
 Skeletal_Sprite_anim::Skeletal_Sprite_anim()
 {
+
 }
 Skeletal_Sprite_anim::~Skeletal_Sprite_anim()
 {
@@ -454,11 +453,11 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 
 void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
 {
-	for (auto part : bone_parts)
+	for (auto part : bones_)
 	{
 		//Will need to save these values to be used for the sprite of each part
 
-		std::string part_name = skin_slots.at(part).part_name_;
+		std::string part_name = skin_slots.at(part.first).part_name_;
 
 		//This stuff seems like it can be just be done in render
 
@@ -468,13 +467,13 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 		gef::Matrix33 local_home_transform_m;
 
 
-		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
+		sprite_offset_transform_m = skin_slots.at(part.first).transform_m_;
 
-		world_bone_transforming_m = bones_.at(part).world_transform_m;
+		world_bone_transforming_m = bones_.at(part.first).world_transform_m;
 
 		sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
 
-		local_home_transform_m = bones_.at(part).local_transform_m;
+		local_home_transform_m = bones_.at(part.first).local_transform_m;
 
 		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
 
@@ -490,6 +489,10 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 		delete tmp;
 	}
+
+	Transforms_for_bone_ = &Transforms_for_bone_1;
+	DeleteTransforms();
+	
 }
 
 //void Skeletal_Sprite_anim::SetupRig(gef::Vector2 sprite_pos_)
@@ -514,5 +517,17 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 
 	text_atlas = *ReadTextureAtlasFromJSON(tex_document);
 
+	for (auto i : bones_)
+	{
+		bone_parts1.push_back(i.first);
+	}
+
+	bone_parts = &bone_parts1;
+
 	return sprite_;
+}
+
+void Skeletal_Sprite_anim::DeleteTransforms()
+{
+	Transforms_for_bone_1.clear();
 }

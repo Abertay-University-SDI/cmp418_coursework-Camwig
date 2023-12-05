@@ -113,8 +113,17 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 	}
 	else if (test_string.find("Armature") != std::string::npos)
 	{
-		//Define Sprite transforms
-		//Define Bone parts
+		Skeletal_Sprite_anim* new_sheet;
+		new_sheet = new Skeletal_Sprite_anim();
+		sprite_animation_ = new_sheet;
+		//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
+
+		int temp;
+		temp = ske_array[0]["frameRate"].GetInt();
+		FrameRate = temp;
+		temp = ske_array[0]["animation"][0]["duration"].GetInt();
+		Duration = temp;
+		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts);
 	}
 }
 
