@@ -43,7 +43,7 @@ void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* pl
 	rapidjson::Document rapidjson_doc_ske;
 
 	int Framerate, duration;
-	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Framerate, duration,Position,&bone_parts);
+	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Framerate, duration,Position,bone_parts);
 
 	new_animantion->FrameRate = Framerate;
 	new_animantion->Duration = duration;
@@ -53,7 +53,7 @@ void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* pl
 
 void Character::Update(std::string tex_string, int frame)
 {
-	animations.at(tex_string)->Update(frame, sprite_,Position, &Transforms_for_bone_);
+	animations.at(tex_string)->Update(frame, sprite_,Position, Transforms_for_bone_);
 }
 
 gef::Sprite* Character::Render(std::string tex_string)

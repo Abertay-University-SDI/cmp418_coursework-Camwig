@@ -82,12 +82,12 @@ Sheet_Sprite_anim::~Sheet_Sprite_anim()
 //	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
 //}
 
-void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
+void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
-	DeleteTransforms();
 	Transforms_for_bone_1.insert(std::make_pair(bone_parts1[0], rig_transform_m_));
 	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas,frame);
-	Transforms_for_bone_ = &Transforms_for_bone_1;
+	Transforms_for_bone_ = Transforms_for_bone_1;
+	DeleteTransforms();
 }
 
 gef::Sprite* Sheet_Sprite_anim::Load_sprite_and_texture_2(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string)
@@ -124,12 +124,12 @@ gef::Sprite* Sheet_Sprite_anim::Load_sprite_and_texture_2(gef::Platform* platfor
 	return sprite_;
 }
 
-gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts)
+gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
 	scale = 1.0f;
 
 	bone_parts1.push_back("Default");
-	bone_parts = &bone_parts1;
+	bone_parts = bone_parts1;
 
 	SetupRig(&rig_transform_m_,Position,scale);
 
@@ -138,7 +138,7 @@ gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sp
 	sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
 
 	text_atlas = ReadTextureAtlasFromJSON(tex_document);
-	sprite_->set_texture(sprite_texture_);
+	//sprite_->set_texture(sprite_texture_);
 
 	run_order = SetupOrder(ske_document);
 

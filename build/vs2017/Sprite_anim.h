@@ -59,15 +59,17 @@ public:
 
 	TextureAtlas* ReadTextureAtlasFromJSON(rapidjson::Document&);
 	TexData* ReadSubtextureFromJSON(const rapidjson::Value&);
-	template <typename Value> void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, Value);
+	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, int);
+	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, std::string);
 
 	virtual gef::Sprite* Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string);
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts);
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts);
 
 	void Load_sprite_and_texture_3(std::string, rapidjson::Document&, rapidjson::Document&);
 
-	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>* Transforms_for_bone_);
+	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>& Transforms_for_bone_);
 	virtual gef::Sprite* Render(gef::Sprite* sprite);
+	//virtual gef::Sprite* Render(gef::Sprite* sprite);
 
 	void SetupRig(gef::Matrix33* rig_transform_m_, gef::Vector2 sprite_pos_, float scale);
 

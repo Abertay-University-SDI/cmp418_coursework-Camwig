@@ -46,18 +46,39 @@ void Sprite_anim::Load_sprite_and_texture_3(std::string tex_string, rapidjson::D
 
 TextureAtlas* Sprite_anim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_document)
 {
+	//These need to be put in sheet and skeletal respectively
+
+
+	//TextureAtlas* tex_atlas = new TextureAtlas();
+	//tex_atlas->name_ = tex_document["name"].GetString();
+	////Something to with this?
+	//tex_atlas->width_ = tex_document["width"].GetFloat();
+	//tex_atlas->height_ = tex_document["height"].GetFloat();
+	/////--------------------------------------------
+
+	//const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
+	//for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
+	//{
+	//	TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
+	//	tex_atlas->subtextures.push_back(*texdata);
+	//	delete texdata;
+	//}
+
+	//return tex_atlas;
+
 	TextureAtlas* tex_atlas = new TextureAtlas();
 	tex_atlas->name_ = tex_document["name"].GetString();
-	//Something to with this?
 	tex_atlas->width_ = tex_document["width"].GetFloat();
 	tex_atlas->height_ = tex_document["height"].GetFloat();
-	///--------------------------------------------
 
 	const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
 	for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
 	{
 		TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
-		tex_atlas->subtextures.push_back(*texdata);
+		//tex_atlas->subtextures.push_back(*texdata);
+
+		tex_atlas->subtex_atlas.insert(std::make_pair(texdata->name_, *texdata));
+
 		delete texdata;
 	}
 
@@ -114,7 +135,7 @@ TexData* Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_
 	return subTextData;
 }
 
-template <typename Value> void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas,Value subtext_)
+void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas,int subtext_)
 {
 
 	float width = texture_atlas->subtextures.at(subtext_).width_;
@@ -144,17 +165,45 @@ template <typename Value> void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef
 	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
 }
 
+void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, std::string subtext_)
+{
+
+	float width = texture_atlas->subtex_atlas.at(subtext_).width_;
+	float height = texture_atlas->subtex_atlas.at(subtext_).height_;
+	float x = texture_atlas->subtex_atlas.at(subtext_).x_;
+	float y = texture_atlas->subtex_atlas.at(subtext_).y_;
+	float frame_width = texture_atlas->subtex_atlas.at(subtext_).frame_width_;
+	float frame_height = texture_atlas->subtex_atlas.at(subtext_).frame_height_;
+	float frame_x = texture_atlas->subtex_atlas.at(subtext_).frame_x_;
+	float frame_y = texture_atlas->subtex_atlas.at(subtext_).frame_y_;
+
+	sprite->set_width(width);
+	sprite->set_height(height);
+	sprite->set_uv_width(width / texture_atlas->width_);
+	sprite->set_uv_height(height / texture_atlas->height_);
+
+	float u = x / texture_atlas->width_;
+	float v = y / texture_atlas->height_;
+	sprite->set_uv_position(gef::Vector2(u, v));
+
+	float sprite_x = width * 0.5f - (frame_width * 0.5f + frame_x);
+	float sprite_y = height * 0.5f - (frame_height * 0.5f + frame_y);
+
+	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
+	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
+}
+
 gef::Sprite* Sprite_anim::Load_sprite_and_texture_2(gef::Platform*, gef::Sprite* sprite, std::string)
 {
 	return sprite;
 }
 
-gef::Sprite* Sprite_anim::SetupAnimation(gef::Platform*, gef::Sprite* sprite, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts)
+gef::Sprite* Sprite_anim::SetupAnimation(gef::Platform*, gef::Sprite* sprite, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
 	return sprite;
 }
 
-void Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
+void Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
 }
 
@@ -175,5 +224,5 @@ void Sprite_anim::SetupRig(gef::Matrix33* rig_transform_m_,gef::Vector2 sprite_p
 
 //Dont know why this wouldnt work?
 //Does not work with string!!!! FUN
-template void Sprite_anim::SetSpriteSizeAndPositionForFrame<int>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, int subtext_);
-template void Sprite_anim::SetSpriteSizeAndPositionForFrame<char>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, char subtext_);
+//template void Sprite_anim::SetSpriteSizeAndPositionForFrame<int>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, int subtext_);
+//template void Sprite_anim::SetSpriteSizeAndPositionForFrame<char*>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, char* subtext_);

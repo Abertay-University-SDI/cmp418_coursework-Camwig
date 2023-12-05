@@ -311,10 +311,13 @@ void SceneApp::Render()
 	//anim->Update(frame);
 	//anim->Update(4, &sprite_);
 
-	sprite_renderer_->DrawSprite(*character->Render(this_s));
+	//sprite_renderer_->DrawSprite(*character->Render(this_s));
+
+	//character->Update(std::string(this_s), frame);
 
 	for (auto part : character->bone_parts)
 	{
+		//std::string str = "parts/" + part;
 		sprite_renderer_->DrawSprite(*character->Render(this_s),character->Transforms_for_bone_.at(part));
 	}
 

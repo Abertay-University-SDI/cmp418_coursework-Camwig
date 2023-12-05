@@ -60,7 +60,7 @@ Anim::~Anim()
 //	sprite_animation_ = new_sheet;
 //}
 
-void Anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
+void Anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
 	//sprite_ = sprite_animation_->SetSpriteSizeAndPositionForFrame(sprite_,screen_x,screen_y, frame);
 	//sprite_animation_->SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame);
@@ -83,7 +83,7 @@ void Anim::Render(gef::Sprite* sprite_)
 //	sprite_ = sprite_animation_->SetupAnimation(platform_,sprite_,tex_string,tex_document,ske_document);
 //}
 
-void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document,int& FrameRate, int& Duration, gef::Vector2 Position, std::vector<std::string>* bone_parts)
+void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document,int& FrameRate, int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
 	Sprite_anim* new_sheet;
 	new_sheet = new Sprite_anim();

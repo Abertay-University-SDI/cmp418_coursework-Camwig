@@ -106,20 +106,24 @@ public:
 	std::map<std::string, SkinSlot> skin_slots;
 	std::map<std::string, Bone> bones_;
 
-	TextureAtlas text_atlas;
-
 	std::vector<std::string> bone_parts1;
 	//void SetupRig(gef::Vector2);
 
-	std::map<std::string, Animation> new_anim;
+	//std::map<std::string, Animation> new_anim;
 
 	std::map<std::string, gef::Matrix33> Transforms_for_bone_1;
 	void DeleteTransforms();
 
 
 
-	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_) override;
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts) override;
+	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts) override;
 	//gef::Sprite* Render(gef::Sprite* sprite) override;
+
+private:
+	gef::Texture* sprite_texture_;
+	TextureAtlas* text_atlas1;
+	//TextureAtlas new_tex;
+	std::map<std::string, Animation> new_anim;
 };
 

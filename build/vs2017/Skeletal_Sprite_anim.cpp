@@ -7,11 +7,12 @@
 
 Skeletal_Sprite_anim::Skeletal_Sprite_anim()
 {
-
+	//text_atlas = new TextureAtlas;
 }
 Skeletal_Sprite_anim::~Skeletal_Sprite_anim()
 {
-
+	//delete text_atlas;
+	//text_atlas = NULL;
 }
 
 //void Skeletal_Sprite_anim::Init(/*gef::Texture* sprite_texture_, gef::Platform* platform_*/)
@@ -451,47 +452,35 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 //
 //}
 
-void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
+void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
-	for (auto part : bones_)
+	CalculateWorldBoneTransform(&new_anim.at("stand"), frame);
+
+
+	//Below is for render!!!!!!!!---------------------------------------------
+
+	for (auto part : bone_parts1)
 	{
-		//Will need to save these values to be used for the sprite of each part
-
-		std::string part_name = skin_slots.at(part.first).part_name_;
-
-		//This stuff seems like it can be just be done in render
-
+		std::string part_name = skin_slots.at(part).part_name_;
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
 		gef::Matrix33 sub_texture_transform_m;
 		gef::Matrix33 local_home_transform_m;
+		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
+		world_bone_transforming_m = bones_.at(part).world_transform_m;
 
+		//Problem this doesnt seem to remeber everything it does before hand!
+		sub_texture_transform_m = text_atlas1->subtex_atlas.at(part_name).transform_m_;
+		//-------------------------------------------------------------------
 
-		sprite_offset_transform_m = skin_slots.at(part.first).transform_m_;
-
-		world_bone_transforming_m = bones_.at(part.first).world_transform_m;
-
-		sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
-
-		local_home_transform_m = bones_.at(part.first).local_transform_m;
-
+		local_home_transform_m = bones_.at(part).local_transform_m;
 		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
-
-		Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
-
-		/*char[] tmp = part_name.c_str();*/
-
-		char* tmp = new char[part_name.length() + 1];
-		strcpy(tmp,part_name.c_str());
-
-		//Having issues with the generic
-		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, &text_atlas, *tmp);
-
-		delete tmp;
+		Transforms_for_bone_1.insert(std::make_pair(part, tmp_transform_));
+	
+		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas1, part_name);
 	}
-
-	Transforms_for_bone_ = &Transforms_for_bone_1;
-	DeleteTransforms();
+	Transforms_for_bone_ = Transforms_for_bone_1;
+	DeleteTransforms();;
 	
 }
 
@@ -502,10 +491,24 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 //	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
 //}
 
-gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts)
+gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
+	std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
+
+	for (auto i : parts)
+	{
+		bone_parts1.push_back(i);
+	}
+
+	bone_parts = bone_parts1;
+
 	scale = 0.5f;
 	SetupRig(&rig_transform_m_, Position, scale);
+
+	std::string tex_string_temp = tex_string + "_tex.png";
+
+	//sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
+	//sprite_->set_texture(sprite_texture_);
 
 	anim_pars = new Animation_Parser;
 
@@ -515,14 +518,16 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 	//Does not like it returning it this way
 	new_anim = ReadAnimationDataFromJSON(ske_document);
 
-	text_atlas = *ReadTextureAtlasFromJSON(tex_document);
+	text_atlas1 = ReadTextureAtlasFromJSON(tex_document);
 
-	for (auto i : bones_)
-	{
-		bone_parts1.push_back(i.first);
-	}
+	//new_tex = *text_atlas1;
 
-	bone_parts = &bone_parts1;
+	//for (auto i : bones_)
+	//{
+	//	bone_parts1.push_back(i.first);
+	//}
+
+	//bone_parts = &bone_parts1;
 
 	return sprite_;
 }
