@@ -461,27 +461,28 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 	//Below is for render!!!!!!!!---------------------------------------------
 
-	for (auto part : bone_parts1)
-	{
+	//for (auto part : bone_parts1)
+	//{
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
 		gef::Matrix33 sub_texture_transform_m;
 		gef::Matrix33 local_home_transform_m;
 
-		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
-		world_bone_transforming_m = bones_.at(part).world_transform_m;
-		std::string part_name = skin_slots.at(part).part_name_;
+		sprite_offset_transform_m = skin_slots.at("tailTip").transform_m_;
+		world_bone_transforming_m = bones_.at("tailTip").world_transform_m;
+		std::string part_name = skin_slots.at("tailTip").part_name_;
+		//part_name = "parts/" + part_name;
 
 		//Problem this doesnt seem to remeber everything it does before hand!
 		sub_texture_transform_m = text_atlas1->subtex_atlas.at(part_name).transform_m_;
 		//-------------------------------------------------------------------
 
-		local_home_transform_m = bones_.at(part).local_transform_m;
+		local_home_transform_m = bones_.at("tailTip").local_transform_m;
 		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
-		Transforms_for_bone_1.insert(std::make_pair(part, tmp_transform_));
+		Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
 	
 		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas1, part_name);
-	}
+	//}
 	Transforms_for_bone_ = Transforms_for_bone_1;
 	DeleteTransforms();;
 	
@@ -496,14 +497,17 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
+	//Always draws the last in this sequence
+
 	std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
 
 	for (auto i : parts)
 	{
 		bone_parts1.push_back(i);
+		bone_parts.push_back(i);
 	}
 
-	bone_parts = bone_parts1;
+	//bone_parts = bone_parts1;
 
 	scale = 0.5f;
 	SetupRig(&rig_transform_m_, Position, scale);

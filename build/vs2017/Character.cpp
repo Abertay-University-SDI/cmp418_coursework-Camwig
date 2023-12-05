@@ -7,6 +7,7 @@
 Character::Character() :
 	sprite_texture_(NULL),sprite_(NULL)
 {
+	
 }
 
 Character::~Character()

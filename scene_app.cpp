@@ -317,8 +317,8 @@ void SceneApp::Render()
 
 	//for (auto part : character->bone_parts)
 	//{
-		//std::string str = "parts/" + part;
-		sprite_renderer_->DrawSprite(*character->Render(this_s),character->Transforms_for_bone_.at("tailTip"));
+		std::string str = "parts/tailTip";
+		sprite_renderer_->DrawSprite(*character->Render(this_s),character->Transforms_for_bone_.at(str));
 	//}
 
 
