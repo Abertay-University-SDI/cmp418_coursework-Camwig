@@ -149,12 +149,12 @@ gef::Sprite* Sprite_anim::Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*
 	return sprite;
 }
 
-gef::Sprite* Sprite_anim::SetupAnimation(gef::Platform*, gef::Sprite* sprite, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
+gef::Sprite* Sprite_anim::SetupAnimation(gef::Platform*, gef::Sprite* sprite, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts)
 {
 	return sprite;
 }
 
-void Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_)
+void Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
 {
 }
 
@@ -163,8 +163,17 @@ gef::Sprite* Sprite_anim::Render(gef::Sprite* sprite)
 	return sprite;
 }
 
+void Sprite_anim::SetupRig(gef::Matrix33* rig_transform_m_,gef::Vector2 sprite_pos_,float scale)
+{
+	//gef::Matrix33 rig_transform_m_;
+
+	rig_transform_m_->SetIdentity();
+	rig_transform_m_->Scale(gef::Vector2(scale, scale));
+	rig_transform_m_->SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
+}
+
 
 //Dont know why this wouldnt work?
 //Does not work with string!!!! FUN
 template void Sprite_anim::SetSpriteSizeAndPositionForFrame<int>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, int subtext_);
-template void Sprite_anim::SetSpriteSizeAndPositionForFrame<float>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, float subtext_);
+template void Sprite_anim::SetSpriteSizeAndPositionForFrame<char>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, char subtext_);

@@ -452,11 +452,16 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 //
 //}
 
-void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_)
+void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_)
 {
 	for (auto part : bone_parts)
 	{
 		//Will need to save these values to be used for the sprite of each part
+
+		std::string part_name = skin_slots.at(part).part_name_;
+
+		//This stuff seems like it can be just be done in render
+
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
 		gef::Matrix33 sub_texture_transform_m;
@@ -464,25 +469,41 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 
 		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
+
 		world_bone_transforming_m = bones_.at(part).world_transform_m;
-		std::string part_name = skin_slots.at(part).part_name_;
+
 		sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
+
 		local_home_transform_m = bones_.at(part).local_transform_m;
 
+		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
+
+		Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
+
+		/*char[] tmp = part_name.c_str();*/
+
+		char* tmp = new char[part_name.length() + 1];
+		strcpy(tmp,part_name.c_str());
+
 		//Having issues with the generic
-		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, &text_atlas, 0/*part_name*/);
+		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, &text_atlas, *tmp);
+
+		delete tmp;
 	}
 }
 
-void Skeletal_Sprite_anim::SetupRig(gef::Vector2 sprite_pos_)
-{
-	rig_transform_m_.SetIdentity();
-	rig_transform_m_.Scale(gef::Vector2(scale, scale));
-	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
-}
+//void Skeletal_Sprite_anim::SetupRig(gef::Vector2 sprite_pos_)
+//{
+//	rig_transform_m_.SetIdentity();
+//	rig_transform_m_.Scale(gef::Vector2(scale, scale));
+//	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
+//}
 
-gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
+gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts)
 {
+	scale = 0.5f;
+	SetupRig(&rig_transform_m_, Position, scale);
+
 	anim_pars = new Animation_Parser;
 
 	skin_slots = ReadSkinSlotsDataFromJSON(ske_document);

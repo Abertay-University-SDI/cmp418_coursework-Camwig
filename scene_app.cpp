@@ -304,13 +304,18 @@ void SceneApp::Render()
 	//	anim->RenderUpdate(sprite_pos_, sprite_,i, sprite_offset_transform_m, world_bone_transforming_m, sub_texture_transform_m, local_home_transform_m);
 
 	//	//Doesnt actually spit out the new calculated values so they are all still null
-	//	sprite_renderer_->DrawSprite(sprite_, sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * anim->rig_transform_m_);
+		//sprite_renderer_->DrawSprite(sprite_, sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * anim->rig_transform_m_);
 	//}
 
 	//anim->Update(frame);
 	//anim->Update(4, &sprite_);
 
 	sprite_renderer_->DrawSprite(*character->Render(this_s));
+
+	for (auto part : character->bone_parts)
+	{
+		sprite_renderer_->DrawSprite(*character->Render(this_s),character->Transforms_for_bone_.at(part));
+	}
 
 
 	DrawHUD();

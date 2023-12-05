@@ -28,6 +28,10 @@ public:
 	std::map<std::string, Anim*> animations;
 
 	gef::Sprite* sprite_;
+
+	std::vector<std::string> bone_parts;
+	std::map<std::string, gef::Matrix33> Transforms_for_bone_;
+
 private:
 	Type Chars_type;
 	gef::Texture* sprite_texture_;

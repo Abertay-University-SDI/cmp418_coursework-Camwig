@@ -98,7 +98,7 @@ class Skeletal_Sprite_anim : public Sprite_anim
 	gef::Matrix33 rig_transform_m_;
 	gef::Matrix33 combined_transform_m_;
 
-	const float scale = 0.5f;
+	//const float scale = 0.5f;
 
 	//void RenderUpdate(const gef::Vector2, gef::Sprite&, const std::string, gef::Matrix33&, gef::Matrix33&, gef::Matrix33&, gef::Matrix33&);
 
@@ -108,11 +108,15 @@ class Skeletal_Sprite_anim : public Sprite_anim
 	TextureAtlas text_atlas;
 
 	std::vector<std::string> bone_parts;
-	void SetupRig(gef::Vector2);
+	//void SetupRig(gef::Vector2);
 
 	std::map<std::string, Animation> new_anim;
 
-	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_) override;
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document) override;
+	std::map<std::string, gef::Matrix33> Transforms_for_bone_1;
+
+
+	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>* Transforms_for_bone_) override;
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>* bone_parts) override;
+	//gef::Sprite* Render(gef::Sprite* sprite) override;
 };
 
