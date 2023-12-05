@@ -315,11 +315,11 @@ void SceneApp::Render()
 
 	//character->Update(std::string(this_s), frame);
 
-	//for (auto part : character->bone_parts)
-	//{
-		std::string str = "parts/tailTip";
-		sprite_renderer_->DrawSprite(*character->Render(this_s),character->Transforms_for_bone_.at(str));
-	//}
+	for (auto part : character->bone_parts)
+	{
+		//std::string str = "tailTip";
+		sprite_renderer_->DrawSprite(*character->Render(this_s, part),character->Transform);
+	}
 
 
 	DrawHUD();

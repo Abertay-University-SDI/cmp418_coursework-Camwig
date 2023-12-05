@@ -57,9 +57,9 @@ void Character::Update(std::string tex_string, int frame)
 	animations.at(tex_string)->Update(frame, sprite_,Position, Transforms_for_bone_);
 }
 
-gef::Sprite* Character::Render(std::string tex_string)
+gef::Sprite* Character::Render(std::string tex_string, std::string part)
 {
 	//return sprite_;
-	animations.at(tex_string)->Render(sprite_);
+	animations.at(tex_string)->Render(sprite_, Transform, part,Position);
 	return sprite_;
 }

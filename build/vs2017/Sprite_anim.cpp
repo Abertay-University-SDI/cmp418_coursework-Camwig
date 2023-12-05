@@ -212,6 +212,11 @@ gef::Sprite* Sprite_anim::Render(gef::Sprite* sprite)
 	return sprite;
 }
 
+gef::Sprite* Sprite_anim::Render(gef::Sprite* sprite,gef::Matrix33& transform, std::string part, gef::Vector2 Position)
+{
+	return sprite;
+}
+
 void Sprite_anim::SetupRig(gef::Matrix33* rig_transform_m_,gef::Vector2 sprite_pos_,float scale)
 {
 	//gef::Matrix33 rig_transform_m_;

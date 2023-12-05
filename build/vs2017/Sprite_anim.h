@@ -69,6 +69,8 @@ public:
 
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>& Transforms_for_bone_);
 	virtual gef::Sprite* Render(gef::Sprite* sprite);
+	virtual gef::Sprite* Render(gef::Sprite* sprite, gef::Matrix33& transform,std::string part, gef::Vector2 Position);
+	//std::map<gef::Sprite*, gef::Matrix33> Render(gef::Sprite* sprite_);
 	//virtual gef::Sprite* Render(gef::Sprite* sprite);
 
 	void SetupRig(gef::Matrix33* rig_transform_m_, gef::Vector2 sprite_pos_, float scale);

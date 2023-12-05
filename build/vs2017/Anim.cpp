@@ -67,9 +67,9 @@ void Anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::
 	sprite_animation_->Update(frame, sprite_, position_, Transforms_for_bone_);
 }
 
-void Anim::Render(gef::Sprite* sprite_)
+void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
 {
-	sprite_animation_->Render(sprite_);
+	sprite_animation_->Render(sprite_,transform,part,Position);
 }
 
 //void Anim::SetupAnimSheet2D(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)

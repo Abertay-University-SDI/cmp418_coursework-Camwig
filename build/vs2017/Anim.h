@@ -36,7 +36,7 @@ public:
 
 	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, int& FrameRate,int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts);
 
-	void Render(gef::Sprite* sprite_);
+	void Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position);
 
 	float FrameRate;
 	float Duration;
