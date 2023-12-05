@@ -454,6 +454,8 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 
 void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
+	SetupRig(&rig_transform_m_,position_,scale);
+
 	CalculateWorldBoneTransform(&new_anim.at("stand"), frame);
 
 
@@ -461,13 +463,14 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 	for (auto part : bone_parts1)
 	{
-		std::string part_name = skin_slots.at(part).part_name_;
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
 		gef::Matrix33 sub_texture_transform_m;
 		gef::Matrix33 local_home_transform_m;
+
 		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
 		world_bone_transforming_m = bones_.at(part).world_transform_m;
+		std::string part_name = skin_slots.at(part).part_name_;
 
 		//Problem this doesnt seem to remeber everything it does before hand!
 		sub_texture_transform_m = text_atlas1->subtex_atlas.at(part_name).transform_m_;
