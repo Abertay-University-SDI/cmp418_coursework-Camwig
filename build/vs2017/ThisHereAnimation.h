@@ -4,11 +4,11 @@
 #include <graphics/primitive.h>
 #include <graphics/scene.h>
 
-class Animation
+class ThisHereAnimation
 {
 public:
-	Animation();
-	~Animation();
+	ThisHereAnimation();
+	~ThisHereAnimation();
 
 	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform&);
 

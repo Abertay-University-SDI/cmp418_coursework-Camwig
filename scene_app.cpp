@@ -320,7 +320,7 @@ void SceneApp::Init()
 	SetupLights();
 
 	model_mesh_ = new ModelMesh;
-	anim_ = new Animation;
+	anim_ = new ThisHereAnimation;
 
 	blend_tree_ = new BlendTree;
 
@@ -486,38 +486,6 @@ bool SceneApp::Update(float frame_time)
 			}
 		}
 	}
-
-	//if(player_)
-	//{
-	//	if (speed_ < anim_model_->Anim_map.at("Walk").Anim_min_speed_)
-	//	{
-	//		// update the pose in the anim player from the animation
-	//		idle_anim_player.Update(frame_time, player_->bind_pose());
-
-	//		// update the bone matrices that are used for rendering the character
-	//		// from the newly updated pose in the anim player
-	//		anim_blend = speed_;
-
-	//		//Issue here
-	//		player_->UpdateBoneMatrices(idle_anim_player.pose());
-	//	}
-	//	else
-	//	{
-	//		anim_model_->Anim_map.at("Walk").Anim_player_.Update(frame_time, player_->bind_pose());
-	//		run_anim_player.Update(frame_time, player_->bind_pose());
-
-	//		anim_blend = (speed_ - anim_model_->Anim_map.at("Walk").Anim_speed) / (run_speed - anim_model_->Anim_map.at("Walk").Anim_speed);
-
-	//		float walk_speed_mod = (anim_model_->Anim_map.at("Walk").Anim_max_speed_ - anim_model_->Anim_map.at("Walk").Anim_min_speed_) * anim_blend;
-	//		float run_speed_mod = (max_run_speed - min_run_speed) * anim_blend;
-
-	//		anim_model_->Anim_map.at("Walk").Anim_player_.set_playback_speed(anim_model_->Anim_map.at("Walk").Anim_speed + walk_speed_mod);
-	//		run_anim_player.set_playback_speed(min_run_speed + run_speed_mod);
-
-	//		blended_pose.Linear2PoseBlend(anim_model_->Anim_map.at("Walk").Anim_player_.pose(),run_anim_player.pose(),anim_blend);
-	//		player_->UpdateBoneMatrices(blended_pose);
-	//	}
-	//}
 
 	if (player_)
 	{

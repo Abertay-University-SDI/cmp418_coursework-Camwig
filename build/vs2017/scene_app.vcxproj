@@ -223,7 +223,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Anim.cpp" />
-    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ThisHereAnimation.cpp" />
     <ClCompile Include="Animation_Parser.cpp" />
     <ClCompile Include="Anim_Sprite.cpp" />
     <ClCompile Include="BlendNode.cpp" />
@@ -232,6 +232,7 @@
     <ClCompile Include="ClipNode.cpp" />
     <ClCompile Include="Linear2Blend.cpp" />
     <ClCompile Include="ModelMesh.cpp" />
+    <ClCompile Include="motion_clip_player.cpp" />
     <ClCompile Include="OutputNode.cpp" />
     <ClCompile Include="Sheet_Sprite_anim.cpp" />
     <ClCompile Include="Skeletal_Sprite_anim.cpp" />
@@ -243,7 +244,7 @@
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Anim.h" />
     <ClInclude Include="AnimatedModel.h" />
-    <ClInclude Include="Animation.h" />
+    <ClInclude Include="ThisHereAnimation.h" />
     <ClInclude Include="Animation_Parser.h" />
     <ClInclude Include="Anim_Sprite.h" />
     <ClInclude Include="BlendNode.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="ClipNode.h" />
     <ClInclude Include="Linear2Blend.h" />
     <ClInclude Include="ModelMesh.h" />
+    <ClInclude Include="motion_clip_player.h" />
     <ClInclude Include="OutputNode.h" />
     <ClInclude Include="PlayableAnim.h" />
     <ClInclude Include="Sheet_Sprite_anim.h" />

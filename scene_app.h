@@ -108,7 +108,7 @@
 #include <graphics/skinned_mesh_instance.h>
 #include "motion_clip_player.h"
 #include "ModelMesh.h"
-#include "Animation.h"
+#include "ThisHereAnimation.h"
 
 #include "AnimatedModel.h"
 
@@ -189,7 +189,7 @@ private:
 	//const char* AnimToLoad = "ybot/ybot@walking.scn";
 
 	ModelMesh* model_mesh_;
-	Animation* anim_;
+	ThisHereAnimation* anim_;
 
 	float min_walk_speed;
 	float max_walk_speed;

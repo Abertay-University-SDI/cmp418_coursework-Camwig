@@ -51,7 +51,7 @@
     <ClCompile Include="Skeletal_Sprite_anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
+    <ClCompile Include="ThisHereAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlendNode.cpp">
@@ -70,6 +70,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutputNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="motion_clip_player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,7 +110,7 @@
     <ClInclude Include="AnimatedModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
+    <ClInclude Include="ThisHereAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlendNode.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayableAnim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="motion_clip_player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

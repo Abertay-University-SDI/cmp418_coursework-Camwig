@@ -1,16 +1,16 @@
-#include "Animation.h"
+#include "ThisHereAnimation.h"
 
-Animation::Animation()
+ThisHereAnimation::ThisHereAnimation()
 {
 
 }
 
-Animation::~Animation()
+ThisHereAnimation::~ThisHereAnimation()
 {
 
 }
 
-gef::Animation* Animation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
+gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
 {
 	gef::Animation* anim = NULL;
 
