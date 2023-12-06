@@ -7,7 +7,7 @@
 
 Anim::Anim()
 {
-
+	WhichAnim_ = NULL;
 }
 
 Anim::~Anim()
@@ -17,6 +17,9 @@ Anim::~Anim()
 
 	delete sprite_animation_;
 	sprite_animation_ = NULL;
+
+	delete WhichAnim_;
+	WhichAnim_ = NULL;
 }
 
 //void Anim::Init(std::string file, gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, int frame)
@@ -83,17 +86,35 @@ void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string pa
 //	sprite_ = sprite_animation_->SetupAnimation(platform_,sprite_,tex_string,tex_document,ske_document);
 //}
 
-void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document,int& FrameRate, int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_)
+void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_, std::string* WhichAnim1)
 {
-	Sprite_anim* new_sheet;
-	new_sheet = new Sprite_anim();
-	sprite_animation_ = new_sheet;
-	sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
+	if (WhichAnim1 != NULL)
+	{
+		WhichAnim_ = new std::string(*WhichAnim1);
+	}
 
-	sprite_animation_ = nullptr;
+	//maybe its actually the below that needs its own function
+	//Maybe it needs to go into the character
+
+	//Sprite_anim* new_sheet;
+	//new_sheet = new Sprite_anim();
+	//sprite_animation_ = new_sheet;
+	//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
+
+	//sprite_animation_ = nullptr;
+
+	//---------------------------------
 
 	const rapidjson::Value& ske_array = ske_document["armature"];
 	std::string test_string = ske_array[0]["type"].GetString();
+
+	int temp;
+	temp = ske_array[0]["frameRate"].GetInt();
+	FrameRate = temp;
+	temp = ske_array[0]["animation"][0]["duration"].GetInt();
+	Duration = temp;
+
+	//The below should be done again and again for diffrent animations so the setup, render and update
 
 	if (test_string.find("Sheet") != std::string::npos)
 	{
@@ -103,14 +124,8 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		new_sheet = new Sheet_Sprite_anim();
 		sprite_animation_ = new_sheet;
 		//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
-
-		int temp;
-		temp = ske_array[0]["frameRate"].GetInt();
-		FrameRate = temp;
-		temp = ske_array[0]["animation"][0]["duration"].GetInt();
-		Duration = temp;
 		type_ = test_string;
-		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document,Position,bone_parts);
+		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document,Position,bone_parts,WhichAnim_);
 	}
 	else if (test_string.find("Armature") != std::string::npos)
 	{
@@ -119,13 +134,8 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		sprite_animation_ = new_sheet;
 		//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
 
-		int temp;
-		temp = ske_array[0]["frameRate"].GetInt();
-		FrameRate = temp;
-		temp = ske_array[0]["animation"][0]["duration"].GetInt();
-		Duration = temp;
 		type_ = test_string;
-		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts);
+		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_);
 	}
 }
 

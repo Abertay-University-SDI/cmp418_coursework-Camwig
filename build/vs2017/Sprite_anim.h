@@ -62,7 +62,7 @@ public:
 	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, std::string);
 
 	virtual gef::Sprite* Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string);
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts);
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string* WhichAnim1);
 
 	void Load_sprite_and_texture_3(std::string, rapidjson::Document&, rapidjson::Document&);
 

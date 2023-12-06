@@ -469,7 +469,7 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 {
 	SetupRig(&rig_transform_m_,position_,scale);
 
-	CalculateWorldBoneTransform(&new_anim.at("stand"), frame);
+	CalculateWorldBoneTransform(&new_anim.at(WhichAnim_), frame);
 
 
 	//Below is for render!!!!!!!!---------------------------------------------
@@ -536,11 +536,15 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 //	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
 //}
 
-gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
+gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1)
 {
 	//This is also the drawing order crap
 	//I think the order is in the slot stuff
 
+	if (WhichAnim1 != NULL)
+	{
+		WhichAnim_ = *WhichAnim1;
+	}
 	
 
 	//parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };

@@ -176,7 +176,14 @@ void SceneApp::Init()
 	//anim->Update(frame,&sprite_);
 
 	character = new Character();
-	character->LoadCharacter(this_s, 0, &platform_);
+	//Could I glue the strings together in here and output that?
+	character->SetWhichAnimation("walk");
+	character->LoadCharacter(this_s, &platform_);
+	//---------------------------------------
+	character->SetAnimation(this_s, &platform_);
+
+	//character->SetWhichAnimation("stand");
+	//character->SetAnimation(this_s, &platform_);
 	character->Update(this_s, 0);
 }
 

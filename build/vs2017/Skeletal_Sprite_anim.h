@@ -119,7 +119,7 @@ public:
 
 
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts) override;
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1) override;
 	gef::Sprite* Render(gef::Sprite* sprite,gef::Matrix33& transform, std::string part, gef::Vector2 Position) override;
 
 private:
@@ -127,6 +127,7 @@ private:
 	TextureAtlas* text_atlas1;
 	//TextureAtlas new_tex;
 	std::map<std::string, Animation> new_anim;
-	std::string parts[];
+	//std::string parts[];
+	std::string WhichAnim_;
 };
 

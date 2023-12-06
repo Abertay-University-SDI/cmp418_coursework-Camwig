@@ -34,12 +34,13 @@ public:
 	//void Setup_2D_anim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string);
 	//void SetupAnimSheet2D(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document);
 
-	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, int& FrameRate,int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string& type_);
+	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string& type_,std::string* WhichAnim);
 
 	void Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position);
 
 	float FrameRate;
 	float Duration;
+	std::string* WhichAnim_;
 private:
 	//gef::Texture* sprite_texture_;
 	Sprite_anim* sprite_animation_;

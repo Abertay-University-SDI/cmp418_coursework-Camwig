@@ -9,6 +9,7 @@ Character::Character() :
 {
 	//Transform = new gef::Matrix33;
 	Transform = NULL;
+	WhichAnim_ = NULL;
 }
 
 Character::~Character()
@@ -21,9 +22,12 @@ Character::~Character()
 
 	delete Transform;
 	Transform = NULL;
+
+	delete WhichAnim_;
+	WhichAnim_ = NULL;
 }
 
-void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* platform_)
+void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_)
 {
 
 	sprite_ = new gef::Sprite();
@@ -40,20 +44,38 @@ void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* pl
 
 	sprite_->set_texture(sprite_texture_);
 
+	Sprite_anim* new_sheet;
+	new_sheet = new Sprite_anim();
+	new_sheet->Load_sprite_and_texture_3(tex_string, rapidjson_doc_tex, rapidjson_doc_ske);
+
+	delete new_sheet;
+
+	//SetAnimation(tex_string,platform_);
+}
+
+void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
+{
 	Anim* new_animantion;
 	new_animantion = new Anim();
 
-	rapidjson::Document rapidjson_doc_tex;
+	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Position, bone_parts, Type, WhichAnim_);
 
-	rapidjson::Document rapidjson_doc_ske;
+	if (new_animantion->WhichAnim_ != NULL)
+	{
+		tex_string = tex_string + "_" + *new_animantion->WhichAnim_;
+		animations.insert(std::make_pair(tex_string, new_animantion));
+	}
+	else
+	{
+		animations.insert(std::make_pair(tex_string, new_animantion));
+	}
+}
 
-	int Framerate, duration;
-	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Framerate, duration,Position,bone_parts,Type);
-
-	new_animantion->FrameRate = Framerate;
-	new_animantion->Duration = duration;
-
-	animations.insert(std::make_pair(tex_string,new_animantion));
+void Character::SetWhichAnimation(std::string tex_string)
+{
+	//WhichAnim_ = new std::string;
+	WhichAnim_ = new std::string(tex_string);
+	//WhichAnim_ = &tex_string;
 }
 
 void Character::Update(std::string tex_string, int frame)

@@ -13,7 +13,7 @@ public:
 	//void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int) override;
 	gef::Sprite* Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string tex_string) override;
 
-	gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts) override;
+	gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1) override;
 
 	void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
 
