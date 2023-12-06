@@ -17,6 +17,8 @@ public:
 
 	void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
 
+	gef::Sprite* Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position) override;
+
 	std::vector<std::string> bone_parts1;
 	//void SetupRig(gef::Vector2);
 	gef::Matrix33 rig_transform_m_;
@@ -36,5 +38,7 @@ private:
 
 	std::map<int, std::string> SetupOrder(rapidjson::Document&);
 	std::vector<TexData> ReOrganiseSubtextures();
+	gef::Matrix33 sub_texture_transform_m;
+	gef::Matrix33 sub_texture_transform_m1;
 };
 

@@ -83,7 +83,7 @@ void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string pa
 //	sprite_ = sprite_animation_->SetupAnimation(platform_,sprite_,tex_string,tex_document,ske_document);
 //}
 
-void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document,int& FrameRate, int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts)
+void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document,int& FrameRate, int& Duration, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_)
 {
 	Sprite_anim* new_sheet;
 	new_sheet = new Sprite_anim();
@@ -109,6 +109,7 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		FrameRate = temp;
 		temp = ske_array[0]["animation"][0]["duration"].GetInt();
 		Duration = temp;
+		type_ = test_string;
 		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document,Position,bone_parts);
 	}
 	else if (test_string.find("Armature") != std::string::npos)
@@ -123,6 +124,7 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		FrameRate = temp;
 		temp = ske_array[0]["animation"][0]["duration"].GetInt();
 		Duration = temp;
+		type_ = test_string;
 		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts);
 	}
 }

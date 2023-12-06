@@ -177,7 +177,7 @@ void SceneApp::Init()
 
 	character = new Character();
 	character->LoadCharacter(this_s, 0, &platform_);
-	character->Update(this_s, frame);
+	character->Update(this_s, 0);
 }
 
 void SceneApp::CleanUp()
@@ -315,10 +315,25 @@ void SceneApp::Render()
 
 	//character->Update(std::string(this_s), frame);
 
-	for (auto part : character->bone_parts)
+	if (character->Type == "Sheet")
 	{
-		//std::string str = "tailTip";
-		sprite_renderer_->DrawSprite(*character->Render(this_s, part),character->Transform);
+		for (auto part : character->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*character->Render(this_s, part));
+		}
+	}
+	else
+	{
+		for (auto part : character->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*character->Render(this_s, part), *character->Transform);
+		}
 	}
 
 

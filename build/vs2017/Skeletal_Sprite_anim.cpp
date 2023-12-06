@@ -490,6 +490,8 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
 {
+	//transform = gef::Matrix33();
+
 	gef::Matrix33 sprite_offset_transform_m;
 	gef::Matrix33 world_bone_transforming_m;
 	gef::Matrix33 sub_texture_transform_m;
@@ -505,7 +507,8 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 	//-------------------------------------------------------------------
 
 	local_home_transform_m = bones_.at(part).local_transform_m;
-	transform = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
+	gef::Matrix33 Result = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
+	transform = Result;
 	//Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
 
 	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas1, part_name);

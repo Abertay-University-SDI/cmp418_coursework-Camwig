@@ -84,10 +84,22 @@ Sheet_Sprite_anim::~Sheet_Sprite_anim()
 
 void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
-	Transforms_for_bone_1.insert(std::make_pair(bone_parts1[0], rig_transform_m_));
+	//Transforms_for_bone_1.insert(std::make_pair(bone_parts1[0], rig_transform_m_));
+
+	//SetupRig(&rig_transform_m_, position_, scale);
+	sub_texture_transform_m = text_atlas->subtextures.at(frame).transform_m_;
+	sub_texture_transform_m1 = text_atlas->subtextures.at(frame).translate_m_;
 	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas,frame);
-	Transforms_for_bone_ = Transforms_for_bone_1;
-	DeleteTransforms();
+	//Transforms_for_bone_ = Transforms_for_bone_1;
+	//DeleteTransforms();
+}
+
+gef::Sprite* Sheet_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
+{
+	//gef::Matrix33 sub_texture_transform_m = text_atlas->subtextures.at(0).transform_m_;
+	//transform = sub_texture_transform_m * sub_texture_transform_m1 * rig_transform_m_;
+	//SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas, frame);
+	return sprite;
 }
 
 gef::Sprite* Sheet_Sprite_anim::Load_sprite_and_texture_2(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string)
@@ -131,7 +143,7 @@ gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sp
 	bone_parts1.push_back("Default");
 	bone_parts = bone_parts1;
 
-	SetupRig(&rig_transform_m_,Position,scale);
+	SetupRig(&rig_transform_m_, Position, scale);
 
 	std::string tex_string_temp = tex_string + "_tex.png";
 

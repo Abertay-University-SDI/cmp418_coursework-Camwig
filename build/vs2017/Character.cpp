@@ -7,7 +7,8 @@
 Character::Character() :
 	sprite_texture_(NULL),sprite_(NULL)
 {
-	
+	//Transform = new gef::Matrix33;
+	Transform = NULL;
 }
 
 Character::~Character()
@@ -17,6 +18,9 @@ Character::~Character()
 
 	delete sprite_;
 	sprite_ = NULL;
+
+	delete Transform;
+	Transform = NULL;
 }
 
 void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* platform_)
@@ -44,7 +48,7 @@ void Character::LoadCharacter(std::string tex_string,int type, gef::Platform* pl
 	rapidjson::Document rapidjson_doc_ske;
 
 	int Framerate, duration;
-	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Framerate, duration,Position,bone_parts);
+	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Framerate, duration,Position,bone_parts,Type);
 
 	new_animantion->FrameRate = Framerate;
 	new_animantion->Duration = duration;
@@ -60,6 +64,9 @@ void Character::Update(std::string tex_string, int frame)
 gef::Sprite* Character::Render(std::string tex_string, std::string part)
 {
 	//return sprite_;
-	animations.at(tex_string)->Render(sprite_, Transform, part,Position);
+	gef::Matrix33 NewTransform;
+	//gef::Sprite new_sprite;
+	animations.at(tex_string)->Render(sprite_, NewTransform, part,Position);
+	Transform = &NewTransform;
 	return sprite_;
 }

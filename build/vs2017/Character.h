@@ -3,11 +3,11 @@
 #include "Anim.h"
 #include <maths/vector2.h>
 
-enum Type
-{
-	Sheet = 0,
-	Skeletal = 1
-};
+//enum Type
+//{
+//	Sheet = 0,
+//	Skeletal = 1
+//};
 
 
 class Character
@@ -29,12 +29,14 @@ public:
 
 	gef::Sprite* sprite_;
 
+	std::string Type;
+
 	std::vector<std::string> bone_parts;
 	std::map<std::string, gef::Matrix33> Transforms_for_bone_;
-	gef::Matrix33 Transform;
+	gef::Matrix33* Transform;
 
 private:
-	Type Chars_type;
+	//Type Chars_type;
 	gef::Texture* sprite_texture_;
 
 	gef::Vector2 Position;
