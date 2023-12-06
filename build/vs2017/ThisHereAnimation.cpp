@@ -60,6 +60,8 @@ gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename
 
 void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_)
 {
+	blend_tree_ = new BlendTree;
+
 	// if there is mesh data in the scene, create a mesh to draw from the first mesh
 	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);//GetFirstMesh(model_scene_);
 
@@ -135,7 +137,7 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	delete play_anim_;
 	play_anim_ = NULL;
 
-	//InitBlendTree();
+	InitBlendTree();
 }
 
 void ThisHereAnimation::Update(float frameTime_)
@@ -179,7 +181,6 @@ void ThisHereAnimation::InitBlendTree()
 	if (player_ && player_->bind_pose().skeleton())
 	{
 		//Issue here
-		//gef::SkeletonPose  new_pose = player_->bind_pose();
 		blend_tree_->Init(player_->bind_pose());
 
 		ClipNode* idle_clip = new ClipNode(blend_tree_);

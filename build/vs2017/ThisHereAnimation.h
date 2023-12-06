@@ -4,6 +4,7 @@
 #include <graphics/primitive.h>
 #include <graphics/scene.h>
 
+#include <graphics/skinned_mesh_instance.h>
 
 #include "ModelMesh.h"
 #include "motion_clip_player.h"

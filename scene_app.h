@@ -105,7 +105,7 @@
 #include <maths/vector4.h>
 #include <maths/matrix44.h>
 #include <vector>
-#include <graphics/skinned_mesh_instance.h>
+//#include <graphics/skinned_mesh_instance.h>
 //#include "motion_clip_player.h"
 //#include "ModelMesh.h"
 #include "ThisHereAnimation.h"

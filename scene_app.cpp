@@ -335,87 +335,87 @@ void SceneApp::Init()
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
-	//anim_->Setup(model_mesh_,model_scene_,&platform_);
+	anim_->Setup(model_mesh_,model_scene_,&platform_);
 	//InitBlendTree();
 
 	//Can move!-----------------------------------------------
 
-	// if there is mesh data in the scene, create a mesh to draw from the first mesh
-	anim_->mesh_ = model_mesh_->CreateMeshData(model_scene_, platform_);//GetFirstMesh(model_scene_);
+	//// if there is mesh data in the scene, create a mesh to draw from the first mesh
+	//anim_->mesh_ = model_mesh_->CreateMeshData(model_scene_, platform_);//GetFirstMesh(model_scene_);
 
-	// get the first skeleton in the scene
-	gef::Skeleton* skeleton = model_mesh_->CreateSkeleton(model_scene_);//GetFirstSkeleton(model_scene_);
+	//// get the first skeleton in the scene
+	//gef::Skeleton* skeleton = model_mesh_->CreateSkeleton(model_scene_);//GetFirstSkeleton(model_scene_);
 
-	if (skeleton)
-	{
-		player_1 = new gef::SkinnedMeshInstance(*skeleton);
-		anim_->anim_player_.Init(player_1->bind_pose());
-		anim_->walk_anim_player.Init(player_1->bind_pose());
-		anim_->run_anim_player.Init(player_1->bind_pose());
-		anim_->idle_anim_player.Init(player_1->bind_pose());
-		anim_->blended_pose = player_1->bind_pose();
-		player_1->set_mesh(anim_->mesh_);
-	}
+	//if (skeleton)
+	//{
+	//	player_1 = new gef::SkinnedMeshInstance(*skeleton);
+	//	anim_->anim_player_.Init(player_1->bind_pose());
+	//	anim_->walk_anim_player.Init(player_1->bind_pose());
+	//	anim_->run_anim_player.Init(player_1->bind_pose());
+	//	anim_->idle_anim_player.Init(player_1->bind_pose());
+	//	anim_->blended_pose = player_1->bind_pose();
+	//	player_1->set_mesh(anim_->mesh_);
+	//}
 
 
-	// anims
-	//walk_anim_ = LoadAnimation("tesla/tesla@walk.scn", "");
-	anim_->walk_anim_ = anim_->LoadAnimation(anim_->AnimToLoad, "", platform_);//LoadAnimation(AnimToLoad, "");
+	//// anims
+	////walk_anim_ = LoadAnimation("tesla/tesla@walk.scn", "");
+	//anim_->walk_anim_ = anim_->LoadAnimation(anim_->AnimToLoad, "", platform_);//LoadAnimation(AnimToLoad, "");
 
-	anim_->run_anim_ = anim_->LoadAnimation(anim_->AnimToLoad2, "", platform_);
+	//anim_->run_anim_ = anim_->LoadAnimation(anim_->AnimToLoad2, "", platform_);
 
-	anim_->idle_anim_ = anim_->LoadAnimation(anim_->AnimToLoad3, "", platform_);
+	//anim_->idle_anim_ = anim_->LoadAnimation(anim_->AnimToLoad3, "", platform_);
 
-	if (anim_->walk_anim_)
-	{
-		anim_->walk_anim_player.set_clip(anim_->walk_anim_);
-		anim_->walk_anim_player.set_looping(true);
-		anim_->walk_anim_player.set_anim_time(0.0f);
-	}
+	//if (anim_->walk_anim_)
+	//{
+	//	anim_->walk_anim_player.set_clip(anim_->walk_anim_);
+	//	anim_->walk_anim_player.set_looping(true);
+	//	anim_->walk_anim_player.set_anim_time(0.0f);
+	//}
 
-	if (anim_->run_anim_)
-	{
-		anim_->run_anim_player.set_clip(anim_->run_anim_);
-		anim_->run_anim_player.set_looping(true);
-		anim_->run_anim_player.set_anim_time(0.0f);
-	}
+	//if (anim_->run_anim_)
+	//{
+	//	anim_->run_anim_player.set_clip(anim_->run_anim_);
+	//	anim_->run_anim_player.set_looping(true);
+	//	anim_->run_anim_player.set_anim_time(0.0f);
+	//}
 
-	if (anim_->idle_anim_)
-	{
-		anim_->idle_anim_player.set_clip(anim_->idle_anim_);
-		anim_->idle_anim_player.set_looping(true);
-		anim_->idle_anim_player.set_anim_time(0.0f);
-	}
+	//if (anim_->idle_anim_)
+	//{
+	//	anim_->idle_anim_player.set_clip(anim_->idle_anim_);
+	//	anim_->idle_anim_player.set_looping(true);
+	//	anim_->idle_anim_player.set_anim_time(0.0f);
+	//}
 
-	anim_->min_walk_speed = 1.f;
-	anim_->max_walk_speed = anim_->walk_anim_->duration() / anim_->run_anim_->duration();//run anim duration
+	//anim_->min_walk_speed = 1.f;
+	//anim_->max_walk_speed = anim_->walk_anim_->duration() / anim_->run_anim_->duration();//run anim duration
 
-	anim_->min_run_speed = anim_->run_anim_->duration() / anim_->walk_anim_->duration();
-	anim_->max_run_speed = 1.f;
+	//anim_->min_run_speed = anim_->run_anim_->duration() / anim_->walk_anim_->duration();
+	//anim_->max_run_speed = 1.f;
 
-	anim_->speed_ = 0.0f;
+	//anim_->speed_ = 0.0f;
 
-	anim_->anim_blend = 0.f;
+	//anim_->anim_blend = 0.f;
 
-	anim_model_ = new AnimatedModel;
+	//anim_model_ = new AnimatedModel;
 
-	anim_model_->Model_Name_ = "Manbot";
-	anim_model_->Model_PathWay_ = "ybot/ybot.scn";
+	//anim_model_->Model_Name_ = "Manbot";
+	//anim_model_->Model_PathWay_ = "ybot/ybot.scn";
 
-	PlayableAnim* play_anim_ = new PlayableAnim;
-	play_anim_->Anim_Name_ = "Walk";
-	play_anim_->Anim_Pathway_ = "ybot/ybot@walking_inplace.scn";
-	play_anim_->Anim_max_speed_ = anim_->max_walk_speed;
-	play_anim_->Anim_min_speed_ = anim_->min_walk_speed;
-	play_anim_->Anim_speed = 1.0f;
-	play_anim_->Anim_player_ = anim_->walk_anim_player;
-	play_anim_->Anim_ = anim_->walk_anim_;
+	//PlayableAnim* play_anim_ = new PlayableAnim;
+	//play_anim_->Anim_Name_ = "Walk";
+	//play_anim_->Anim_Pathway_ = "ybot/ybot@walking_inplace.scn";
+	//play_anim_->Anim_max_speed_ = anim_->max_walk_speed;
+	//play_anim_->Anim_min_speed_ = anim_->min_walk_speed;
+	//play_anim_->Anim_speed = 1.0f;
+	//play_anim_->Anim_player_ = anim_->walk_anim_player;
+	//play_anim_->Anim_ = anim_->walk_anim_;
 
-	anim_model_->Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
-	delete play_anim_;
-	play_anim_ = NULL;
+	//anim_model_->Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
+	//delete play_anim_;
+	//play_anim_ = NULL;
 
-	InitBlendTree();
+	//InitBlendTree();
 
 	//-------------------------------------------------
 }
