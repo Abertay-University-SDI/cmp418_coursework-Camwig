@@ -204,6 +204,19 @@ std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::D
 	return bones;
 }
 
+std::vector<std::string> Skeletal_Sprite_anim::ReadInOrder(rapidjson::Document& ske_document)
+{
+	const rapidjson::Value& bones_array = ske_document["armature"][0]["slot"];
+
+	std::vector<std::string> newVec;
+	for (int bone_num = 0; bone_num < (int)bones_array.Size(); ++bone_num)
+	{
+		newVec.push_back(bones_array[bone_num]["name"].GetString());
+	}
+
+	return newVec;
+}
+
 void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 {
 	for (auto bone_ : *bones)
@@ -525,17 +538,43 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 
 gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts)
 {
-	//Always draws the last in this sequence
+	//This is also the drawing order crap
+	//I think the order is in the slot stuff
 
-	std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
+	
 
-	for (auto i : parts)
-	{
-		bone_parts1.push_back(i);
-		bone_parts.push_back(i);
-	}
+	//parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
+
+	//for (auto i : parts)
+	//{
+	//	bone_parts1.push_back(i);
+	//	bone_parts.push_back(i);
+	//}
+
+	std::vector<std::string> new_parts = ReadInOrder(ske_document);
+
+	auto it = std::next(new_parts.begin(), new_parts.size());
+	std::move(new_parts.begin(), it, std::back_inserter(bone_parts1));
+	//std::move(new_parts.begin(), it, std::back_inserter(bone_parts));
+
+	bone_parts = bone_parts1;
+
+	//for(auto it : std::next(new_parts.begin(),new_parts.size()))
+
+	/*std::vector<Foo> v1, v2;
+
+	// populate v1 with at least 17 elements...
+
+	auto it = std::next(v1.begin(), 17);
+
+	std::move(v1.begin(), it, std::back_inserter(v2));  // ##
+
+	v1.erase(v1.begin(), it);*/
 
 	//bone_parts = bone_parts1;
+
+	new_parts.erase(new_parts.begin(),it);
+
 
 	scale = 0.5f;
 	SetupRig(&rig_transform_m_, Position, scale);
@@ -554,6 +593,7 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 	new_anim = ReadAnimationDataFromJSON(ske_document);
 
 	text_atlas1 = ReadTextureAtlasFromJSON(tex_document);
+
 
 	//new_tex = *text_atlas1;
 

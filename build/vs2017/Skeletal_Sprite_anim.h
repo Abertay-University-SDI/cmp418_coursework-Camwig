@@ -89,6 +89,8 @@ public:
 
 	std::map<std::string, Animation> ReadAnimationDataFromJSON(rapidjson::Document&);
 
+	std::vector<std::string> ReadInOrder(rapidjson::Document&);
+
 	//float elapsed_time;
 	float sprite_speed;
 
@@ -125,5 +127,6 @@ private:
 	TextureAtlas* text_atlas1;
 	//TextureAtlas new_tex;
 	std::map<std::string, Animation> new_anim;
+	std::string parts[];
 };
 

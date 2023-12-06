@@ -135,36 +135,6 @@ TexData* Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_
 	return subTextData;
 }
 
-void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas,int subtext_)
-{
-
-	float width = texture_atlas->subtextures.at(subtext_).width_;
-	float height = texture_atlas->subtextures.at(subtext_).height_;
-	float x = texture_atlas->subtextures.at(subtext_).x_;
-	float y = texture_atlas->subtextures.at(subtext_).y_;
-	float frame_width = texture_atlas->subtextures.at(subtext_).frame_width_;
-	float frame_height = texture_atlas->subtextures.at(subtext_).frame_height_;
-	float frame_x = texture_atlas->subtextures.at(subtext_).frame_x_;
-	float frame_y = texture_atlas->subtextures.at(subtext_).frame_y_;
-
-	sprite->set_width(width);
-	sprite->set_height(height);
-	//This guy here
-	sprite->set_uv_width(width / texture_atlas->width_);
-	sprite->set_uv_height(height / texture_atlas->height_);
-	///////////////////////////
-
-	float u = x / texture_atlas->width_;
-	float v = y / texture_atlas->height_;
-	sprite->set_uv_position(gef::Vector2(u, v));
-
-
-	float sprite_x = width * 0.5f - (frame_width * 0.5f + frame_x);
-	float sprite_y = height * 0.5f - (frame_height * 0.5f + frame_y);
-
-	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
-}
-
 void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, std::string subtext_)
 {
 

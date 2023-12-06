@@ -59,7 +59,6 @@ public:
 
 	TextureAtlas* ReadTextureAtlasFromJSON(rapidjson::Document&);
 	TexData* ReadSubtextureFromJSON(const rapidjson::Value&);
-	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, int);
 	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, std::string);
 
 	virtual gef::Sprite* Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string);
