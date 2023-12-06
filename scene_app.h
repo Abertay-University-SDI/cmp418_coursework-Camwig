@@ -106,15 +106,15 @@
 #include <maths/matrix44.h>
 #include <vector>
 #include <graphics/skinned_mesh_instance.h>
-#include "motion_clip_player.h"
-#include "ModelMesh.h"
+//#include "motion_clip_player.h"
+//#include "ModelMesh.h"
 #include "ThisHereAnimation.h"
 
-#include "AnimatedModel.h"
+//#include "AnimatedModel.h"
 
-#include "BlendTree.h"
-#include "ClipNode.h"
-#include "Linear2Blend.h"
+//#include "BlendTree.h"
+//#include "ClipNode.h"
+//#include "Linear2Blend.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -162,8 +162,8 @@ private:
 
 	float fps_;
 
-	class gef::Mesh* mesh_;
-	gef::SkinnedMeshInstance* player_;
+	//class gef::Mesh* mesh_;
+	gef::SkinnedMeshInstance* player_1;
 
 	gef::Scene* model_scene_;
 
@@ -174,16 +174,16 @@ private:
 	float near_plane_;
 	float far_plane_;
 
-	MotionClipPlayer anim_player_;
+	//MotionClipPlayer anim_player_;
 
-	gef::Animation* walk_anim_;
-	MotionClipPlayer walk_anim_player;
+	//gef::Animation* walk_anim_;
+	//MotionClipPlayer walk_anim_player;
 
-	gef::Animation* run_anim_;
-	MotionClipPlayer run_anim_player;
+	//gef::Animation* run_anim_;
+	//MotionClipPlayer run_anim_player;
 
-	gef::Animation* idle_anim_;
-	MotionClipPlayer idle_anim_player;
+	//gef::Animation* idle_anim_;
+	//MotionClipPlayer idle_anim_player;
 
 	//const char* modelToLoad = "ybot/ybot.scn";
 	//const char* AnimToLoad = "ybot/ybot@walking.scn";
@@ -191,21 +191,21 @@ private:
 	ModelMesh* model_mesh_;
 	ThisHereAnimation* anim_;
 
-	float min_walk_speed;
-	float max_walk_speed;
-	float walk_speed = 1.f;
+	//float min_walk_speed;
+	//float max_walk_speed;
+	//float walk_speed = 1.f;
 
-	float min_run_speed;
-	float max_run_speed;
-	float run_speed = 4.f;;
+	//float min_run_speed;
+	//float max_run_speed;
+	//float run_speed = 4.f;;
 
-	float anim_blend;
+	//float anim_blend;
 
-	float speed_;
+	//float speed_;
 
-	gef::SkeletonPose blended_pose;
+	//gef::SkeletonPose blended_pose;
 
-	BlendTree* blend_tree_;
+	//BlendTree* blend_tree_;
 };
 
 #endif // _ANIMATED_MESH_APP_H

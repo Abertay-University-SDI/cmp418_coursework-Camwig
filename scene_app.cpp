@@ -286,7 +286,7 @@
 #include <input/input_manager.h>
 #include <input/sony_controller_input_manager.h>
 #include <input/keyboard.h>
-#include <maths/math_utils.h>
+//#include <maths/math_utils.h>
 #include <graphics/renderer_3d.h>
 #include <graphics/scene.h>
 #include <animation/skeleton.h>
@@ -297,15 +297,15 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	sprite_renderer_(NULL),
 	font_(NULL),
 	//Can be its own thing
-	mesh_(NULL),
+	//mesh_(NULL),
 	//Can be its own thing
-	player_(NULL),
+	//player_(NULL),
 	renderer_3d_(NULL),
-	model_scene_(NULL),
+	model_scene_(NULL)
 	//Can be turned into a base animation class
-	walk_anim_(NULL),
-	run_anim_(NULL),
-	idle_anim_(NULL)
+	//walk_anim_(NULL),
+	//run_anim_(NULL),
+	//idle_anim_(NULL)
 {
 }
 
@@ -322,7 +322,7 @@ void SceneApp::Init()
 	model_mesh_ = new ModelMesh;
 	anim_ = new ThisHereAnimation;
 
-	blend_tree_ = new BlendTree;
+	//blend_tree_ = new BlendTree;
 
 
 	// create a new scene object and read in the data from the file
@@ -335,64 +335,67 @@ void SceneApp::Init()
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
+	//anim_->Setup(model_mesh_,model_scene_,&platform_);
+	//InitBlendTree();
+
 	//Can move!-----------------------------------------------
 
 	// if there is mesh data in the scene, create a mesh to draw from the first mesh
-	mesh_ = model_mesh_->CreateMeshData(model_scene_, platform_);//GetFirstMesh(model_scene_);
+	anim_->mesh_ = model_mesh_->CreateMeshData(model_scene_, platform_);//GetFirstMesh(model_scene_);
 
 	// get the first skeleton in the scene
 	gef::Skeleton* skeleton = model_mesh_->CreateSkeleton(model_scene_);//GetFirstSkeleton(model_scene_);
 
 	if (skeleton)
 	{
-		player_ = new gef::SkinnedMeshInstance(*skeleton);
-		anim_player_.Init(player_->bind_pose());
-		walk_anim_player.Init(player_->bind_pose());
-		run_anim_player.Init(player_->bind_pose());
-		idle_anim_player.Init(player_->bind_pose());
-		blended_pose = player_->bind_pose();
-		player_->set_mesh(mesh_);
+		player_1 = new gef::SkinnedMeshInstance(*skeleton);
+		anim_->anim_player_.Init(player_1->bind_pose());
+		anim_->walk_anim_player.Init(player_1->bind_pose());
+		anim_->run_anim_player.Init(player_1->bind_pose());
+		anim_->idle_anim_player.Init(player_1->bind_pose());
+		anim_->blended_pose = player_1->bind_pose();
+		player_1->set_mesh(anim_->mesh_);
 	}
 
 
 	// anims
 	//walk_anim_ = LoadAnimation("tesla/tesla@walk.scn", "");
-	walk_anim_ = anim_->LoadAnimation(anim_->AnimToLoad, "", platform_);//LoadAnimation(AnimToLoad, "");
+	anim_->walk_anim_ = anim_->LoadAnimation(anim_->AnimToLoad, "", platform_);//LoadAnimation(AnimToLoad, "");
 
-	run_anim_ = anim_->LoadAnimation(anim_->AnimToLoad2, "", platform_);
+	anim_->run_anim_ = anim_->LoadAnimation(anim_->AnimToLoad2, "", platform_);
 
-	idle_anim_ = anim_->LoadAnimation(anim_->AnimToLoad3, "", platform_);
+	anim_->idle_anim_ = anim_->LoadAnimation(anim_->AnimToLoad3, "", platform_);
 
-	if (walk_anim_)
+	if (anim_->walk_anim_)
 	{
-		walk_anim_player.set_clip(walk_anim_);
-		walk_anim_player.set_looping(true);
-		walk_anim_player.set_anim_time(0.0f);
+		anim_->walk_anim_player.set_clip(anim_->walk_anim_);
+		anim_->walk_anim_player.set_looping(true);
+		anim_->walk_anim_player.set_anim_time(0.0f);
 	}
 
-	if (run_anim_)
+	if (anim_->run_anim_)
 	{
-		run_anim_player.set_clip(run_anim_);
-		run_anim_player.set_looping(true);
-		run_anim_player.set_anim_time(0.0f);
+		anim_->run_anim_player.set_clip(anim_->run_anim_);
+		anim_->run_anim_player.set_looping(true);
+		anim_->run_anim_player.set_anim_time(0.0f);
 	}
 
-	if (idle_anim_)
+	if (anim_->idle_anim_)
 	{
-		idle_anim_player.set_clip(idle_anim_);
-		idle_anim_player.set_looping(true);
-		idle_anim_player.set_anim_time(0.0f);
+		anim_->idle_anim_player.set_clip(anim_->idle_anim_);
+		anim_->idle_anim_player.set_looping(true);
+		anim_->idle_anim_player.set_anim_time(0.0f);
 	}
 
-	min_walk_speed = 1.f;
-	max_walk_speed = walk_anim_->duration() / run_anim_->duration();//run anim duration
+	anim_->min_walk_speed = 1.f;
+	anim_->max_walk_speed = anim_->walk_anim_->duration() / anim_->run_anim_->duration();//run anim duration
 
-	min_run_speed = run_anim_->duration() / walk_anim_->duration();
-	max_run_speed = 1.f;
+	anim_->min_run_speed = anim_->run_anim_->duration() / anim_->walk_anim_->duration();
+	anim_->max_run_speed = 1.f;
 
-	speed_ = 0.0f;
+	anim_->speed_ = 0.0f;
 
-	anim_blend = 0.f;
+	anim_->anim_blend = 0.f;
 
 	anim_model_ = new AnimatedModel;
 
@@ -402,17 +405,19 @@ void SceneApp::Init()
 	PlayableAnim* play_anim_ = new PlayableAnim;
 	play_anim_->Anim_Name_ = "Walk";
 	play_anim_->Anim_Pathway_ = "ybot/ybot@walking_inplace.scn";
-	play_anim_->Anim_max_speed_ = max_walk_speed;
-	play_anim_->Anim_min_speed_ = min_walk_speed;
+	play_anim_->Anim_max_speed_ = anim_->max_walk_speed;
+	play_anim_->Anim_min_speed_ = anim_->min_walk_speed;
 	play_anim_->Anim_speed = 1.0f;
-	play_anim_->Anim_player_ = walk_anim_player;
-	play_anim_->Anim_ = walk_anim_;
+	play_anim_->Anim_player_ = anim_->walk_anim_player;
+	play_anim_->Anim_ = anim_->walk_anim_;
 
 	anim_model_->Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
 	delete play_anim_;
 	play_anim_ = NULL;
 
 	InitBlendTree();
+
+	//-------------------------------------------------
 }
 
 
@@ -420,20 +425,20 @@ void SceneApp::CleanUp()
 {
 	CleanUpFont();
 
-	delete player_;
-	player_ = NULL;
+	//delete player_;
+	//player_ = NULL;
 
-	delete walk_anim_;
-	walk_anim_ = NULL;
+	//delete walk_anim_;
+	//walk_anim_ = NULL;
 
-	delete run_anim_;
-	run_anim_ = NULL;
+	//delete run_anim_;
+	//run_anim_ = NULL;
 
-	delete idle_anim_;
-	idle_anim_ = NULL;
+	//delete idle_anim_;
+	//idle_anim_ = NULL;
 
-	delete mesh_;
-	mesh_ = NULL;
+	//delete mesh_;
+	//mesh_ = NULL;
 
 	delete model_scene_;
 	model_scene_ = NULL;
@@ -450,8 +455,8 @@ void SceneApp::CleanUp()
 	delete anim_model_;
 	anim_model_ = NULL;
 
-	delete blend_tree_;
-	blend_tree_ = NULL;
+	//delete blend_tree_;
+	//blend_tree_ = NULL;
 }
 
 bool SceneApp::Update(float frame_time)
@@ -482,47 +487,49 @@ bool SceneApp::Update(float frame_time)
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				speed_ = (speed_ >= walk_speed) ? walk_speed : speed_ + 0.02f * multiplier;
+				anim_->speed_ = (anim_->speed_ >= anim_->walk_speed) ? anim_->walk_speed : anim_->speed_ + 0.02f * multiplier;
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {
-				speed_ = (speed_ <= 0) ? 0 : speed_ - 0.02f * multiplier;
+				anim_->speed_ = (anim_->speed_ <= 0) ? 0 : anim_->speed_ - 0.02f * multiplier;
 			}
 		}
 	}
 
-	if (player_)
-	{
-		//blend_tree_->variables[""]
-		blend_tree_->variables["idle_anim_"] = speed_;
-		blend_tree_->Update(frame_time);
-		blended_pose = blend_tree_->output_.OutputPose_;
+	anim_->Update(frame_time);
 
-		player_->UpdateBoneMatrices(blended_pose);
-	}
+	//if (player_)
+	//{
+	//	//blend_tree_->variables[""]
+	//	blend_tree_->variables["idle_anim_"] = speed_;
+	//	blend_tree_->Update(frame_time);
+	//	blended_pose = blend_tree_->output_.OutputPose_;
 
-	// build a transformation matrix that will position the character
-	// use this to move the player around, scale it, etc.
-	if (player_)
-	{
-		gef::Matrix44 player_transform;
-		gef::Matrix44 player_scale;
-		gef::Matrix44 player_rotate;
-		gef::Matrix44 player_translate;
+	//	player_->UpdateBoneMatrices(blended_pose);
+	//}
 
-		player_transform.SetIdentity();
-		player_scale.SetIdentity();
-		player_rotate.SetIdentity();
-		player_translate.SetIdentity();
+	//// build a transformation matrix that will position the character
+	//// use this to move the player around, scale it, etc.
+	//if (player_)
+	//{
+	//	gef::Matrix44 player_transform;
+	//	gef::Matrix44 player_scale;
+	//	gef::Matrix44 player_rotate;
+	//	gef::Matrix44 player_translate;
 
-		player_scale.Scale(gef::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-		player_rotate.RotationY(gef::DegToRad(45.0f));
-		player_translate.SetTranslation(gef::Vector4(25.0f, -25.0f, -100.0f, 1.0f));
+	//	player_transform.SetIdentity();
+	//	player_scale.SetIdentity();
+	//	player_rotate.SetIdentity();
+	//	player_translate.SetIdentity();
 
-		player_transform = player_scale * player_rotate * player_translate;
+	//	player_scale.Scale(gef::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+	//	player_rotate.RotationY(gef::DegToRad(45.0f));
+	//	player_translate.SetTranslation(gef::Vector4(25.0f, -25.0f, -100.0f, 1.0f));
 
-		player_->set_transform(player_transform);
-	}
+	//	player_transform = player_scale * player_rotate * player_translate;
+
+	//	player_->set_transform(player_transform);
+	//}
 
 	return true;
 }
@@ -541,8 +548,8 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	// draw the player, the pose is defined by the bone matrices
-	if (player_)
-		renderer_3d_->DrawSkinnedMesh(*player_, player_->bone_matrices());
+	if (anim_->player_)
+		renderer_3d_->DrawSkinnedMesh(*anim_->player_, anim_->player_->bone_matrices());
 
 	renderer_3d_->End();
 
@@ -598,24 +605,24 @@ void SceneApp::SetupCamera()
 //Can move!-----------------------------------------------
 void SceneApp::InitBlendTree()
 {
-	if (player_ && player_->bind_pose().skeleton())
+	if (player_1 && player_1->bind_pose().skeleton())
 	{
-		blend_tree_->Init(player_->bind_pose());
-		ClipNode* idle_clip = new ClipNode(blend_tree_);
-		idle_clip->SetClip(idle_anim_);
+		anim_->blend_tree_->Init(player_1->bind_pose());
+		ClipNode* idle_clip = new ClipNode(anim_->blend_tree_);
+		idle_clip->SetClip(anim_->idle_anim_);
 
-		ClipNode* walk_clip = new ClipNode(blend_tree_);
+		ClipNode* walk_clip = new ClipNode(anim_->blend_tree_);
 		walk_clip->SetClip(anim_model_->Anim_map.at("Walk").Anim_);
 
-		Linear2Blend* l2b = new Linear2Blend(blend_tree_);
+		Linear2Blend* l2b = new Linear2Blend(anim_->blend_tree_);
 		l2b->SetVariable(0, "idle_anim_");
 
 		l2b->SetInput(0, idle_clip);
 		l2b->SetInput(1, walk_clip);
 
-		blend_tree_->output_.SetInput(0, l2b);
+		anim_->blend_tree_->output_.SetInput(0, l2b);
 
-		blend_tree_->Start();
+		anim_->blend_tree_->Start();
 	}
 }
 
