@@ -87,9 +87,19 @@ void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 pos
 	//Transforms_for_bone_1.insert(std::make_pair(bone_parts1[0], rig_transform_m_));
 
 	//SetupRig(&rig_transform_m_, position_, scale);
-	sub_texture_transform_m = text_atlas->subtextures.at(frame).transform_m_;
-	sub_texture_transform_m1 = text_atlas->subtextures.at(frame).translate_m_;
-	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas,frame);
+	//sub_texture_transform_m = text_atlas->subtextures.at(frame).transform_m_;
+	//sub_texture_transform_m1 = text_atlas->subtextures.at(frame).translate_m_;
+
+	//Needs to be a better way to do this
+
+	//Get the size of the word
+	//take a away one letter 
+	//and then add the frame to it!
+
+
+
+	std::string name = this_string + std::to_string(frame);
+	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas, name);
 	//Transforms_for_bone_ = Transforms_for_bone_1;
 	//DeleteTransforms();
 }
@@ -154,7 +164,9 @@ gef::Sprite* Sheet_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sp
 
 	run_order = SetupOrder(ske_document);
 
-	text_atlas->subtextures = ReOrganiseSubtextures();
+	//Need to do this with subtext_atlas
+	//text_atlas->subtextures = ReOrganiseSubtextures();
+	text_atlas->subtex_atlas = ReOrganiseSubtextures1();
 
 	return sprite_;
 }
@@ -191,6 +203,31 @@ std::vector<TexData> Sheet_Sprite_anim::ReOrganiseSubtextures()
 
 	return new_vec;
 
+}
+
+std::map<std::string, TexData> Sheet_Sprite_anim::ReOrganiseSubtextures1()
+{
+	std::map<std::string,TexData> new_vec;
+	bool got_string = false;
+	for (int i = 0; i < run_order.size(); i++)
+	{
+		for (auto j : text_atlas->subtex_atlas)
+		{
+			if (text_atlas->subtex_atlas.at(j.first).name_ == run_order[i])
+			{
+				new_vec.insert(std::make_pair(j.first, j.second));
+			}
+
+			if (!got_string)
+			{
+				int string_length_ = j.first.size();
+				int new_length = string_length_ - 1;
+				this_string = j.first.substr(0, new_length);
+				got_string = true;
+			}
+		}
+	}
+	return new_vec;
 }
 
 void Sheet_Sprite_anim::DeleteTransforms()

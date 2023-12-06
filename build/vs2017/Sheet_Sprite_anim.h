@@ -38,7 +38,9 @@ private:
 
 	std::map<int, std::string> SetupOrder(rapidjson::Document&);
 	std::vector<TexData> ReOrganiseSubtextures();
+	std::map< std::string,TexData> ReOrganiseSubtextures1();
 	gef::Matrix33 sub_texture_transform_m;
 	gef::Matrix33 sub_texture_transform_m1;
+	std::string this_string;
 };
 
