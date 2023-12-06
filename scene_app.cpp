@@ -603,27 +603,27 @@ void SceneApp::SetupCamera()
 }
 
 //Can move!-----------------------------------------------
-void SceneApp::InitBlendTree()
-{
-	if (player_1 && player_1->bind_pose().skeleton())
-	{
-		anim_->blend_tree_->Init(player_1->bind_pose());
-		ClipNode* idle_clip = new ClipNode(anim_->blend_tree_);
-		idle_clip->SetClip(anim_->idle_anim_);
-
-		ClipNode* walk_clip = new ClipNode(anim_->blend_tree_);
-		walk_clip->SetClip(anim_model_->Anim_map.at("Walk").Anim_);
-
-		Linear2Blend* l2b = new Linear2Blend(anim_->blend_tree_);
-		l2b->SetVariable(0, "idle_anim_");
-
-		l2b->SetInput(0, idle_clip);
-		l2b->SetInput(1, walk_clip);
-
-		anim_->blend_tree_->output_.SetInput(0, l2b);
-
-		anim_->blend_tree_->Start();
-	}
-}
+//void SceneApp::InitBlendTree()
+//{
+//	if (player_1 && player_1->bind_pose().skeleton())
+//	{
+//		anim_->blend_tree_->Init(player_1->bind_pose());
+//		ClipNode* idle_clip = new ClipNode(anim_->blend_tree_);
+//		idle_clip->SetClip(anim_->idle_anim_);
+//
+//		ClipNode* walk_clip = new ClipNode(anim_->blend_tree_);
+//		walk_clip->SetClip(anim_model_->Anim_map.at("Walk").Anim_);
+//
+//		Linear2Blend* l2b = new Linear2Blend(anim_->blend_tree_);
+//		l2b->SetVariable(0, "idle_anim_");
+//
+//		l2b->SetInput(0, idle_clip);
+//		l2b->SetInput(1, walk_clip);
+//
+//		anim_->blend_tree_->output_.SetInput(0, l2b);
+//
+//		anim_->blend_tree_->Start();
+//	}
+//}
 
 
