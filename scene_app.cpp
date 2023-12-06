@@ -335,6 +335,8 @@ void SceneApp::Init()
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
+	//Can move!-----------------------------------------------
+
 	// if there is mesh data in the scene, create a mesh to draw from the first mesh
 	mesh_ = model_mesh_->CreateMeshData(model_scene_, platform_);//GetFirstMesh(model_scene_);
 
@@ -455,6 +457,8 @@ void SceneApp::CleanUp()
 bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
+
+	//Can move!-----------------------------------------------
 
 	// read input devices
 	if (input_manager_)
@@ -591,7 +595,7 @@ void SceneApp::SetupCamera()
 	far_plane_ = 1000.f;
 }
 
-
+//Can move!-----------------------------------------------
 void SceneApp::InitBlendTree()
 {
 	if (player_ && player_->bind_pose().skeleton())
