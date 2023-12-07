@@ -17,16 +17,6 @@
 
 #include "Anim.h"
 
-struct AnimatedModel_new
-{
-	std::string Model_Name_;
-	char* Model_PathWay_;
-
-	//Should be a map of Anims
-	//Just need to be able to access its Animation varibale
-	std::map<std::string, PlayableAnim> Anim_map;
-};
-
 class ThreeDimensional_Character
 {
 public:
@@ -45,7 +35,7 @@ public:
 
 	gef::SkinnedMeshInstance* player_;
 
-	AnimatedModel anim_model_;
+	AnimatedModel_new anim_model_;
 
 	gef::SkeletonPose blended_pose;
 

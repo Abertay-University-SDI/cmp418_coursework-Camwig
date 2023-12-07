@@ -152,10 +152,10 @@ private:
 	void SetupLights();
 	void SetupCamera();
 
-	void InitBlendTree();
+	//void InitBlendTree();
 	//gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name);
 
-	AnimatedModel* anim_model_;
+	//AnimatedModel* anim_model_;
 
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Renderer3D* renderer_3d_;

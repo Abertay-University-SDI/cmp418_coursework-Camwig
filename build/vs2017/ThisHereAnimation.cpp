@@ -60,7 +60,7 @@ gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename
 //	anim_model_->Model_PathWay_ = model_file_path_;
 //}
 
-void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name,std::string anim_name,gef::Skeleton& skeleton_,gef::SkinnedMeshInstance* player_, AnimatedModel& anim_model,float speed_)
+void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name,std::string anim_name,gef::Skeleton& skeleton_,gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model,float speed_)
 {
 	MotionClipPlayer* new_anim_player_ = new MotionClipPlayer;
 	gef::Animation* new_anim = new gef::Animation;
@@ -84,30 +84,33 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 
 	//ALL OF THIS STUFF SHOULD BE CHANGED TO HOLD THE PLAYABLE ANIM STUFF HERE
 
-	PlayableAnim* play_anim_ = new PlayableAnim;
+	//PlayableAnim* play_anim_ = new PlayableAnim;
+
+	PlayableAnim_new play_anim_;
 
 	char* anim_file_path_ = new char[anim_name.length()];
 
 	strcpy(anim_file_path_, anim_name.c_str());
 
-	play_anim_->Anim_Pathway_ = tex_name;
-	play_anim_->Anim_Name_ = anim_name;
+	play_anim_.Anim_Pathway_ = tex_name;
+	play_anim_.Anim_Name_ = anim_name;
 
-	play_anim_->Anim_max_speed_ = max_speed;
-	play_anim_->Anim_min_speed_ = min_speed;
-	play_anim_->Anim_speed = speed_;
-	play_anim_->Anim_player_ = *new_anim_player_;
-	play_anim_->Anim_ = new_anim;
+	play_anim_.Anim_max_speed_ = max_speed;
+	play_anim_.Anim_min_speed_ = min_speed;
+	play_anim_.Anim_speed = speed_;
+	play_anim_.Anim_player_ = *new_anim_player_;
+	play_anim_.Anim_ = new_anim;
 
 	//This should then be given to the Character
 
-	anim_model.Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
+	//Need to change the kind of anim_model that it takes in
+	anim_model.Anim_map.insert(std::make_pair(play_anim_.Anim_Name_, play_anim_));
 
-	delete play_anim_;
-	play_anim_ = NULL;
+	//delete play_anim_;
+	//play_anim_ = NULL;
 }
 
-void ThisHereAnimation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel& anim_model, gef::SkinnedMeshInstance& player_, float speed_)
+void ThisHereAnimation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel_new& anim_model, gef::SkinnedMeshInstance& player_, float speed_)
 {
 	SetAnimation(ModelMesh_, Model_scene, platform_, anim_name, anim_name, skeleton_, &player_,anim_model,speed_);
 }

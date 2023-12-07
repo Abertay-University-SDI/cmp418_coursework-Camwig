@@ -472,8 +472,8 @@ void SceneApp::CleanUp()
 	delete renderer_3d_;
 	renderer_3d_ = NULL;
 
-	delete anim_model_;
-	anim_model_ = NULL;
+	//delete anim_model_;
+	//anim_model_ = NULL;
 
 	//delete blend_tree_;
 	//blend_tree_ = NULL;

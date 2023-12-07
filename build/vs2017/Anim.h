@@ -40,7 +40,7 @@ public:
 	
 	
 	/*ModelMesh *,                        gef::Scene *,            gef::Platform *,          std::string,           gef::Skeleton,            AnimatedModel, gef::SkinnedMeshInstance, float)*/
-	void SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel& anim_model, float speed_);
+	void SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model, float speed_);
 
 
 	void Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position);

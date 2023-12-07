@@ -8,7 +8,7 @@
 
 #include "ModelMesh.h"
 #include "motion_clip_player.h"
-#include "AnimatedModel.h"
+//#include "AnimatedModel.h"
 
 #include "BlendTree.h"
 #include "ClipNode.h"
@@ -29,6 +29,16 @@ struct PlayableAnim_new
 	MotionClipPlayer Anim_player_;
 };
 
+struct AnimatedModel_new
+{
+	std::string Model_Name_;
+	char* Model_PathWay_;
+
+	//Should be a map of Anims
+	//Just need to be able to access its Animation varibale
+	std::map<std::string, PlayableAnim_new> Anim_map;
+};
+
 class ThisHereAnimation
 {
 public:
@@ -41,9 +51,9 @@ public:
 	//void InitBlendTree(std::string Anim1_name_, std::string Anim2_name_);
 	void Update(float frameTime_, BlendTree& blend_tree,gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_);
 
-	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel& anim_model, float speed_);
+	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model, float speed_);
 
-	void CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel& anim_model, gef::SkinnedMeshInstance& player_, float speed_);
+	void CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel_new& anim_model, gef::SkinnedMeshInstance& player_, float speed_);
 
 	//class gef::Mesh* mesh_;
 	//gef::SkinnedMeshInstance* player_;
