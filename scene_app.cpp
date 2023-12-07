@@ -335,7 +335,7 @@ void SceneApp::Init()
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
-	anim_->Setup(model_mesh_,model_scene_,&platform_);
+	anim_->Setup(model_mesh_,model_scene_,&platform_, "ybot/ybot.scn");
 	//InitBlendTree();
 
 	//Can move!-----------------------------------------------

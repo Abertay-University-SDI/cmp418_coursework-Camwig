@@ -24,9 +24,11 @@ public:
 
 	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform&);
 
-	void Setup(ModelMesh* ModelMesh_,gef::Scene* Model_scene,gef::Platform* platform_);
+	void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
 	void InitBlendTree();
 	void Update(float frameTime_);
+
+	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_);
 
 	class gef::Mesh* mesh_;
 	gef::SkinnedMeshInstance* player_;
