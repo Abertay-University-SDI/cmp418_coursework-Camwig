@@ -343,15 +343,15 @@ void SceneApp::Init()
 
 	//Need this to hold multiple animations rather than the one!
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad);
-	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad2);
+	//character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad2);
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
 	//Need this to hold multiple animations rather than the one!
 
 
 	//max_walk_speed = walk_anim_->duration() / run_anim_->duration();//run anim duration
-	character_->anim_model_->Anim_map.at(AnimToLoad).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration();
+	//character_->anim_model_->Anim_map.at(AnimToLoad).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration();
 	//min_run_speed = run_anim_->duration() / anim_model_->Anim_map.at("ybot/ybot").Anim_->duration();
-	character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
+	//character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
 
 	//InitBlendTree();
 	character_->AddBlendTree(tree_name_);
