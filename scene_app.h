@@ -206,6 +206,9 @@ private:
 	//gef::SkeletonPose blended_pose;
 
 	//BlendTree* blend_tree_;
+	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";
+	const char* AnimToLoad2 = "ybot/ybot@running_inplace.scn";
+	const char* AnimToLoad3 = "ybot/ybot@idle.scn";
 };
 
 #endif // _ANIMATED_MESH_APP_H

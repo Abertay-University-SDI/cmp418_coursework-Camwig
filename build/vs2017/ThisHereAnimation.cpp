@@ -8,7 +8,8 @@ ThisHereAnimation::ThisHereAnimation() :
 	//Can be turned into a base animation class
 	walk_anim_(NULL),
 	run_anim_(NULL),
-	idle_anim_(NULL)
+	idle_anim_(NULL),
+	skeleton(NULL)
 {
 	anim_model_ = new AnimatedModel;
 }
@@ -35,6 +36,9 @@ ThisHereAnimation::~ThisHereAnimation()
 
 	delete blend_tree_;
 	blend_tree_ = NULL;
+
+	delete skeleton;
+	skeleton = NULL;
 }
 
 gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
@@ -67,15 +71,15 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);//GetFirstMesh(model_scene_);
 
 	// get the first skeleton in the scene
-	gef::Skeleton* skeleton = ModelMesh_->CreateSkeleton(Model_scene);//GetFirstSkeleton(model_scene_);
+	skeleton = ModelMesh_->CreateSkeleton(Model_scene);//GetFirstSkeleton(model_scene_);
 
 	if (skeleton)
 	{
 		player_ = new gef::SkinnedMeshInstance(*skeleton);
 		//anim_player_.Init(player_->bind_pose());
 		//walk_anim_player.Init(player_->bind_pose());
-		run_anim_player.Init(player_->bind_pose());
-		idle_anim_player.Init(player_->bind_pose());
+		//run_anim_player.Init(player_->bind_pose());
+		//idle_anim_player.Init(player_->bind_pose());
 		blended_pose = player_->bind_pose();
 		player_->set_mesh(mesh_);
 	}
@@ -85,9 +89,9 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	//walk_anim_ = LoadAnimation("tesla/tesla@walk.scn", "");
 	//walk_anim_ = LoadAnimation(AnimToLoad, "", *platform_);//LoadAnimation(AnimToLoad, "");
 
-	run_anim_ = LoadAnimation(AnimToLoad2, "", *platform_);
+	//run_anim_ = LoadAnimation(AnimToLoad2, "", *platform_);
 
-	idle_anim_ = LoadAnimation(AnimToLoad3, "", *platform_);
+	//idle_anim_ = LoadAnimation(AnimToLoad3, "", *platform_);
 
 	//if (walk_anim_)
 	//{
@@ -96,19 +100,19 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	//	walk_anim_player.set_anim_time(0.0f);
 	//}
 
-	if (run_anim_)
-	{
-		run_anim_player.set_clip(run_anim_);
-		run_anim_player.set_looping(true);
-		run_anim_player.set_anim_time(0.0f);
-	}
+	//if (run_anim_)
+	//{
+	//	run_anim_player.set_clip(run_anim_);
+	//	run_anim_player.set_looping(true);
+	//	run_anim_player.set_anim_time(0.0f);
+	//}
 
-	if (idle_anim_)
-	{
-		idle_anim_player.set_clip(idle_anim_);
-		idle_anim_player.set_looping(true);
-		idle_anim_player.set_anim_time(0.0f);
-	}
+	//if (idle_anim_)
+	//{
+	//	idle_anim_player.set_clip(idle_anim_);
+	//	idle_anim_player.set_looping(true);
+	//	idle_anim_player.set_anim_time(0.0f);
+	//}
 
 	//min_walk_speed = 1.f;
 	//max_walk_speed = walk_anim_->duration() / run_anim_->duration();//run anim duration
@@ -134,12 +138,12 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	anim_model_->Model_Name_ = model_name;
 	anim_model_->Model_PathWay_ = model_file_path_;
 
-	std::string new_string = AnimToLoad;
+	//std::string new_string = AnimToLoad;
 
-	SetAnimation(ModelMesh_,Model_scene,platform_, new_string,new_string,*skeleton,player_);
+	//SetAnimation(ModelMesh_,Model_scene,platform_, new_string,new_string,*skeleton,player_);
 
-	min_run_speed = run_anim_->duration() / anim_model_->Anim_map.at("walk").Anim_->duration();
-	max_run_speed = 1.f;
+	//min_run_speed = run_anim_->duration() / anim_model_->Anim_map.at("ybot/ybot").Anim_->duration();
+	//max_run_speed = 1.f;
 
 	//PlayableAnim* play_anim_ = new PlayableAnim;
 	//play_anim_->Anim_Name_ = "Walk";
@@ -154,7 +158,7 @@ void ThisHereAnimation::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, ge
 	//delete play_anim_;
 	//play_anim_ = NULL;
 
-	InitBlendTree();
+	//InitBlendTree();
 }
 
 void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name,std::string anim_name,gef::Skeleton& skeleton_,gef::SkinnedMeshInstance* player_)
@@ -180,12 +184,12 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 
 	float min_speed = 1.f;
 	//----------------------------------Fix Later!
-	float max_speed = new_anim->duration() / run_anim_->duration();//run anim duration
+	float max_speed = 1.f;//run anim duration
 	//----------------------------------Fix Later!
 
 	PlayableAnim* play_anim_ = new PlayableAnim;
 
-	//int position = anim_name.find("@");
+	//int position = anim_name.find(".");
 
 	//std::string new_name = anim_name.substr(0, position);
 
@@ -193,15 +197,16 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 
 	strcpy(anim_file_path_, anim_name.c_str());
 
-	play_anim_->Anim_Pathway_ = anim_file_path_;
+	play_anim_->Anim_Pathway_ = tex_name;
 	//----------------------------------Fix Later!
-	play_anim_->Anim_Name_ = "walk";
+	play_anim_->Anim_Name_ = anim_name;
 	//----------------------------------Fix Later!
 
 	play_anim_->Anim_max_speed_ = max_speed;
 	play_anim_->Anim_min_speed_ = min_speed;
 	play_anim_->Anim_speed = speed_;
 	play_anim_->Anim_player_ = *new_anim_player_;
+	//gef::Animation this_anim = *new_anim;
 	play_anim_->Anim_ = new_anim;
 
 	anim_model_->Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
@@ -209,11 +214,16 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 	delete play_anim_;
 	play_anim_ = NULL;
 
-	delete new_anim_player_;
-	new_anim_player_ = NULL;
+	//delete new_anim_player_;
+	//new_anim_player_ = NULL;
 
 	//delete new_anim;
 	//new_anim = NULL;
+}
+
+void ThisHereAnimation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name)
+{
+	SetAnimation(ModelMesh_, Model_scene, platform_, anim_name, anim_name, *skeleton, player_);
 }
 
 void ThisHereAnimation::Update(float frameTime_)
@@ -252,18 +262,17 @@ void ThisHereAnimation::Update(float frameTime_)
 	}
 }
 
-void ThisHereAnimation::InitBlendTree()
+void ThisHereAnimation::InitBlendTree(std::string Anim1_name_, std::string Anim2_name_)
 {
 	if (player_ && player_->bind_pose().skeleton())
 	{
-		//Issue here
 		blend_tree_->Init(player_->bind_pose());
 
 		ClipNode* idle_clip = new ClipNode(blend_tree_);
-		idle_clip->SetClip(idle_anim_);
+		idle_clip->SetClip(anim_model_->Anim_map.at(Anim2_name_.c_str()).Anim_);
 
 		ClipNode* walk_clip = new ClipNode(blend_tree_);
-		walk_clip->SetClip(anim_model_->Anim_map.at("walk").Anim_);
+		walk_clip->SetClip(anim_model_->Anim_map.at(Anim1_name_.c_str()).Anim_);
 
 		Linear2Blend* l2b = new Linear2Blend(blend_tree_);
 		l2b->SetVariable(0, "idle_anim_");

@@ -25,10 +25,12 @@ public:
 	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform&);
 
 	void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
-	void InitBlendTree();
+	void InitBlendTree(std::string Anim1_name_, std::string Anim2_name_);
 	void Update(float frameTime_);
 
 	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_);
+
+	void CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
 
 	class gef::Mesh* mesh_;
 	gef::SkinnedMeshInstance* player_;
@@ -48,6 +50,8 @@ public:
 
 	gef::SkeletonPose blended_pose;
 
+	gef::Skeleton* skeleton;
+
 	BlendTree* blend_tree_;
 
 	float min_walk_speed;
@@ -63,8 +67,5 @@ public:
 	float speed_;
 
 	//Can use maps to store multiple of these
-	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";
-	const char* AnimToLoad2 = "ybot/ybot@running_inplace.scn";
-	const char* AnimToLoad3 = "ybot/ybot@idle.scn";
 };
 

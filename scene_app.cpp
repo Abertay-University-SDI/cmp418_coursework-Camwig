@@ -336,7 +336,18 @@ void SceneApp::Init()
 	model_scene_->CreateMaterials(platform_);
 
 	anim_->Setup(model_mesh_,model_scene_,&platform_, "ybot/ybot.scn");
+	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_,AnimToLoad);
+	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_, AnimToLoad2);	
+	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_, AnimToLoad3);
+
+	//max_walk_speed = walk_anim_->duration() / run_anim_->duration();//run anim duration
+	anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_max_speed_ = anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration() / anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration();
+	//min_run_speed = run_anim_->duration() / anim_model_->Anim_map.at("ybot/ybot").Anim_->duration();
+	anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
+
 	//InitBlendTree();
+
+	anim_->InitBlendTree(AnimToLoad,AnimToLoad3);
 
 	//Can move!-----------------------------------------------
 
@@ -463,8 +474,6 @@ bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
-	//Can move!-----------------------------------------------
-
 	// read input devices
 	if (input_manager_)
 	{
@@ -487,7 +496,7 @@ bool SceneApp::Update(float frame_time)
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				anim_->speed_ = (anim_->speed_ >= anim_->walk_speed) ? anim_->walk_speed : anim_->speed_ + 0.02f * multiplier;
+				anim_->speed_ = (anim_->speed_ >= anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_) ? anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_ : anim_->speed_ + 0.02f * multiplier;
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {
@@ -497,6 +506,8 @@ bool SceneApp::Update(float frame_time)
 	}
 
 	anim_->Update(frame_time);
+
+	//Can move!-----------------------------------------------
 
 	//if (player_)
 	//{
