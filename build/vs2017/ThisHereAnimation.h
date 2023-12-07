@@ -24,20 +24,20 @@ public:
 
 	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform&);
 
-	void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
-	void InitBlendTree(std::string Anim1_name_, std::string Anim2_name_);
-	void Update(float frameTime_);
+	//void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
+	//void InitBlendTree(std::string Anim1_name_, std::string Anim2_name_);
+	void Update(float frameTime_, BlendTree& blend_tree,gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_);
 
-	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_);
+	void SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel& anim_model, float speed_);
 
-	void CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
+	void CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel& anim_model, gef::SkinnedMeshInstance& player_, float speed_);
 
-	class gef::Mesh* mesh_;
-	gef::SkinnedMeshInstance* player_;
+	//class gef::Mesh* mesh_;
+	//gef::SkinnedMeshInstance* player_;
 
-	MotionClipPlayer anim_player_;
+	//MotionClipPlayer anim_player_;
 
-	AnimatedModel* anim_model_;
+	//AnimatedModel* anim_model_;
 
 	gef::Animation* walk_anim_;
 	MotionClipPlayer walk_anim_player;
@@ -48,11 +48,11 @@ public:
 	gef::Animation* idle_anim_;
 	MotionClipPlayer idle_anim_player;
 
-	gef::SkeletonPose blended_pose;
+	//gef::SkeletonPose blended_pose;
 
-	gef::Skeleton* skeleton;
+	//gef::Skeleton* skeleton;
 
-	BlendTree* blend_tree_;
+	//BlendTree* blend_tree_;
 
 	float min_walk_speed;
 	float max_walk_speed;
@@ -62,9 +62,9 @@ public:
 	float max_run_speed;
 	float run_speed = 4.f;;
 
-	float anim_blend;
+	//float anim_blend;
 
-	float speed_;
+	//float speed_;
 
 	//Can use maps to store multiple of these
 };

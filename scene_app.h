@@ -108,13 +108,15 @@
 //#include <graphics/skinned_mesh_instance.h>
 //#include "motion_clip_player.h"
 //#include "ModelMesh.h"
-#include "ThisHereAnimation.h"
+//#include "ThisHereAnimation.h"
 
 //#include "AnimatedModel.h"
 
 //#include "BlendTree.h"
 //#include "ClipNode.h"
 //#include "Linear2Blend.h"
+
+#include "ThreeDimensional_Character.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -189,7 +191,9 @@ private:
 	//const char* AnimToLoad = "ybot/ybot@walking.scn";
 
 	ModelMesh* model_mesh_;
-	ThisHereAnimation* anim_;
+
+	ThreeDimensional_Character* character_;
+	//ThisHereAnimation* anim_;
 
 	//float min_walk_speed;
 	//float max_walk_speed;

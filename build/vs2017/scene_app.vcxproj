@@ -237,6 +237,7 @@
     <ClCompile Include="Sheet_Sprite_anim.cpp" />
     <ClCompile Include="Skeletal_Sprite_anim.cpp" />
     <ClCompile Include="Sprite_anim.cpp" />
+    <ClCompile Include="ThreeDimensional_Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\load_json.h" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Sheet_Sprite_anim.h" />
     <ClInclude Include="Skeletal_Sprite_anim.h" />
     <ClInclude Include="Sprite_anim.h" />
+    <ClInclude Include="ThreeDimensional_Character.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

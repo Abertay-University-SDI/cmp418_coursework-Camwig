@@ -320,7 +320,9 @@ void SceneApp::Init()
 	SetupLights();
 
 	model_mesh_ = new ModelMesh;
-	anim_ = new ThisHereAnimation;
+	//anim_ = new ThisHereAnimation;
+
+	character_ = new ThreeDimensional_Character();
 
 	//blend_tree_ = new BlendTree;
 
@@ -335,19 +337,26 @@ void SceneApp::Init()
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
-	anim_->Setup(model_mesh_,model_scene_,&platform_, "ybot/ybot.scn");
-	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_,AnimToLoad);
-	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_, AnimToLoad2);	
-	anim_->CallAnimationSetup(model_mesh_, model_scene_, &platform_, AnimToLoad3);
+	//IN CHARACTER!!!---------------------
+	character_->Setup(model_mesh_,model_scene_,&platform_, "ybot/ybot.scn");
+
+
+	//Need this to hold multiple animations rather than the one!
+	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad);
+	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad2);
+	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
+	//Need this to hold multiple animations rather than the one!
+
 
 	//max_walk_speed = walk_anim_->duration() / run_anim_->duration();//run anim duration
-	anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_max_speed_ = anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration() / anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration();
+	character_->anim_model_->Anim_map.at(AnimToLoad).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration();
 	//min_run_speed = run_anim_->duration() / anim_model_->Anim_map.at("ybot/ybot").Anim_->duration();
-	anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = anim_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
+	character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
 
 	//InitBlendTree();
 
-	anim_->InitBlendTree(AnimToLoad,AnimToLoad3);
+	character_->InitBlendTree(AnimToLoad,AnimToLoad3);
+	//IN CHARACTER!!!---------------------
 
 	//Can move!-----------------------------------------------
 
@@ -496,16 +505,20 @@ bool SceneApp::Update(float frame_time)
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				anim_->speed_ = (anim_->speed_ >= anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_) ? anim_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_ : anim_->speed_ + 0.02f * multiplier;
+				character_->speed_ = (character_->speed_ >= character_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {
-				anim_->speed_ = (anim_->speed_ <= 0) ? 0 : anim_->speed_ - 0.02f * multiplier;
+				character_->speed_ = (character_->speed_ <= 0) ? 0 : character_->speed_ - 0.02f * multiplier;
 			}
 		}
 	}
 
-	anim_->Update(frame_time);
+	character_->NewUpdate(frame_time);
+
+	//IN CHARACTER!!!---------------------
+	//anim_->Update(frame_time);
+	//IN CHARACTER!!!---------------------
 
 	//Can move!-----------------------------------------------
 
@@ -559,8 +572,8 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	// draw the player, the pose is defined by the bone matrices
-	if (anim_->player_)
-		renderer_3d_->DrawSkinnedMesh(*anim_->player_, anim_->player_->bone_matrices());
+	if (character_->player_)
+		renderer_3d_->DrawSkinnedMesh(*character_->player_, character_->player_->bone_matrices());
 
 	renderer_3d_->End();
 
