@@ -505,7 +505,7 @@ bool SceneApp::Update(float frame_time)
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				character_->speed_ = (character_->speed_ >= character_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_->Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
+				character_->speed_ = (character_->speed_ >= character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
 			}
 
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {

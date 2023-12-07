@@ -8,6 +8,7 @@
 Anim::Anim()
 {
 	WhichAnim_ = NULL;
+	ThreeD_animation_ = NULL;
 }
 
 Anim::~Anim()
@@ -20,6 +21,9 @@ Anim::~Anim()
 
 	delete WhichAnim_;
 	WhichAnim_ = NULL;
+
+	delete ThreeD_animation_;
+	ThreeD_animation_ = NULL;
 }
 
 //void Anim::Init(std::string file, gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, int frame)
@@ -68,6 +72,11 @@ void Anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::
 	//sprite_ = sprite_animation_->SetSpriteSizeAndPositionForFrame(sprite_,screen_x,screen_y, frame);
 	//sprite_animation_->SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame);
 	sprite_animation_->Update(frame, sprite_, position_, Transforms_for_bone_);
+}
+
+void Anim::Update(float frameTime_, BlendTree& blend_tree, gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_)
+{
+	ThreeD_animation_->Update(frameTime_, blend_tree, player_, blended_pose, speed_);
 }
 
 void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
@@ -137,6 +146,12 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		type_ = test_string;
 		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_);
 	}
+}
+
+void Anim::SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel& anim_model, float speed_)
+{
+	ThreeD_animation_ = new ThisHereAnimation;
+	ThreeD_animation_->CallAnimationSetup(ModelMesh_, Model_scene, platform_, anim_name, skeleton_, anim_model, *player_, speed_);
 }
 
 //

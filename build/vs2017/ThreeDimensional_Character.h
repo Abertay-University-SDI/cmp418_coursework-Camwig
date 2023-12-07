@@ -15,7 +15,17 @@
 #include "ClipNode.h"
 #include "Linear2Blend.h"*/
 
-#include "ThisHereAnimation.h"
+#include "Anim.h"
+
+struct AnimatedModel_new
+{
+	std::string Model_Name_;
+	char* Model_PathWay_;
+
+	//Should be a map of Anims
+	//Just need to be able to access its Animation varibale
+	std::map<std::string, PlayableAnim> Anim_map;
+};
 
 class ThreeDimensional_Character
 {
@@ -35,11 +45,11 @@ public:
 
 	gef::SkinnedMeshInstance* player_;
 
-	AnimatedModel* anim_model_;
+	AnimatedModel anim_model_;
 
 	gef::SkeletonPose blended_pose;
 
-	gef::Skeleton* skeleton;
+	gef::Skeleton skeleton;
 
 	std::map<std::string, BlendTree> Map_o_blendtrees_;
 
@@ -50,6 +60,6 @@ public:
 
 	float speed_;
 
-	ThisHereAnimation* anim_;
+	Anim* anim_;
 };
 

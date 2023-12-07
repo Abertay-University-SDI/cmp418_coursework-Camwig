@@ -16,6 +16,19 @@
 
 #include <maths/math_utils.h>
 
+struct PlayableAnim_new
+{
+	std::string Anim_Name_;
+	std::string Anim_Pathway_;
+
+	float Anim_min_speed_;
+	float Anim_max_speed_;
+	float Anim_speed;
+
+	gef::Animation* Anim_;
+	MotionClipPlayer Anim_player_;
+};
+
 class ThisHereAnimation
 {
 public:

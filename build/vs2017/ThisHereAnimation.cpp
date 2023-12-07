@@ -82,6 +82,8 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 	float min_speed = 1.f;
 	float max_speed = 1.f;
 
+	//ALL OF THIS STUFF SHOULD BE CHANGED TO HOLD THE PLAYABLE ANIM STUFF HERE
+
 	PlayableAnim* play_anim_ = new PlayableAnim;
 
 	char* anim_file_path_ = new char[anim_name.length()];
@@ -96,6 +98,8 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 	play_anim_->Anim_speed = speed_;
 	play_anim_->Anim_player_ = *new_anim_player_;
 	play_anim_->Anim_ = new_anim;
+
+	//This should then be given to the Character
 
 	anim_model.Anim_map.insert(std::make_pair(play_anim_->Anim_Name_, *play_anim_));
 
