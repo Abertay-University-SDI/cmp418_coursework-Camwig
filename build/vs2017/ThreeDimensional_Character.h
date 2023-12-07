@@ -24,11 +24,12 @@ public:
 	ThreeDimensional_Character::~ThreeDimensional_Character();
 
 	void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
-	void InitBlendTree(std::string Anim1_name_, std::string Anim2_name_);
+	void InitBlendTree(std::string tree_name,std::string Anim1_name_, std::string Anim2_name_);
 
 	void Init(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
+	void NewUpdate(float frametime, std::string tree_name);
 
-	void NewUpdate(float frametime);
+	void AddBlendTree(std::string tree_name);
 
 	class gef::Mesh* mesh_;
 
@@ -40,8 +41,11 @@ public:
 
 	gef::Skeleton* skeleton;
 
-	BlendTree* blend_tree_;
+	std::map<std::string, BlendTree> Map_o_blendtrees_;
 
+	//BlendTree* blend_tree_;
+
+	//The thing below seems useless?
 	float anim_blend;
 
 	float speed_;

@@ -39,14 +39,14 @@ public:
 
 	//AnimatedModel* anim_model_;
 
-	gef::Animation* walk_anim_;
-	MotionClipPlayer walk_anim_player;
+	//gef::Animation* walk_anim_;
+	//MotionClipPlayer walk_anim_player;
 
-	gef::Animation* run_anim_;
-	MotionClipPlayer run_anim_player;
+	//gef::Animation* run_anim_;
+	//MotionClipPlayer run_anim_player;
 
-	gef::Animation* idle_anim_;
-	MotionClipPlayer idle_anim_player;
+	//gef::Animation* idle_anim_;
+	//MotionClipPlayer idle_anim_player;
 
 	//gef::SkeletonPose blended_pose;
 

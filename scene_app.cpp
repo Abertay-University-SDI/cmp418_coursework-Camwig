@@ -354,8 +354,8 @@ void SceneApp::Init()
 	character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_max_speed_ = character_->anim_model_->Anim_map.at(AnimToLoad2).Anim_->duration() / character_->anim_model_->Anim_map.at(AnimToLoad).Anim_->duration();
 
 	//InitBlendTree();
-
-	character_->InitBlendTree(AnimToLoad,AnimToLoad3);
+	character_->AddBlendTree(tree_name_);
+	character_->InitBlendTree(tree_name_,AnimToLoad,AnimToLoad3);
 	//IN CHARACTER!!!---------------------
 
 	//Can move!-----------------------------------------------
@@ -514,7 +514,7 @@ bool SceneApp::Update(float frame_time)
 		}
 	}
 
-	character_->NewUpdate(frame_time);
+	character_->NewUpdate(frame_time, tree_name_);
 
 	//IN CHARACTER!!!---------------------
 	//anim_->Update(frame_time);

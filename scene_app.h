@@ -213,6 +213,8 @@ private:
 	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";
 	const char* AnimToLoad2 = "ybot/ybot@running_inplace.scn";
 	const char* AnimToLoad3 = "ybot/ybot@idle.scn";
+
+	const char* tree_name_ = "Idle_to_walk";
 };
 
 #endif // _ANIMATED_MESH_APP_H

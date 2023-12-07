@@ -4,8 +4,8 @@ ThreeDimensional_Character::ThreeDimensional_Character():
 	mesh_(NULL),
 	player_(NULL),
 	skeleton(NULL),
-	anim_(NULL),
-	blend_tree_(NULL)
+	anim_(NULL)/*,
+	blend_tree_(NULL)*/
 {
 	anim_model_ = new AnimatedModel;
 }
@@ -22,8 +22,8 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 	delete anim_model_;
 	anim_model_ = NULL;
 
-	delete blend_tree_;
-	blend_tree_ = NULL;
+	//delete blend_tree_;
+	//blend_tree_ = NULL;
 
 	delete skeleton;
 	skeleton = NULL;
@@ -37,7 +37,7 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 {
 	anim_ = new ThisHereAnimation;
 
-	blend_tree_ = new BlendTree;
+	//blend_tree_ = new BlendTree;
 
 	// if there is mesh data in the scene, create a mesh to draw from the first mesh
 	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);//GetFirstMesh(model_scene_);
@@ -71,31 +71,40 @@ void ThreeDimensional_Character::Init(ModelMesh* ModelMesh_, gef::Scene* Model_s
 	anim_->CallAnimationSetup(ModelMesh_, Model_scene, platform_, anim_name,*skeleton,*anim_model_,*player_, speed_);
 }
 
-void ThreeDimensional_Character::NewUpdate(float frametime)
+void ThreeDimensional_Character::NewUpdate(float frametime, std::string tree_name)
 {
-	anim_->Update(frametime,*blend_tree_,*player_,blended_pose,speed_);
+	anim_->Update(frametime,Map_o_blendtrees_.at(tree_name),*player_,blended_pose,speed_);
 }
 
-void ThreeDimensional_Character::InitBlendTree(std::string Anim1_name_, std::string Anim2_name_)
+void ThreeDimensional_Character::AddBlendTree(std::string tree_name)
+{
+	BlendTree* temp_tree = new BlendTree;
+	Map_o_blendtrees_.insert(std::make_pair(tree_name,*temp_tree));
+	
+	delete temp_tree;
+	temp_tree = NULL;
+}
+
+void ThreeDimensional_Character::InitBlendTree(std::string tree_name, std::string Anim1_name_, std::string Anim2_name_)
 {
 	if (player_ && player_->bind_pose().skeleton())
 	{
-		blend_tree_->Init(player_->bind_pose());
+		Map_o_blendtrees_.at(tree_name).Init(player_->bind_pose());
 
-		ClipNode* idle_clip = new ClipNode(blend_tree_);
+		ClipNode* idle_clip = new ClipNode(&Map_o_blendtrees_.at(tree_name));
 		idle_clip->SetClip(anim_model_->Anim_map.at(Anim2_name_.c_str()).Anim_);
 
-		ClipNode* walk_clip = new ClipNode(blend_tree_);
+		ClipNode* walk_clip = new ClipNode(&Map_o_blendtrees_.at(tree_name));
 		walk_clip->SetClip(anim_model_->Anim_map.at(Anim1_name_.c_str()).Anim_);
 
-		Linear2Blend* l2b = new Linear2Blend(blend_tree_);
+		Linear2Blend* l2b = new Linear2Blend(&Map_o_blendtrees_.at(tree_name));
 		l2b->SetVariable(0, "idle_anim_");
 
 		l2b->SetInput(0, idle_clip);
 		l2b->SetInput(1, walk_clip);
 
-		blend_tree_->output_.SetInput(0, l2b);
+		Map_o_blendtrees_.at(tree_name).output_.SetInput(0, l2b);
 
-		blend_tree_->Start();
+		Map_o_blendtrees_.at(tree_name).Start();
 	}
 }

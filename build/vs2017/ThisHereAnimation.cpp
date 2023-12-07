@@ -1,44 +1,11 @@
 #include "ThisHereAnimation.h"
 
-ThisHereAnimation::ThisHereAnimation() :
-
-	//mesh_(NULL),
-	////Can be its own thing
-	//player_(NULL),
-	//Can be turned into a base animation class
-	walk_anim_(NULL),
-	run_anim_(NULL),
-	idle_anim_(NULL)/*,
-	skeleton(NULL)*/
+ThisHereAnimation::ThisHereAnimation()
 {
-	//anim_model_ = new AnimatedModel;
 }
 
 ThisHereAnimation::~ThisHereAnimation()
 {
-	//delete player_;
-	//player_ = NULL;
-
-	delete walk_anim_;
-	walk_anim_ = NULL;
-
-	delete run_anim_;
-	run_anim_ = NULL;
-
-	delete idle_anim_;
-	idle_anim_ = NULL;
-
-	//delete mesh_;
-	//mesh_ = NULL;
-
-	//delete anim_model_;
-	//anim_model_ = NULL;
-
-	//delete blend_tree_;
-	//blend_tree_ = NULL;
-
-	//delete skeleton;
-	//skeleton = NULL;
 }
 
 gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
