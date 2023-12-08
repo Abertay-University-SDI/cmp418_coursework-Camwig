@@ -230,8 +230,10 @@
 
 //-----------------------------Ragdoll Version ----------------------------------------
 
-#ifndef _ANIMATED_MESH_APP_H
-#define _ANIMATED_MESH_APP_H
+//#ifndef _ANIMATED_MESH_APP_H
+//#define _ANIMATED_MESH_APP_H
+#ifndef _SCENE_APP_H
+#define _SCENE_APP_H
 
 #include <system/application.h>
 #include <graphics/sprite.h>
@@ -245,8 +247,10 @@
 #include "primitive_renderer.h"
 #include "gef_debug_drawer.h"
 
+#include "ThreeDimensional_Character.h"
+
 #include "btBulletDynamicsCommon.h"
-#include "ragdoll.h"
+//#include "ragdoll.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -337,10 +341,15 @@ private:
 	gef::Mesh* sphere_mesh_;
 	gef::MeshInstance sphere_gfx_;
 
-	Ragdoll* ragdoll_;
+	//Ragdoll* ragdoll_;
 
 	bool is_ragdoll_simulating_;
 
+	ThreeDimensional_Character* character_;
+
+	ModelMesh* model_mesh_;
+
+	const char* AnimToLoad3 = "xbot/xbot@idle.scn";
 };
 
 #endif // _ANIMATED_MESH_APP_H

@@ -17,6 +17,9 @@
 
 #include "Anim.h"
 
+//Temporary for testing
+#include "ragdoll.h"
+
 class ThreeDimensional_Character
 {
 public:
@@ -28,6 +31,14 @@ public:
 
 	void Init(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
 	void NewUpdate(float frametime, std::string tree_name);
+
+	//Ragdoll stuff to make sure I know what to move
+	//
+	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
+	gef::Mesh* GetFirstMesh(gef::Scene* scene, gef::Scene* Model_scene, gef::Platform* platform_);
+	void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_);
+	void UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
+	//
 
 	void AddBlendTree(std::string tree_name);
 
@@ -51,5 +62,9 @@ public:
 	float speed_;
 
 	Anim* anim_;
+
+
+	//Temporary for testing
+	Ragdoll* ragdoll_;
 };
 

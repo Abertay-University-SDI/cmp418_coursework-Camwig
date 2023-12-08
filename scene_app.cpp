@@ -704,7 +704,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	floor_mesh_(NULL),
 	sphere_mesh_(NULL),
 	sphere_rb_(NULL),
-	ragdoll_(NULL)
+	character_(NULL)
 {
 }
 
@@ -723,82 +723,99 @@ void SceneApp::Init()
 	// we're not making any assumptions about what the data may be loaded in for
 	std::string model_scene_name = model_name + "/" + model_name + ".scn";
 
+	model_mesh_ = new ModelMesh;
 
 	model_scene_ = new gef::Scene();
-	model_scene_->ReadSceneFromFile(platform_, model_scene_name.c_str());
+	//model_scene_->ReadSceneFromFile(platform_, model_scene_name.c_str());
+	model_scene_->ReadSceneFromFile(platform_, model_mesh_->modelToLoad);
 
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
 	model_scene_->CreateMaterials(platform_);
 
-	// if there is mesh data in the scene, create a mesh to draw from the first mesh
-	mesh_ = GetFirstMesh(model_scene_);
+	character_ = new ThreeDimensional_Character();
 
-	// get the first skeleton in the scene
-	gef::Skeleton* skeleton = GetFirstSkeleton(model_scene_);
+	character_->Setup(model_mesh_, model_scene_, &platform_, "xbot/xbot.scn");
 
-	if (skeleton)
-	{
-		player_ = new gef::SkinnedMeshInstance(*skeleton);
-		player_->set_mesh(mesh_);
-		player_->UpdateBoneMatrices(player_->bind_pose());
+	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
 
-		// output skeleton joint names
-		for (int joint_num = 0; joint_num < skeleton->joints().size(); ++joint_num)
-		{
-			std::string bone_name;
-			model_scene_->string_id_table.Find(skeleton->joint(joint_num).name_id, bone_name);
-			gef::DebugOut("%d: %s\n", joint_num, bone_name.c_str());
-		}
+	//Can be in 3D Character!------------------------------------
 
-		// animated model is scaled down to match the size of the physics ragdoll
-		gef::Matrix44 player_transform;
-		const float scale = 0.01f;
-		player_transform.Scale(gef::Vector4(scale, scale, scale));
-		player_->set_transform(player_transform);
-	}
+	//// if there is mesh data in the scene, create a mesh to draw from the first mesh
+	//mesh_ = GetFirstMesh(model_scene_);
+
+	//// get the first skeleton in the scene
+	//gef::Skeleton* skeleton = GetFirstSkeleton(model_scene_);
+
+	//if (skeleton)
+	//{
+	//	player_ = new gef::SkinnedMeshInstance(*skeleton);
+	//	player_->set_mesh(mesh_);
+	//	player_->UpdateBoneMatrices(player_->bind_pose());
+
+	//	// output skeleton joint names
+	//	for (int joint_num = 0; joint_num < skeleton->joints().size(); ++joint_num)
+	//	{
+	//		std::string bone_name;
+	//		model_scene_->string_id_table.Find(skeleton->joint(joint_num).name_id, bone_name);
+	//		gef::DebugOut("%d: %s\n", joint_num, bone_name.c_str());
+	//	}
+
+	//	// animated model is scaled down to match the size of the physics ragdoll
+	//	gef::Matrix44 player_transform;
+	//	const float scale = 0.01f;
+	//	player_transform.Scale(gef::Vector4(scale, scale, scale));
+	//	player_->set_transform(player_transform);
+	//}
 
 
 	// anims
-	std::string walk_anim_name = model_name + "/" + model_name + "@walking_inplace.scn";
-	std::string run_anim_name = model_name + "/" + model_name + "@running_inplace.scn";
-	std::string idle_anim_name = model_name + "/" + model_name + "@idle.scn";
+
+		//All animation setup---------------------------------------------------------------
+		//std::string walk_anim_name = model_name + "/" + model_name + "@walking_inplace.scn";
+		//std::string run_anim_name = model_name + "/" + model_name + "@running_inplace.scn";
+		//std::string idle_anim_name = model_name + "/" + model_name + "@idle.scn";
 
 
-	walk_anim_ = LoadAnimation(walk_anim_name.c_str(), "");
-	run_anim_ = LoadAnimation(run_anim_name.c_str(), "");
-	idle_anim_ = LoadAnimation(idle_anim_name.c_str(), "");
+		//walk_anim_ = LoadAnimation(walk_anim_name.c_str(), "");
+		//run_anim_ = LoadAnimation(run_anim_name.c_str(), "");
+		//idle_anim_ = LoadAnimation(idle_anim_name.c_str(), "");
 
-	clip_player_.Init(player_->bind_pose());
-	clip_player_.set_clip(idle_anim_);
-	clip_player_.set_looping(true);
-	clip_player_.set_anim_time(0.0f);
+		//clip_player_.Init(player_->bind_pose());
+		//clip_player_.set_clip(idle_anim_);
+		//clip_player_.set_looping(true);
+		//clip_player_.set_anim_time(0.0f);
+		//All animation setup---------------------------------------------------------------
 
 	primitive_builder_ = new PrimitiveBuilder(platform_);
-
-	//Dies here
 	primitive_renderer_ = new PrimitiveRenderer(platform_);
 
 	InitPhysicsWorld();
 	CreateRigidBodies();
 
-	InitRagdoll();
+	//InitRagdoll();
+
+	character_->InitRagdoll(dynamics_world_,model_name,is_ragdoll_simulating_);
+
+	//Can be in 3D Character!------------------------------------
 }
 
-void SceneApp::InitRagdoll()
-{
-	if (player_->bind_pose().skeleton())
-	{
-		ragdoll_ = new Ragdoll();
-		ragdoll_->set_scale_factor(0.01f);
-
-		std::string ragdoll_filename;
-		ragdoll_filename = model_name + "/ragdoll.bullet";
-
-		ragdoll_->Init(player_->bind_pose(), dynamics_world_, ragdoll_filename.c_str());
-	}
-
-	is_ragdoll_simulating_ = false;
-}
+//Can be in 3D Character!------------------------------------
+//void SceneApp::InitRagdoll()
+//{
+//	if (player_->bind_pose().skeleton())
+//	{
+//		ragdoll_ = new Ragdoll();
+//		ragdoll_->set_scale_factor(0.01f);
+//
+//		std::string ragdoll_filename;
+//		ragdoll_filename = model_name + "/ragdoll.bullet";
+//
+//		ragdoll_->Init(player_->bind_pose(), dynamics_world_, ragdoll_filename.c_str());
+//	}
+//
+//	is_ragdoll_simulating_ = false;
+//}
+//Can be in 3D Character!------------------------------------
 
 void SceneApp::CleanUp()
 {
@@ -844,8 +861,8 @@ void SceneApp::CleanUp()
 
 void SceneApp::CleanUpRagdoll()
 {
-	delete ragdoll_;
-	ragdoll_ = NULL;
+	delete character_;
+	character_ = NULL;
 }
 
 bool SceneApp::Update(float frame_time)
@@ -875,31 +892,38 @@ bool SceneApp::Update(float frame_time)
 		}
 	}
 
+	//Can be in 3D Character!------------------------------------
+
 	// update the current animation that is playing
-	if (player_)
+	if (character_->player_)
 	{
-		clip_player_.Update(frame_time, player_->bind_pose());
-		player_->UpdateBoneMatrices(clip_player_.pose());
+		character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.Update(frame_time, character_->player_->bind_pose());
+		character_->player_->UpdateBoneMatrices(character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.pose());
 	}
 
+	//This is the only one that might be a problem
 	UpdatePhysicsWorld(frame_time);
+
+	//The blow only effects the sphere
 	UpdateRigidBodies();
 
+	character_->UpdateRagdoll(is_ragdoll_simulating_,AnimToLoad3);
 
+	//if (player_ && ragdoll_)
+	//{
+	//	if (is_ragdoll_simulating_)
+	//	{
+	//		ragdoll_->UpdatePoseFromRagdoll();
+	//		player_->UpdateBoneMatrices(ragdoll_->pose());
+	//	}
+	//	else
+	//	{
+	//		ragdoll_->set_pose(clip_player_.pose());
+	//		ragdoll_->UpdateRagdollFromPose();
+	//	}
+	//}
 
-	if (player_ && ragdoll_)
-	{
-		if (is_ragdoll_simulating_)
-		{
-			ragdoll_->UpdatePoseFromRagdoll();
-			player_->UpdateBoneMatrices(ragdoll_->pose());
-		}
-		else
-		{
-			ragdoll_->set_pose(clip_player_.pose());
-			ragdoll_->UpdateRagdollFromPose();
-		}
-	}
+	//Can be in 3D Character!------------------------------------
 
 	return true;
 }
@@ -918,9 +942,9 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	// draw the player, the pose is defined by the bone matrices
-	if (player_)
+	if (character_->player_)
 	{
-		renderer_3d_->DrawSkinnedMesh(*player_, player_->bone_matrices());
+		renderer_3d_->DrawSkinnedMesh(*character_->player_, character_->player_->bone_matrices());
 	}
 
 	renderer_3d_->DrawMesh(floor_gfx_);
@@ -982,35 +1006,40 @@ void SceneApp::SetupCamera()
 }
 
 
-gef::Skeleton* SceneApp::GetFirstSkeleton(gef::Scene* scene)
-{
-	gef::Skeleton* skeleton = NULL;
-	if (scene)
-	{
-		// check to see if there is a skeleton in the the scene file
-		// if so, pull out the bind pose and create an array of matrices
-		// that wil be used to store the bone transformations
-		if (scene->skeletons.size() > 0)
-			skeleton = scene->skeletons.front();
-	}
+//Can be in 3D Character!------------------------------------
+//gef::Skeleton* SceneApp::GetFirstSkeleton(gef::Scene* scene)
+//{
+//	gef::Skeleton* skeleton = NULL;
+//	if (scene)
+//	{
+//		// check to see if there is a skeleton in the the scene file
+//		// if so, pull out the bind pose and create an array of matrices
+//		// that wil be used to store the bone transformations
+//		if (scene->skeletons.size() > 0)
+//			skeleton = scene->skeletons.front();
+//	}
+//
+//	return skeleton;
+//}
+//Can be in 3D Character!------------------------------------
 
-	return skeleton;
-}
+//Can be in 3D Character!------------------------------------
+//gef::Mesh* SceneApp::GetFirstMesh(gef::Scene* scene)
+//{
+//	gef::Mesh* mesh = NULL;
+//
+//	if (scene)
+//	{
+//		// now check to see if there is any mesh data in the file, if so lets create a mesh from it
+//		if (scene->mesh_data.size() > 0)
+//			mesh = model_scene_->CreateMesh(platform_, scene->mesh_data.front());
+//	}
+//
+//	return mesh;
+//}
+//Can be in 3D Character!------------------------------------
 
-gef::Mesh* SceneApp::GetFirstMesh(gef::Scene* scene)
-{
-	gef::Mesh* mesh = NULL;
-
-	if (scene)
-	{
-		// now check to see if there is any mesh data in the file, if so lets create a mesh from it
-		if (scene->mesh_data.size() > 0)
-			mesh = model_scene_->CreateMesh(platform_, scene->mesh_data.front());
-	}
-
-	return mesh;
-}
-
+//Can be in 3D Character!------------------------------------
 gef::Animation* SceneApp::LoadAnimation(const char* anim_scene_filename, const char* anim_name)
 {
 	gef::Animation* anim = NULL;
@@ -1032,6 +1061,7 @@ gef::Animation* SceneApp::LoadAnimation(const char* anim_scene_filename, const c
 
 	return anim;
 }
+//Can be in 3D Character!------------------------------------
 
 void SceneApp::InitPhysicsWorld()
 {
@@ -1117,6 +1147,8 @@ void SceneApp::UpdatePhysicsWorld(float delta_time)
 	const int max_sub_steps = 1;
 	dynamics_world_->stepSimulation(simulation_time_step, max_sub_steps);
 }
+
+//Can get rid of the sphere that falls!---------------------------------------
 
 void SceneApp::CreateRigidBodies()
 {
@@ -1208,5 +1240,7 @@ void SceneApp::UpdateRigidBodies()
 		sphere_gfx_.set_transform(btTransform2Matrix(world_transform));
 	}
 }
+
+//Can get rid of the sphere that falls!---------------------------------------
 
 //-----------------------------Ragdoll Version ----------------------------------------

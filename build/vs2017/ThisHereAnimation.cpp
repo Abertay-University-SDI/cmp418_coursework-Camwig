@@ -122,7 +122,11 @@ void ThisHereAnimation::Update(float frameTime_, BlendTree& blend_tree,gef::Skin
 	if (&player_)
 	{
 		//blend_tree_->variables[""]
+
+		//Need to fix this so it does not just do the default instead the default of the blend tree
 		blend_tree.variables["idle_anim_"] = speed_;
+
+
 		blend_tree.Update(frameTime_);
 		blended_pose = blend_tree.output_.OutputPose_;
 
