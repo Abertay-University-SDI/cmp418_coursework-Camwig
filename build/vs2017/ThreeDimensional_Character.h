@@ -46,7 +46,7 @@ public:
 	//BlendTree* blend_tree_;
 
 	//The thing below seems useless?
-	float anim_blend;
+	//float anim_blend;
 
 	float speed_;
 

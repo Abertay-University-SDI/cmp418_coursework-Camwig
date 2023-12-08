@@ -54,8 +54,6 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 
 	speed_ = 0.0f;
 
-	anim_blend = 0.f;
-
 	char* model_file_path_ = new char[model_name.length()];
 
 	strcpy(model_file_path_, model_name.c_str());
