@@ -383,6 +383,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Anim.cpp" />
+    <ClCompile Include="gef_debug_drawer.cpp" />
     <ClCompile Include="primitive_builder.cpp" />
     <ClCompile Include="primitive_renderer.cpp" />
     <ClCompile Include="ragdoll.cpp" />
@@ -651,6 +652,7 @@
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Anim.h" />
     <ClInclude Include="AnimatedModel.h" />
+    <ClInclude Include="gef_debug_drawer.h" />
     <ClInclude Include="primitive_builder.h" />
     <ClInclude Include="primitive_renderer.h" />
     <ClInclude Include="ragdoll.h" />

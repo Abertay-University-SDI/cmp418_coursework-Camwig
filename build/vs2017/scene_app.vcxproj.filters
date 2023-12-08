@@ -627,6 +627,9 @@
     <ClCompile Include="..\..\..\bullet3\src\BulletDynamics\Dynamics\btSimulationIslandManagerMt.cpp">
       <Filter>Bullet\BulletDynamics\Dynamics</Filter>
     </ClCompile>
+    <ClCompile Include="gef_debug_drawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene_app.h">
@@ -1429,6 +1432,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\bullet3\src\BulletDynamics\Dynamics\btSimulationIslandManagerMt.h">
       <Filter>Bullet\BulletDynamics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="gef_debug_drawer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
