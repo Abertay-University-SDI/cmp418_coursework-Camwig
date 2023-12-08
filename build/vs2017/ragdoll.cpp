@@ -3,7 +3,7 @@
 #include <btBulletWorldImporter.h>
 #include <system/debug_log.h>
 
-extern std::string model_name;
+extern std::string model_name = "";
 
 Ragdoll::Ragdoll() :
 	scale_factor_(1.0f)
