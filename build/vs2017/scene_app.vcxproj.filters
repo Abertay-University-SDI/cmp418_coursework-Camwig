@@ -78,6 +78,18 @@
     <ClCompile Include="ThreeDimensional_Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="primitive_builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="primitive_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ragdoll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vertex_colour_unlit_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene_app.h">
@@ -141,6 +153,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreeDimensional_Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive_builder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ragdoll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex_colour_unlit_shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
