@@ -682,7 +682,7 @@
 #include <system/debug_log.h>
 #include "ragdoll.h"
 
-std::string model_name("xbot");
+//std::string model_name("xbot");
 
 
 SceneApp::SceneApp(gef::Platform& platform) :
@@ -721,7 +721,10 @@ void SceneApp::Init()
 	// create a new scene object and read in the data from the file
 	// no meshes or materials are created yet
 	// we're not making any assumptions about what the data may be loaded in for
-	std::string model_scene_name = model_name + "/" + model_name + ".scn";
+
+	std::string this_s = "xbot";
+
+	std::string model_scene_name = this_s + "/" + this_s + ".scn";
 
 	model_mesh_ = new ModelMesh;
 
@@ -734,7 +737,7 @@ void SceneApp::Init()
 
 	character_ = new ThreeDimensional_Character();
 
-	character_->Setup(model_mesh_, model_scene_, &platform_, "xbot/xbot.scn");
+	character_->Setup(model_mesh_, model_scene_, &platform_, model_scene_name);
 
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
 
@@ -794,7 +797,7 @@ void SceneApp::Init()
 
 	//InitRagdoll();
 
-	character_->InitRagdoll(dynamics_world_,model_name,is_ragdoll_simulating_);
+	character_->InitRagdoll(dynamics_world_, this_s,is_ragdoll_simulating_);
 
 	//Can be in 3D Character!------------------------------------
 }
@@ -1040,27 +1043,27 @@ void SceneApp::SetupCamera()
 //Can be in 3D Character!------------------------------------
 
 //Can be in 3D Character!------------------------------------
-gef::Animation* SceneApp::LoadAnimation(const char* anim_scene_filename, const char* anim_name)
-{
-	gef::Animation* anim = NULL;
-
-	gef::Scene anim_scene;
-	if (anim_scene.ReadSceneFromFile(platform_, anim_scene_filename))
-	{
-		// if the animation name is specified then try and find the named anim
-		// otherwise return the first animation if there is one
-		std::map<gef::StringId, gef::Animation*>::const_iterator anim_node_iter;
-		if (anim_name)
-			anim_node_iter = anim_scene.animations.find(gef::GetStringId(anim_name));
-		else
-			anim_node_iter = anim_scene.animations.begin();
-
-		if (anim_node_iter != anim_scene.animations.end())
-			anim = new gef::Animation(*anim_node_iter->second);
-	}
-
-	return anim;
-}
+//gef::Animation* SceneApp::LoadAnimation(const char* anim_scene_filename, const char* anim_name)
+//{
+//	gef::Animation* anim = NULL;
+//
+//	gef::Scene anim_scene;
+//	if (anim_scene.ReadSceneFromFile(platform_, anim_scene_filename))
+//	{
+//		// if the animation name is specified then try and find the named anim
+//		// otherwise return the first animation if there is one
+//		std::map<gef::StringId, gef::Animation*>::const_iterator anim_node_iter;
+//		if (anim_name)
+//			anim_node_iter = anim_scene.animations.find(gef::GetStringId(anim_name));
+//		else
+//			anim_node_iter = anim_scene.animations.begin();
+//
+//		if (anim_node_iter != anim_scene.animations.end())
+//			anim = new gef::Animation(*anim_node_iter->second);
+//	}
+//
+//	return anim;
+//}
 //Can be in 3D Character!------------------------------------
 
 void SceneApp::InitPhysicsWorld()

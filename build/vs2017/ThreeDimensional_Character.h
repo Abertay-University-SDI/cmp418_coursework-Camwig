@@ -34,12 +34,12 @@ public:
 
 	//Ragdoll stuff to make sure I know what to move
 	//
-	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
-	gef::Mesh* GetFirstMesh(gef::Scene* scene, gef::Scene* Model_scene, gef::Platform* platform_);
 	void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_);
 	void UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
 	//
 
+
+	//gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 	void AddBlendTree(std::string tree_name);
 
 	class gef::Mesh* mesh_;
@@ -50,7 +50,7 @@ public:
 
 	gef::SkeletonPose blended_pose;
 
-	gef::Skeleton skeleton;
+	gef::Skeleton* skeleton;
 
 	std::map<std::string, BlendTree> Map_o_blendtrees_;
 
