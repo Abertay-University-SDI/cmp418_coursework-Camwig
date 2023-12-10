@@ -797,7 +797,8 @@ void SceneApp::Init()
 
 	//InitRagdoll();
 
-	character_->InitRagdoll(dynamics_world_, this_s,is_ragdoll_simulating_);
+	//character_->InitRagdoll(dynamics_world_, this_s,is_ragdoll_simulating_);
+	character_->SetupRagdoll(is_ragdoll_simulating_, dynamics_world_);
 
 	//Can be in 3D Character!------------------------------------
 }
@@ -910,7 +911,8 @@ bool SceneApp::Update(float frame_time)
 	//The blow only effects the sphere
 	UpdateRigidBodies();
 
-	character_->UpdateRagdoll(is_ragdoll_simulating_,AnimToLoad3);
+	//character_->UpdateRagdoll(is_ragdoll_simulating_,AnimToLoad3);
+	character_->CallUpdateRagdoll(is_ragdoll_simulating_, AnimToLoad3);
 
 	//if (player_ && ragdoll_)
 	//{

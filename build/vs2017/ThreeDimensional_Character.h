@@ -18,7 +18,7 @@
 #include "Anim.h"
 
 //Temporary for testing
-#include "ragdoll.h"
+//#include "ragdoll.h"
 
 class ThreeDimensional_Character
 {
@@ -34,10 +34,12 @@ public:
 
 	//Ragdoll stuff to make sure I know what to move
 	//
-	void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_);
-	void UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
+	//void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_);
+	//void UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
 	//
 
+	void SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_);
+	void CallUpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
 
 	//gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 	void AddBlendTree(std::string tree_name);
@@ -63,8 +65,11 @@ public:
 
 	Anim* anim_;
 
+	float scale;
 
 	//Temporary for testing
-	Ragdoll* ragdoll_;
+	//Ragdoll* ragdoll_;
+//private:
+//	//gef::Animation* curr_anim;
 };
 

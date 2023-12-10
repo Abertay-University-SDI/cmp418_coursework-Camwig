@@ -26,7 +26,8 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 
 	btBulletWorldImporter* fileLoader = new btBulletWorldImporter(dynamics_world);
 
-	std::string ragdoll_filename = physics_filename;/*model_name + "/ragdoll.bullet";*/
+	std::string ragdoll_filename;
+	ragdoll_filename = physics_filename;/*model_name + "/ragdoll.bullet";*/
 	fileLoader->loadFile(ragdoll_filename.c_str());
 
 	int numRigidBodies = fileLoader->getNumRigidBodies();
@@ -206,6 +207,42 @@ void Ragdoll::UpdateRagdollFromPose()
 
 	}
 
+}
+
+void Ragdoll::InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_,gef::SkinnedMeshInstance* player_)
+{
+	if (player_->bind_pose().skeleton())
+	{
+		//ragdoll_ = new Ragdoll();
+		set_scale_factor(0.01f);
+
+		std::string ragdoll_filename;
+		ragdoll_filename = model_name + "/ragdoll.bullet";
+
+		Init(player_->bind_pose(), dynamics_world_, ragdoll_filename.c_str());
+	}
+
+	is_ragdoll_simulating_ = false;
+}
+
+void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, MotionClipPlayer* Anim_player_)
+{
+	if (player_)
+	{
+		if (is_ragdoll_simulating_)
+		{
+			UpdatePoseFromRagdoll();
+			player_->UpdateBoneMatrices(pose());
+		}
+		else
+		{
+			//Should be current animation
+			//Just pass it the current pose from animation
+			set_pose(Anim_player_->pose());
+			//--------------------------
+			UpdateRagdollFromPose();
+		}
+	}
 }
 
 gef::Matrix44 btTransform2Matrix(const btTransform& transform)

@@ -4,11 +4,12 @@ ThreeDimensional_Character::ThreeDimensional_Character():
 	mesh_(NULL),
 	player_(NULL),
 	skeleton(NULL),
-	anim_(NULL),/*,
+	anim_(NULL)/*,
 	blend_tree_(NULL)*/
-	ragdoll_(NULL)
 {
 	//anim_model_ = new AnimatedModel;
+	scale = 0.01f;
+	speed_ = 0.0f;
 }
 
 
@@ -31,9 +32,6 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 
 	delete anim_;
 	anim_ = NULL;
-
-	delete ragdoll_;
-	ragdoll_ = NULL;
 }
 
 //IN CHARACTER!!!
@@ -60,7 +58,6 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 
 	// animated model is scaled down to match the size of the physics ragdoll
 	gef::Matrix44 player_transform;
-	const float scale = 0.01f;
 	player_transform.Scale(gef::Vector4(scale, scale, scale));
 	player_->set_transform(player_transform);
 
@@ -90,11 +87,14 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 
 	//--------------------------------------
 
-	speed_ = 0.0f;
 
 	char* model_file_path_ = new char[model_name.length()];
 
 	strcpy(model_file_path_, model_name.c_str());
+
+	auto pos = model_name.find('/');
+
+	model_name = model_name.substr(0,pos);
 
 	anim_model_.Model_Name_ = model_name;
 	anim_model_.Model_PathWay_ = model_file_path_;
@@ -148,57 +148,12 @@ void ThreeDimensional_Character::InitBlendTree(std::string tree_name, std::strin
 	}
 }
 
-//gef::Skeleton* ThreeDimensional_Character::GetFirstSkeleton(gef::Scene* scene)
-//{
-//	gef::Skeleton* skeleton = NULL;
-//	if (scene)
-//	{
-//		// check to see if there is a skeleton in the the scene file
-//		// if so, pull out the bind pose and create an array of matrices
-//		// that wil be used to store the bone transformations
-//		if (scene->skeletons.size() > 0)
-//			skeleton = scene->skeletons.front();
-//	}
-//
-//	return skeleton;
-//}
-
-//--------------------------------------
-
-void ThreeDimensional_Character::InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_)
+void ThreeDimensional_Character::SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_)
 {
-	if (player_->bind_pose().skeleton())
-	{
-		ragdoll_ = new Ragdoll();
-		ragdoll_->set_scale_factor(0.01f);
-
-		std::string ragdoll_filename;
-		ragdoll_filename = model_name + "/ragdoll.bullet";
-
-		ragdoll_->Init(player_->bind_pose(), dynamics_world_, ragdoll_filename.c_str());
-	}
-
-	is_ragdoll_simulating_ = false;
+	anim_->SetupAnim(dynamics_world_, anim_model_.Model_Name_, is_ragdoll_simulating, player_);
 }
 
-void ThreeDimensional_Character::UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name)
+void ThreeDimensional_Character::CallUpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name)
 {
-	if (player_ && ragdoll_)
-	{
-		if (is_ragdoll_simulating_)
-		{
-			ragdoll_->UpdatePoseFromRagdoll();
-			player_->UpdateBoneMatrices(ragdoll_->pose());
-		}
-		else
-		{
-			//Should be current animation
-			//Just pass it the current pose from animation
-			ragdoll_->set_pose(anim_model_.Anim_map.at(anim_name).Anim_player_.pose());
-			//--------------------------
-			ragdoll_->UpdateRagdollFromPose();
-		}
-	}
+	anim_->Update(is_ragdoll_simulating_, player_, &anim_model_.Anim_map.at(anim_name).Anim_player_);
 }
-
-//--------------------------------------

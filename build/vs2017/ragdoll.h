@@ -4,6 +4,9 @@
 #include "btBulletDynamicsCommon.h"
 #include "animation/skeleton.h"
 
+#include <graphics/skinned_mesh_instance.h>
+#include "motion_clip_player.h"
+
 class Ragdoll
 {
 public:
@@ -22,6 +25,11 @@ public:
 	inline float scale_factor() const { return scale_factor_;  }
 	inline std::vector<gef::Matrix44>& bone_world_matrices() { return bone_world_matrices_; }
 
+	//
+	void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_);
+	void UpdateRagdoll(bool is_ragdoll_simulating_,gef::SkinnedMeshInstance* player_,MotionClipPlayer* Anim_player_);
+	//
+
 private:
 	gef::SkeletonPose bind_pose_;
 	gef::SkeletonPose pose_;
@@ -33,7 +41,5 @@ private:
 
 gef::Matrix44 btTransform2Matrix(const btTransform& transform);
 btTransform Matrix2btTransform(const gef::Matrix44& mtx);
-
-
 
 #endif // !_RAGDOLL_H

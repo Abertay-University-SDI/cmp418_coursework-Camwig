@@ -9,6 +9,8 @@ Anim::Anim()
 {
 	WhichAnim_ = NULL;
 	ThreeD_animation_ = NULL;
+	sprite_animation_ = NULL;
+	ragdoll_ = NULL;
 }
 
 Anim::~Anim()
@@ -24,6 +26,9 @@ Anim::~Anim()
 
 	delete ThreeD_animation_;
 	ThreeD_animation_ = NULL;
+
+	delete ragdoll_;
+	ragdoll_ = NULL;
 }
 
 //void Anim::Init(std::string file, gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, int frame)
@@ -79,6 +84,12 @@ void Anim::Update(float frameTime_, BlendTree& blend_tree, gef::SkinnedMeshInsta
 	ThreeD_animation_->Update(frameTime_, blend_tree, player_, blended_pose, speed_);
 }
 
+void Anim::Update(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, MotionClipPlayer* Anim_player_)
+{
+	ragdoll_->UpdateRagdoll(is_ragdoll_simulating_, player_, Anim_player_);
+}
+
+//Do I need this?
 void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
 {
 	sprite_animation_->Render(sprite_,transform,part,Position);
@@ -152,6 +163,12 @@ void Anim::SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platfo
 {
 	ThreeD_animation_ = new ThisHereAnimation;
 	ThreeD_animation_->CallAnimationSetup(ModelMesh_, Model_scene, platform_, anim_name, skeleton_, anim_model, *player_, speed_);
+}
+
+void Anim::SetupAnim(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_)
+{
+	ragdoll_ = new Ragdoll;
+	ragdoll_->InitRagdoll(dynamics_world_, model_name, is_ragdoll_simulating_, player_);
 }
 
 //
