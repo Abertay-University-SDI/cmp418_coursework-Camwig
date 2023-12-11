@@ -124,7 +124,7 @@ void ThisHereAnimation::Update(float frameTime_, BlendTree& blend_tree,gef::Skin
 		//blend_tree_->variables[""]
 
 		//Need to fix this so it does not just do the default instead the default of the blend tree
-		blend_tree.variables["idle_anim_"] = speed_;
+		blend_tree.variables["speed"] = speed_;
 
 
 		blend_tree.Update(frameTime_);
@@ -136,26 +136,26 @@ void ThisHereAnimation::Update(float frameTime_, BlendTree& blend_tree,gef::Skin
 
 	// build a transformation matrix that will position the character
 	// use this to move the player around, scale it, etc.
-	if (&player_)
-	{
-		gef::Matrix44 player_transform;
-		gef::Matrix44 player_scale;
-		gef::Matrix44 player_rotate;
-		gef::Matrix44 player_translate;
+	//if (&player_)
+	//{
+	//	gef::Matrix44 player_transform;
+	//	gef::Matrix44 player_scale;
+	//	gef::Matrix44 player_rotate;
+	//	gef::Matrix44 player_translate;
 
-		player_transform.SetIdentity();
-		player_scale.SetIdentity();
-		player_rotate.SetIdentity();
-		player_translate.SetIdentity();
+	//	player_transform.SetIdentity();
+	//	player_scale.SetIdentity();
+	//	player_rotate.SetIdentity();
+	//	player_translate.SetIdentity();
 
-		player_scale.Scale(gef::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-		player_rotate.RotationY(gef::DegToRad(45.0f));
-		player_translate.SetTranslation(gef::Vector4(25.0f, -25.0f, -100.0f, 1.0f));
+	//	player_scale.Scale(gef::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+	//	player_rotate.RotationY(gef::DegToRad(45.0f));
+	//	player_translate.SetTranslation(gef::Vector4(25.0f, -25.0f, -100.0f, 1.0f));
 
-		player_transform = player_scale * player_rotate * player_translate;
+	//	player_transform = player_scale * player_rotate * player_translate;
 
-		player_.set_transform(player_transform);
-	}
+	//	player_.set_transform(player_transform);
+	//}
 }
 
 //IN CHARACTER!!!

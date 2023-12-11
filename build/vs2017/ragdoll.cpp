@@ -225,7 +225,7 @@ void Ragdoll::InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string 
 	is_ragdoll_simulating_ = false;
 }
 
-void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, MotionClipPlayer* Anim_player_)
+void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, gef::SkeletonPose* curr_pose)
 {
 	if (player_)
 	{
@@ -238,7 +238,7 @@ void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstanc
 		{
 			//Should be current animation
 			//Just pass it the current pose from animation
-			set_pose(Anim_player_->pose());
+			set_pose(*curr_pose);
 			//--------------------------
 			UpdateRagdollFromPose();
 		}

@@ -724,7 +724,7 @@ void SceneApp::Init()
 
 	std::string this_s = "xbot";
 
-	std::string model_scene_name = this_s + "/" + this_s + ".scn";
+	//std::string model_scene_name = this_s + "/" + this_s + ".scn";
 
 	model_mesh_ = new ModelMesh;
 
@@ -737,9 +737,13 @@ void SceneApp::Init()
 
 	character_ = new ThreeDimensional_Character();
 
-	character_->Setup(model_mesh_, model_scene_, &platform_, model_scene_name);
+	character_->Setup(model_mesh_, model_scene_, &platform_, this_s);
 
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
+	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad);
+
+	character_->AddBlendTree(tree_name_);
+	character_->InitBlendTree(tree_name_,AnimToLoad,AnimToLoad3);
 
 	//Can be in 3D Character!------------------------------------
 
@@ -893,17 +897,65 @@ bool SceneApp::Update(float frame_time)
 			{
 				is_ragdoll_simulating_ = !is_ragdoll_simulating_;
 			}
+
+			float multiplier = 1.f;
+
+			if (keyboard->IsKeyDown(keyboard->KC_LSHIFT)) {
+				multiplier = 5.f;
+			}
+
+			if (keyboard->IsKeyDown(keyboard->KC_W)) {
+				character_->speed_ = (character_->speed_ >= character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
+			}
+
+			if (keyboard->IsKeyDown(keyboard->KC_S)) {
+				character_->speed_ = (character_->speed_ <= 0) ? 0 : character_->speed_ - 0.02f * multiplier;
+			}
 		}
 	}
+
+	//	if (input_manager_)
+//	{
+//		input_manager_->Update();
+//
+//		// controller input
+//		gef::SonyControllerInputManager* controller_manager = input_manager_->controller_input();
+//		if (controller_manager)
+//		{
+//		}
+//
+//		// keyboard input
+//		gef::Keyboard* keyboard = input_manager_->keyboard();
+//		if (keyboard)
+//		{
+//			float multiplier = 1.f;
+//
+//			if (keyboard->IsKeyDown(keyboard->KC_LSHIFT)) {
+//				multiplier = 5.f;
+//			}
+//
+//			if (keyboard->IsKeyDown(keyboard->KC_W)) {
+//				character_->speed_ = (character_->speed_ >= character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
+//			}
+//
+//			if (keyboard->IsKeyDown(keyboard->KC_S)) {
+//				character_->speed_ = (character_->speed_ <= 0) ? 0 : character_->speed_ - 0.02f * multiplier;
+//			}
+//		}
+//	}
 
 	//Can be in 3D Character!------------------------------------
 
 	// update the current animation that is playing
 	if (character_->player_)
 	{
-		character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.Update(frame_time, character_->player_->bind_pose());
-		character_->player_->UpdateBoneMatrices(character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.pose());
+		character_->NewUpdate(frame_time, tree_name_);
+		character_->UpdateCurrentPoseBoneMatrices_();
+		//Need to give this the current pose from the blend tree
+		//character_->player_->UpdateBoneMatrices(character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.pose());
 	}
+
+	//character_->NewUpdate(frame_time, tree_name_);
 
 	//This is the only one that might be a problem
 	UpdatePhysicsWorld(frame_time);
@@ -912,7 +964,7 @@ bool SceneApp::Update(float frame_time)
 	UpdateRigidBodies();
 
 	//character_->UpdateRagdoll(is_ragdoll_simulating_,AnimToLoad3);
-	character_->CallUpdateRagdoll(is_ragdoll_simulating_, AnimToLoad3);
+	character_->CallUpdateRagdoll(is_ragdoll_simulating_);
 
 	//if (player_ && ragdoll_)
 	//{

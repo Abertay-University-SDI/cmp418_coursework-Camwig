@@ -39,10 +39,12 @@ public:
 	//
 
 	void SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_);
-	void CallUpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
+	void CallUpdateRagdoll(bool is_ragdoll_simulating_);
 
 	//gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 	void AddBlendTree(std::string tree_name);
+
+	void UpdateCurrentPoseBoneMatrices_();
 
 	class gef::Mesh* mesh_;
 
@@ -69,7 +71,9 @@ public:
 
 	//Temporary for testing
 	//Ragdoll* ragdoll_;
-//private:
-//	//gef::Animation* curr_anim;
+private:
+	gef::SkeletonPose* curr_pose;
+	gef::Animation* curr_anim;
+	std::string model_name_;
 };
 

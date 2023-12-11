@@ -37,6 +37,9 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 //IN CHARACTER!!!
 void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name)
 {
+	model_name_ = model_name;
+	std::string model_scene_name = model_name + "/" + model_name + ".scn";
+
 	anim_ = new Anim;
 
 	//blend_tree_ = new BlendTree;
@@ -88,15 +91,13 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 	//--------------------------------------
 
 
-	char* model_file_path_ = new char[model_name.length()];
+	char* model_file_path_ = new char[model_scene_name.length()];
 
-	strcpy(model_file_path_, model_name.c_str());
+	strcpy(model_file_path_, model_scene_name.c_str());
 
-	auto pos = model_name.find('/');
+	//model_name = model_name.substr(0,pos);
 
-	model_name = model_name.substr(0,pos);
-
-	anim_model_.Model_Name_ = model_name;
+	anim_model_.Model_Name_ = model_name_;
 	anim_model_.Model_PathWay_ = model_file_path_;
 
 	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);
@@ -110,6 +111,7 @@ void ThreeDimensional_Character::Init(ModelMesh* ModelMesh_, gef::Scene* Model_s
 void ThreeDimensional_Character::NewUpdate(float frametime, std::string tree_name)
 {
 	anim_->Update(frametime,Map_o_blendtrees_.at(tree_name),*player_,blended_pose,speed_);
+	curr_pose = &Map_o_blendtrees_.at(tree_name).output_.OutputPose_;
 }
 
 void ThreeDimensional_Character::AddBlendTree(std::string tree_name)
@@ -137,7 +139,8 @@ void ThreeDimensional_Character::InitBlendTree(std::string tree_name, std::strin
 
 		Linear2Blend* l2b = new Linear2Blend(&Map_o_blendtrees_.at(tree_name));
 		//Need to rename
-		l2b->SetVariable(0, "idle_anim_");
+		l2b->SetVariable(0, "speed");
+		Map_o_blendtrees_.at(tree_name).variables["speed"] = speed_;
 
 		l2b->SetInput(0, clip_1);
 		l2b->SetInput(1, clip_2);
@@ -148,12 +151,17 @@ void ThreeDimensional_Character::InitBlendTree(std::string tree_name, std::strin
 	}
 }
 
+void ThreeDimensional_Character::UpdateCurrentPoseBoneMatrices_()
+{
+	player_->UpdateBoneMatrices(*curr_pose);
+}
+
 void ThreeDimensional_Character::SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_)
 {
 	anim_->SetupAnim(dynamics_world_, anim_model_.Model_Name_, is_ragdoll_simulating, player_);
 }
 
-void ThreeDimensional_Character::CallUpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name)
+void ThreeDimensional_Character::CallUpdateRagdoll(bool is_ragdoll_simulating_)
 {
-	anim_->Update(is_ragdoll_simulating_, player_, &anim_model_.Anim_map.at(anim_name).Anim_player_);
+	anim_->Update(is_ragdoll_simulating_, player_, curr_pose);
 }

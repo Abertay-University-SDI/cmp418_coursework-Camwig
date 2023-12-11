@@ -27,7 +27,7 @@ public:
 
 	//
 	void InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_);
-	void UpdateRagdoll(bool is_ragdoll_simulating_,gef::SkinnedMeshInstance* player_,MotionClipPlayer* Anim_player_);
+	void UpdateRagdoll(bool is_ragdoll_simulating_,gef::SkinnedMeshInstance* player_,gef::SkeletonPose* curr_pose);
 	//
 
 private:
