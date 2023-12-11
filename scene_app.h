@@ -281,7 +281,6 @@ public:
 	//gef::Mesh* GetFirstMesh(gef::Scene* scene);
 
 	void CleanUp();
-	void CleanUpRagdoll();
 	bool Update(float frame_time);
 	void Render();
 private:
@@ -312,8 +311,8 @@ private:
 	int frame;
 	int frame2;
 
-	class gef::Mesh* mesh_;
-	gef::SkinnedMeshInstance* player_;
+	//class gef::Mesh* mesh_;
+	//gef::SkinnedMeshInstance* player_;
 
 	gef::Scene* model_scene_;
 
@@ -324,11 +323,11 @@ private:
 	float near_plane_;
 	float far_plane_;
 
-	gef::Animation* idle_anim_;
-	gef::Animation* walk_anim_;
-	gef::Animation* run_anim_;
+	//gef::Animation* idle_anim_;
+	//gef::Animation* walk_anim_;
+	//gef::Animation* run_anim_;
 
-	MotionClipPlayer clip_player_;
+	//MotionClipPlayer clip_player_;
 
 	PrimitiveBuilder* primitive_builder_;
 	PrimitiveRenderer* primitive_renderer_;

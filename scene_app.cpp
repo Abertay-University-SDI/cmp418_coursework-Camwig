@@ -689,11 +689,8 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	font_(NULL),
-	mesh_(NULL),
-	player_(NULL),
 	renderer_3d_(NULL),
 	model_scene_(NULL),
-	walk_anim_(NULL),
 	primitive_builder_(NULL),
 	primitive_renderer_(NULL),
 	dynamics_world_(NULL),
@@ -704,7 +701,9 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	floor_mesh_(NULL),
 	sphere_mesh_(NULL),
 	sphere_rb_(NULL),
-	character_(NULL)
+	character_(NULL),
+	Sprite_character_(NULL),
+	Sprite_character_2_(NULL)
 {
 }
 
@@ -728,8 +727,7 @@ void SceneApp::Init()
 	frame = 0;
 	frame2 = 0;
 
-	std::string this_s = "xbot";
-
+	this_s = "xbot";
 	sprite_name_2_ = "boy-attack";	
 	sprite_name_ = "Dragon";
 
@@ -762,7 +760,6 @@ void SceneApp::Init()
 	character_ = new ThreeDimensional_Character();
 
 	character_->Setup(model_mesh_, model_scene_, &platform_, this_s);
-
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
 	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad);
 
@@ -851,32 +848,17 @@ void SceneApp::Init()
 
 void SceneApp::CleanUp()
 {
-	CleanUpRagdoll();
-
 	CleanUpRigidBodies();
 
 	CleanUpPhysicsWorld();
+
+	CleanUpFont();
 
 	delete primitive_renderer_;
 	primitive_renderer_ = NULL;
 
 	delete primitive_builder_;
 	primitive_builder_ = NULL;
-
-	CleanUpFont();
-
-	delete player_;
-	player_ = NULL;
-
-
-	delete idle_anim_;
-	idle_anim_ = NULL;
-
-	delete walk_anim_;
-	walk_anim_ = NULL;
-
-	delete mesh_;
-	mesh_ = NULL;
 
 	delete model_scene_;
 	model_scene_ = NULL;
@@ -889,17 +871,22 @@ void SceneApp::CleanUp()
 
 	delete renderer_3d_;
 	renderer_3d_ = NULL;
-}
 
-void SceneApp::CleanUpRagdoll()
-{
 	delete character_;
 	character_ = NULL;
+
+	delete Sprite_character_;
+	Sprite_character_ = NULL;
+
+	delete Sprite_character_2_;
+	Sprite_character_2_ = NULL;
 }
 
 bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
+
+	//----------------------------------Should be in 2D Character------------------------------------
 
 	animation_timer_ += frame_time;
 	animation_timer_2 += frame_time;
@@ -930,6 +917,8 @@ bool SceneApp::Update(float frame_time)
 
 	Sprite_character_->Update(std::string(sprite_name_), frame);
 	Sprite_character_2_->Update(std::string(sprite_name_2_), frame2);
+
+	//----------------------------------Should be in 2D Character------------------------------------
 
 	// read input devices
 	if (input_manager_)
@@ -1069,6 +1058,8 @@ void SceneApp::Render()
 	// setup the sprite renderer, but don't clear the frame buffer
 	// draw 2D sprites here
 	sprite_renderer_->Begin(false);
+
+	//----------------------------------Should be in 2D Character------------------------------------
 	if (Sprite_character_->Type == "Sheet")
 	{
 		for (auto part : Sprite_character_->bone_parts)
@@ -1110,6 +1101,7 @@ void SceneApp::Render()
 			sprite_renderer_->DrawSprite(*Sprite_character_2_->Render(sprite_name_2_, part2), *Sprite_character_2_->Transform);
 		}
 	}
+	//----------------------------------Should be in 2D Character------------------------------------
 
 	DrawHUD();
 	sprite_renderer_->End();

@@ -32,6 +32,10 @@ void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, 
 
 	sprite_ = new gef::Sprite();
 
+	//Dont think this is needed
+	//sprite_->set_width(/*256.0f*/size_.x);
+	//sprite_->set_height(/*512.0f*/size_.y);
+
 	Position.x = position_.x/*platform_->width() * 0.5f*/;
 	Position.y = position_.y/*platform_->height() * 0.5f*/;
 
@@ -41,9 +45,6 @@ void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, 
 	sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
 
 	sprite_->set_texture(sprite_texture_);
-
-	sprite_->set_width(/*256.0f*/size_.x);
-	sprite_->set_height(/*512.0f*/size_.y);
 
 	Sprite_anim* new_sheet;
 	new_sheet = new Sprite_anim();
