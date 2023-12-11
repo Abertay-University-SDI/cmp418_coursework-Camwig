@@ -722,7 +722,20 @@ void SceneApp::Init()
 	// no meshes or materials are created yet
 	// we're not making any assumptions about what the data may be loaded in for
 
+	animation_timer_ = 0;
+
+	frame = 0;
+
 	std::string this_s = "xbot";
+
+	//sprite_name_ = "boy-attack";	
+	sprite_name_ = "Dragon";
+
+	Sprite_character_ = new Character();
+	Sprite_character_->SetWhichAnimation("walk");
+	Sprite_character_->LoadCharacter(sprite_name_, &platform_);
+	Sprite_character_->SetAnimation(sprite_name_, &platform_);
+	Sprite_character_->Update(sprite_name_, 0);
 
 	//std::string model_scene_name = this_s + "/" + this_s + ".scn";
 
@@ -877,6 +890,21 @@ bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
+	animation_timer_ += frame_time;
+
+	if (animation_timer_ >= (1.f / /*anim->FrameRate*/Sprite_character_->animations.at(sprite_name_)->FrameRate))
+	{
+		frame++;
+		animation_timer_ = 0;
+	}
+
+	//Also need to set this to the animation duration
+	if (frame >= /*anim->Duration*/Sprite_character_->animations.at(sprite_name_)->Duration)
+	{
+		frame = 0;
+	}
+
+	Sprite_character_->Update(std::string(sprite_name_), frame);
 
 	// read input devices
 	if (input_manager_)
@@ -1016,6 +1044,27 @@ void SceneApp::Render()
 	// setup the sprite renderer, but don't clear the frame buffer
 	// draw 2D sprites here
 	sprite_renderer_->Begin(false);
+	if (Sprite_character_->Type == "Sheet")
+	{
+		for (auto part : Sprite_character_->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Sprite_character_->Render(sprite_name_, part));
+		}
+	}
+	else
+	{
+		for (auto part : Sprite_character_->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Sprite_character_->Render(sprite_name_, part), *Sprite_character_->Transform);
+		}
+	}
+
 	DrawHUD();
 	sprite_renderer_->End();
 }

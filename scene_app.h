@@ -248,6 +248,7 @@
 #include "gef_debug_drawer.h"
 
 #include "ThreeDimensional_Character.h"
+#include "Character.h"
 
 #include "btBulletDynamicsCommon.h"
 //#include "ragdoll.h"
@@ -289,7 +290,7 @@ private:
 	void DrawHUD();
 	void SetupLights();
 	void SetupCamera();
-	gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name);
+	//gef::Animation* LoadAnimation(const char* anim_scene_filename, const char* anim_name);
 
 	void InitPhysicsWorld();
 	void CleanUpPhysicsWorld();
@@ -305,6 +306,9 @@ private:
 	gef::Font* font_;
 
 	float fps_;
+
+	float animation_timer_;
+	int frame;
 
 	class gef::Mesh* mesh_;
 	gef::SkinnedMeshInstance* player_;
@@ -348,6 +352,11 @@ private:
 	ThreeDimensional_Character* character_;
 
 	ModelMesh* model_mesh_;
+
+	Character* Sprite_character_;
+
+	std::string this_s;
+	std::string sprite_name_;
 
 	const char* AnimToLoad3 = "xbot/xbot@idle.scn";
 	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";
