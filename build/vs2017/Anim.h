@@ -39,7 +39,7 @@ public:
 	//void Setup_2D_anim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string);
 	//void SetupAnimSheet2D(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document);
 
-	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string& type_,std::string* WhichAnim);
+	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string& type_,std::string* WhichAnim,float scale_);
 	/*ModelMesh *,                        gef::Scene *,            gef::Platform *,          std::string,           gef::Skeleton,            AnimatedModel, gef::SkinnedMeshInstance, float)*/
 	void SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model, float speed_);
 	void SetupAnim(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_);

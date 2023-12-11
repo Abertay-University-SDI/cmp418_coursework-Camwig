@@ -19,7 +19,7 @@ public:
 	Character();
 	~Character();
 
-	void LoadCharacter(std::string,gef::Platform*);
+	void LoadCharacter(std::string,gef::Platform*,gef::Vector2 position_,gef::Vector2 size_,float scale_);
 
 	void Update(std::string tex_string, int frame);
 
@@ -46,6 +46,7 @@ private:
 	gef::Texture* sprite_texture_;
 
 	gef::Vector2 Position;
+	float Scale;
 	rapidjson::Document rapidjson_doc_tex;
 	rapidjson::Document rapidjson_doc_ske;
 };

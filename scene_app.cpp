@@ -723,19 +723,30 @@ void SceneApp::Init()
 	// we're not making any assumptions about what the data may be loaded in for
 
 	animation_timer_ = 0;
+	animation_timer_2 = 0;
 
 	frame = 0;
+	frame2 = 0;
 
 	std::string this_s = "xbot";
 
-	//sprite_name_ = "boy-attack";	
+	sprite_name_2_ = "boy-attack";	
 	sprite_name_ = "Dragon";
 
 	Sprite_character_ = new Character();
 	Sprite_character_->SetWhichAnimation("walk");
-	Sprite_character_->LoadCharacter(sprite_name_, &platform_);
+	gef::Vector2 size = gef::Vector2(256.0f, 512.0f);
+	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
+	Sprite_character_->LoadCharacter(sprite_name_, &platform_, size,pos,0.40f);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 	Sprite_character_->Update(sprite_name_, 0);
+
+	Sprite_character_2_ = new Character();
+	size = gef::Vector2(256.0f, 512.0f);
+	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
+	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, size, pos, 0.40f);
+	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
+	Sprite_character_2_->Update(sprite_name_2_, 0);
 
 	//std::string model_scene_name = this_s + "/" + this_s + ".scn";
 
@@ -891,6 +902,7 @@ bool SceneApp::Update(float frame_time)
 	fps_ = 1.0f / frame_time;
 
 	animation_timer_ += frame_time;
+	animation_timer_2 += frame_time;
 
 	if (animation_timer_ >= (1.f / /*anim->FrameRate*/Sprite_character_->animations.at(sprite_name_)->FrameRate))
 	{
@@ -904,7 +916,20 @@ bool SceneApp::Update(float frame_time)
 		frame = 0;
 	}
 
+	if (animation_timer_2 >= (1.f / /*anim->FrameRate*/Sprite_character_2_->animations.at(sprite_name_2_)->FrameRate))
+	{
+		frame2++;
+		animation_timer_2 = 0;
+	}
+
+	//Also need to set this to the animation duration
+	if (frame2 >= /*anim->Duration*/Sprite_character_2_->animations.at(sprite_name_2_)->Duration)
+	{
+		frame2 = 0;
+	}
+
 	Sprite_character_->Update(std::string(sprite_name_), frame);
+	Sprite_character_2_->Update(std::string(sprite_name_2_), frame2);
 
 	// read input devices
 	if (input_manager_)
@@ -1062,6 +1087,27 @@ void SceneApp::Render()
 			// 
 			//something is up with the transform
 			sprite_renderer_->DrawSprite(*Sprite_character_->Render(sprite_name_, part), *Sprite_character_->Transform);
+		}
+	}
+
+	if (Sprite_character_2_->Type == "Sheet")
+	{
+		for (auto part2 : Sprite_character_2_->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Sprite_character_2_->Render(sprite_name_2_, part2));
+		}
+	}
+	else
+	{
+		for (auto part2 : Sprite_character_2_->bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Sprite_character_2_->Render(sprite_name_2_, part2), *Sprite_character_2_->Transform);
 		}
 	}
 

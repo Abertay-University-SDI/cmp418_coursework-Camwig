@@ -274,11 +274,11 @@ public:
 	SceneApp(gef::Platform& platform);
 	void Init();
 
-	void InitRagdoll();
+	//void InitRagdoll();
 
-	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
+	//gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 
-	gef::Mesh* GetFirstMesh(gef::Scene* scene);
+	//gef::Mesh* GetFirstMesh(gef::Scene* scene);
 
 	void CleanUp();
 	void CleanUpRagdoll();
@@ -308,7 +308,9 @@ private:
 	float fps_;
 
 	float animation_timer_;
+	float animation_timer_2;
 	int frame;
+	int frame2;
 
 	class gef::Mesh* mesh_;
 	gef::SkinnedMeshInstance* player_;
@@ -354,9 +356,11 @@ private:
 	ModelMesh* model_mesh_;
 
 	Character* Sprite_character_;
+	Character* Sprite_character_2_;
 
 	std::string this_s;
 	std::string sprite_name_;
+	std::string sprite_name_2_;
 
 	const char* AnimToLoad3 = "xbot/xbot@idle.scn";
 	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";

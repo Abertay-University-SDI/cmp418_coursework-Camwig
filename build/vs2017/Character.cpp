@@ -27,22 +27,23 @@ Character::~Character()
 	WhichAnim_ = NULL;
 }
 
-void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_)
+void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, gef::Vector2 size_, gef::Vector2 position_, float scale_)
 {
 
 	sprite_ = new gef::Sprite();
 
-	sprite_->set_width(256.0f);
-	sprite_->set_height(512.0f);
-
-	Position.x = platform_->width() * 0.5f;
-	Position.y = platform_->height() * 0.5f;
+	Position.x = position_.x/*platform_->width() * 0.5f*/;
+	Position.y = position_.y/*platform_->height() * 0.5f*/;
 
 	std::string tex_string_temp = tex_string + "_tex.png";
+	Scale = scale_;
 
 	sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
 
 	sprite_->set_texture(sprite_texture_);
+
+	sprite_->set_width(/*256.0f*/size_.x);
+	sprite_->set_height(/*512.0f*/size_.y);
 
 	Sprite_anim* new_sheet;
 	new_sheet = new Sprite_anim();
@@ -58,7 +59,7 @@ void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 	Anim* new_animantion;
 	new_animantion = new Anim();
 
-	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Position, bone_parts, Type, WhichAnim_);
+	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Position, bone_parts, Type, WhichAnim_,Scale);
 
 	if (new_animantion->WhichAnim_ != NULL)
 	{

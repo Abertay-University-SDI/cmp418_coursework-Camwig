@@ -111,7 +111,7 @@ void Anim::Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string pa
 //	sprite_ = sprite_animation_->SetupAnimation(platform_,sprite_,tex_string,tex_document,ske_document);
 //}
 
-void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_, std::string* WhichAnim1)
+void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_, std::string* WhichAnim1, float scale_)
 {
 	if (WhichAnim1 != NULL)
 	{
@@ -150,7 +150,7 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		sprite_animation_ = new_sheet;
 		//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
 		type_ = test_string;
-		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document,Position,bone_parts,WhichAnim_);
+		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document,Position,bone_parts,WhichAnim_,scale_);
 	}
 	else if (test_string.find("Armature") != std::string::npos)
 	{
@@ -160,7 +160,7 @@ void Anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string
 		//sprite_animation_->Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
 
 		type_ = test_string;
-		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_);
+		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_,scale_);
 	}
 }
 
