@@ -949,7 +949,8 @@ bool SceneApp::Update(float frame_time)
 	// update the current animation that is playing
 	if (character_->player_)
 	{
-		character_->NewUpdate(frame_time, tree_name_);
+		character_->TreeUpdate(frame_time, tree_name_);
+		//character_->AnimUpdate(frame_time,AnimToLoad);
 		character_->UpdateCurrentPoseBoneMatrices_();
 		//Need to give this the current pose from the blend tree
 		//character_->player_->UpdateBoneMatrices(character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.pose());

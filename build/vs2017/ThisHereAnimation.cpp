@@ -115,6 +115,11 @@ void ThisHereAnimation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Mo
 	SetAnimation(ModelMesh_, Model_scene, platform_, anim_name, anim_name, skeleton_, &player_,anim_model,speed_);
 }
 
+void ThisHereAnimation::Update(float frameTime_, gef::SkinnedMeshInstance& player_, AnimatedModel_new& anim_model,std::string anim_name)
+{
+	anim_model.Anim_map.at(anim_name).Anim_player_.Update(frameTime_, player_.bind_pose());
+}
+
 
 void ThisHereAnimation::Update(float frameTime_, BlendTree& blend_tree,gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_)
 {

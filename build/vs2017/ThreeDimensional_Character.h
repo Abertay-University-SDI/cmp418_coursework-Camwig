@@ -30,7 +30,8 @@ public:
 	void InitBlendTree(std::string tree_name,std::string Anim1_name_, std::string Anim2_name_);
 
 	void Init(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
-	void NewUpdate(float frametime, std::string tree_name);
+	void TreeUpdate(float frametime, std::string tree_name);
+	void AnimUpdate(float frametime, std::string anim_name);
 
 	//Ragdoll stuff to make sure I know what to move
 	//
@@ -52,8 +53,6 @@ public:
 
 	AnimatedModel_new anim_model_;
 
-	gef::SkeletonPose blended_pose;
-
 	gef::Skeleton* skeleton;
 
 	std::map<std::string, BlendTree> Map_o_blendtrees_;
@@ -72,7 +71,8 @@ public:
 	//Temporary for testing
 	//Ragdoll* ragdoll_;
 private:
-	gef::SkeletonPose* curr_pose;
+	gef::SkeletonPose blended_pose;
+	const gef::SkeletonPose* curr_pose;
 	gef::Animation* curr_anim;
 	std::string model_name_;
 };

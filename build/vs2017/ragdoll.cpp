@@ -225,7 +225,7 @@ void Ragdoll::InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string 
 	is_ragdoll_simulating_ = false;
 }
 
-void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, gef::SkeletonPose* curr_pose)
+void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, const gef::SkeletonPose* curr_pose)
 {
 	if (player_)
 	{

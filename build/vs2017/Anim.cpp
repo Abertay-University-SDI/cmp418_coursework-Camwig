@@ -84,7 +84,12 @@ void Anim::Update(float frameTime_, BlendTree& blend_tree, gef::SkinnedMeshInsta
 	ThreeD_animation_->Update(frameTime_, blend_tree, player_, blended_pose, speed_);
 }
 
-void Anim::Update(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, gef::SkeletonPose* curr_pose)
+void Anim::Update(float frameTime_, gef::SkinnedMeshInstance& player_, AnimatedModel_new& anim_model, std::string anim_name)
+{
+	ThreeD_animation_->Update(frameTime_, player_, anim_model, anim_name);
+}
+
+void Anim::Update(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, const gef::SkeletonPose* curr_pose)
 {
 	ragdoll_->UpdateRagdoll(is_ragdoll_simulating_, player_, curr_pose);
 }

@@ -56,6 +56,7 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 	{
 		player_ = new gef::SkinnedMeshInstance(*skeleton);
 		blended_pose = player_->bind_pose();
+		curr_pose = &player_->bind_pose();
 		player_->set_mesh(mesh_);
 	}
 
@@ -108,10 +109,16 @@ void ThreeDimensional_Character::Init(ModelMesh* ModelMesh_, gef::Scene* Model_s
 	anim_->SetupAnim(ModelMesh_, Model_scene, platform_,anim_name,*skeleton,player_,anim_model_, speed_);
 }
 
-void ThreeDimensional_Character::NewUpdate(float frametime, std::string tree_name)
+void ThreeDimensional_Character::TreeUpdate(float frametime, std::string tree_name)
 {
 	anim_->Update(frametime,Map_o_blendtrees_.at(tree_name),*player_,blended_pose,speed_);
-	curr_pose = &Map_o_blendtrees_.at(tree_name).output_.OutputPose_;
+	curr_pose = &blended_pose;
+}
+
+void ThreeDimensional_Character::AnimUpdate(float frametime, std::string anim_name)
+{
+	anim_->Update(frametime,*player_,anim_model_,anim_name);
+	curr_pose = &anim_model_.Anim_map.at(anim_name).Anim_player_.pose();
 }
 
 void ThreeDimensional_Character::AddBlendTree(std::string tree_name)
