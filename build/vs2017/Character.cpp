@@ -29,7 +29,8 @@ Character::~Character()
 
 void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, gef::Vector2 size_, gef::Vector2 position_, float scale_)
 {
-
+	animation_timer_ = 0;
+	frame = 0;
 	sprite_ = new gef::Sprite();
 
 	//Dont think this is needed
@@ -83,6 +84,49 @@ void Character::SetWhichAnimation(std::string tex_string)
 void Character::Update(std::string tex_string, int frame)
 {
 	animations.at(tex_string)->Update(frame, sprite_,Position, Transforms_for_bone_);
+}
+
+void Character::UpdateAnimation(float frame_time, std::string sprite_name_)
+{
+	animation_timer_ += frame_time;
+
+	if (animation_timer_ >= (1.f / /*anim->FrameRate*/animations.at(sprite_name_)->FrameRate))
+	{
+		frame++;
+		animation_timer_ = 0;
+	}
+
+	//Also need to set this to the animation duration
+	if (frame >= /*anim->Duration*/animations.at(sprite_name_)->Duration)
+	{
+		frame = 0;
+	}
+
+	Update(sprite_name_, frame);
+}
+
+void Character::RenderAnimation(std::string sprite_name_,gef::SpriteRenderer* sprite_renderer_)
+{
+	if (Type == "Sheet")
+	{
+		for (auto part : bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Render(sprite_name_, part));
+		}
+	}
+	else
+	{
+		for (auto part : bone_parts)
+		{
+			//std::string str = "tailTip";
+			// 
+			//something is up with the transform
+			sprite_renderer_->DrawSprite(*Render(sprite_name_, part), *Transform);
+		}
+	}
 }
 
 gef::Sprite* Character::Render(std::string tex_string, std::string part)

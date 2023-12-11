@@ -721,12 +721,6 @@ void SceneApp::Init()
 	// no meshes or materials are created yet
 	// we're not making any assumptions about what the data may be loaded in for
 
-	animation_timer_ = 0;
-	animation_timer_2 = 0;
-
-	frame = 0;
-	frame2 = 0;
-
 	this_s = "xbot";
 	sprite_name_2_ = "boy-attack";	
 	sprite_name_ = "Dragon";
@@ -886,40 +880,6 @@ bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
-	//----------------------------------Should be in 2D Character------------------------------------
-
-	animation_timer_ += frame_time;
-	animation_timer_2 += frame_time;
-
-	if (animation_timer_ >= (1.f / /*anim->FrameRate*/Sprite_character_->animations.at(sprite_name_)->FrameRate))
-	{
-		frame++;
-		animation_timer_ = 0;
-	}
-
-	//Also need to set this to the animation duration
-	if (frame >= /*anim->Duration*/Sprite_character_->animations.at(sprite_name_)->Duration)
-	{
-		frame = 0;
-	}
-
-	if (animation_timer_2 >= (1.f / /*anim->FrameRate*/Sprite_character_2_->animations.at(sprite_name_2_)->FrameRate))
-	{
-		frame2++;
-		animation_timer_2 = 0;
-	}
-
-	//Also need to set this to the animation duration
-	if (frame2 >= /*anim->Duration*/Sprite_character_2_->animations.at(sprite_name_2_)->Duration)
-	{
-		frame2 = 0;
-	}
-
-	Sprite_character_->Update(std::string(sprite_name_), frame);
-	Sprite_character_2_->Update(std::string(sprite_name_2_), frame2);
-
-	//----------------------------------Should be in 2D Character------------------------------------
-
 	// read input devices
 	if (input_manager_)
 	{
@@ -955,6 +915,9 @@ bool SceneApp::Update(float frame_time)
 			}
 		}
 	}
+
+	Sprite_character_->UpdateAnimation(frame_time, sprite_name_);
+	Sprite_character_2_->UpdateAnimation(frame_time, sprite_name_2_);
 
 	//	if (input_manager_)
 //	{
@@ -1059,49 +1022,8 @@ void SceneApp::Render()
 	// draw 2D sprites here
 	sprite_renderer_->Begin(false);
 
-	//----------------------------------Should be in 2D Character------------------------------------
-	if (Sprite_character_->Type == "Sheet")
-	{
-		for (auto part : Sprite_character_->bone_parts)
-		{
-			//std::string str = "tailTip";
-			// 
-			//something is up with the transform
-			sprite_renderer_->DrawSprite(*Sprite_character_->Render(sprite_name_, part));
-		}
-	}
-	else
-	{
-		for (auto part : Sprite_character_->bone_parts)
-		{
-			//std::string str = "tailTip";
-			// 
-			//something is up with the transform
-			sprite_renderer_->DrawSprite(*Sprite_character_->Render(sprite_name_, part), *Sprite_character_->Transform);
-		}
-	}
-
-	if (Sprite_character_2_->Type == "Sheet")
-	{
-		for (auto part2 : Sprite_character_2_->bone_parts)
-		{
-			//std::string str = "tailTip";
-			// 
-			//something is up with the transform
-			sprite_renderer_->DrawSprite(*Sprite_character_2_->Render(sprite_name_2_, part2));
-		}
-	}
-	else
-	{
-		for (auto part2 : Sprite_character_2_->bone_parts)
-		{
-			//std::string str = "tailTip";
-			// 
-			//something is up with the transform
-			sprite_renderer_->DrawSprite(*Sprite_character_2_->Render(sprite_name_2_, part2), *Sprite_character_2_->Transform);
-		}
-	}
-	//----------------------------------Should be in 2D Character------------------------------------
+	Sprite_character_->RenderAnimation(sprite_name_,sprite_renderer_);
+	Sprite_character_2_->RenderAnimation(sprite_name_2_, sprite_renderer_);
 
 	DrawHUD();
 	sprite_renderer_->End();

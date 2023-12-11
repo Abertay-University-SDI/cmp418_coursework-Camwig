@@ -2,6 +2,7 @@
 
 #include "Anim.h"
 #include <maths/vector2.h>
+#include <graphics/sprite_renderer.h>
 
 //enum Type
 //{
@@ -9,6 +10,11 @@
 //	Skeletal = 1
 //};
 
+
+namespace gef
+{
+	class SpriteRenderer;
+}
 
 class Character
 {
@@ -24,10 +30,14 @@ public:
 	void Update(std::string tex_string, int frame);
 
 	gef::Sprite* Render(std::string tex_string,std::string part);
+	void RenderAnimation(std::string sprite_name_, gef::SpriteRenderer* sprite_renderer_);
 
 	void SetWhichAnimation(std::string tex_string);
 
 	void SetAnimation(std::string& tex_string, gef::Platform* platform_);
+
+	void UpdateAnimation(float frame_time, std::string sprite_name_);
+
 
 	std::map<std::string, Anim*> animations;
 
@@ -49,5 +59,8 @@ private:
 	float Scale;
 	rapidjson::Document rapidjson_doc_tex;
 	rapidjson::Document rapidjson_doc_ske;
+
+	int frame;
+	float animation_timer_;
 };
 

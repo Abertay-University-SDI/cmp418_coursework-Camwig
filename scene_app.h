@@ -306,11 +306,6 @@ private:
 
 	float fps_;
 
-	float animation_timer_;
-	float animation_timer_2;
-	int frame;
-	int frame2;
-
 	//class gef::Mesh* mesh_;
 	//gef::SkinnedMeshInstance* player_;
 
