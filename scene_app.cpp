@@ -762,8 +762,12 @@ void SceneApp::Init()
 	//model_scene_->CreateMaterials(platform_);
 
 	character_ = new ThreeDimensional_Character();
+
 	int skel_num = 0;
-	character_->Setup(*model_scene_, &platform_, this_s, skel_num);
+	gef::Vector4 Rot = gef::Vector4(0.0f,45.0f,0.0f,0.0f);
+	gef::Vector4 New_pos = gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	character_->Setup(*model_scene_, &platform_, this_s, skel_num,Rot,New_pos);
 
 
 	character_->Init(model_scene_, &platform_, AnimToLoad3);
@@ -771,6 +775,20 @@ void SceneApp::Init()
 
 	character_->AddBlendTree(tree_name_);
 	character_->InitBlendTree(tree_name_,AnimToLoad,AnimToLoad3);
+
+
+	//------------------------------------------------------
+	//character_2 = new ThreeDimensional_Character();
+
+	//skel_num = 1;
+	//Rot = gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	//New_pos = gef::Vector4(0.0f, 1.0f, 0.0f, 0.0f);
+
+	//character_2->Setup(*model_scene_, &platform_, this_s, skel_num, Rot, New_pos);
+
+
+	//character_2->Init(model_scene_, &platform_, AnimToLoad3);
+	//-------------------------------------------------------
 
 	//Can be in 3D Character!------------------------------------
 
@@ -830,6 +848,7 @@ void SceneApp::Init()
 
 	//character_->InitRagdoll(dynamics_world_, this_s,is_ragdoll_simulating_);
 	character_->SetupRagdoll(is_ragdoll_simulating_, dynamics_world_);
+	//character_2->SetupRagdoll(is_ragdoll_simulating_, dynamics_world_);
 
 	//Can be in 3D Character!------------------------------------
 }
@@ -973,6 +992,12 @@ bool SceneApp::Update(float frame_time)
 		//character_->player_->UpdateBoneMatrices(character_->anim_model_.Anim_map.at(AnimToLoad3).Anim_player_.pose());
 	}
 
+	//if (character_2->player_)
+	//{
+	//	character_2->AnimUpdate(frame_time,AnimToLoad3);
+	//	character_2->UpdateCurrentPoseBoneMatrices_();
+	//}
+
 	//character_->NewUpdate(frame_time, tree_name_);
 
 	//This is the only one that might be a problem
@@ -983,6 +1008,7 @@ bool SceneApp::Update(float frame_time)
 
 	//character_->UpdateRagdoll(is_ragdoll_simulating_,AnimToLoad3);
 	character_->CallUpdateRagdoll(is_ragdoll_simulating_);
+	//character_2->CallUpdateRagdoll(is_ragdoll_simulating_);
 
 	//if (player_ && ragdoll_)
 	//{
@@ -1021,6 +1047,11 @@ void SceneApp::Render()
 	{
 		renderer_3d_->DrawSkinnedMesh(*character_->player_, character_->player_->bone_matrices());
 	}
+
+	//if (character_2->player_)
+	//{
+	//	renderer_3d_->DrawSkinnedMesh(*character_2->player_, character_2->player_->bone_matrices());
+	//}
 
 	renderer_3d_->DrawMesh(floor_gfx_);
 	renderer_3d_->DrawMesh(sphere_gfx_);

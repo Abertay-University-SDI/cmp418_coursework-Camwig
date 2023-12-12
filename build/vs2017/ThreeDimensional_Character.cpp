@@ -35,7 +35,7 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 }
 
 //IN CHARACTER!!!
-void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name,int Skeleton_num)
+void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name,int Skeleton_num, gef::Vector4 Rotation,gef::Vector4 Translation)
 {
 	model_name_ = model_name;
 	std::string model_scene_name = model_name + "/" + model_name + ".scn";
@@ -66,9 +66,34 @@ void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* p
 	}
 
 	// animated model is scaled down to match the size of the physics ragdoll
-	gef::Matrix44 player_transform;
-	player_transform.Scale(gef::Vector4(scale, scale, scale));
-	player_->set_transform(player_transform);
+	//gef::Matrix44 player_transform;
+	//player_transform.Scale(gef::Vector4(scale, scale, scale));
+	//player_->set_transform(player_transform);
+
+	if (&player_)
+	{
+		gef::Matrix44 player_transform;
+		gef::Matrix44 player_scale;
+		gef::Matrix44 player_rotate;
+		gef::Matrix44 player_translate;
+
+		player_transform.SetIdentity();
+		player_scale.SetIdentity();
+		player_rotate.SetIdentity();
+		player_translate.SetIdentity();
+
+		player_scale.Scale(gef::Vector4(scale, scale, scale, 1.0f));
+
+		player_rotate.RotationX(gef::DegToRad(Rotation.x()/*0.0f*/));
+		player_rotate.RotationY(gef::DegToRad(Rotation.y()/*0.0f*/));
+		player_rotate.RotationZ(gef::DegToRad(Rotation.z()/*0.0f*/));
+
+		player_translate.SetTranslation(gef::Vector4(Translation.x(), Translation.y(), Translation.z(), Translation.z()/*25.0f, -25.0f, -100.0f, 1.0f*/));
+
+		player_transform = player_scale * player_rotate * player_translate;
+
+		player_->set_transform(player_transform);
+	}
 
 	//--------------------------------------
 

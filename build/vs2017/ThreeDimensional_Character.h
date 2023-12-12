@@ -26,7 +26,7 @@ public:
 	ThreeDimensional_Character::ThreeDimensional_Character();
 	ThreeDimensional_Character::~ThreeDimensional_Character();
 
-	void Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name, int Skeleton_num);
+	void Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name, int Skeleton_num,gef::Vector4 Rotation, gef::Vector4 Translation);
 	void InitBlendTree(std::string tree_name,std::string Anim1_name_, std::string Anim2_name_);
 
 	void Init(gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
