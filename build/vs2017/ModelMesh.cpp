@@ -29,22 +29,15 @@ gef::Skeleton* ModelMesh::CreateSkeleton(gef::Scene* scene, int skeleton_num)
 	if (scene)
 	{
 		if (scene->skeletons.size() > 0)
-			//Create the skeleton from the skeletons in the scene
-			skeleton = GetItemFromList(scene->skeletons,skeleton_num);/*scene->skeletons.front();*/
+			//Create the skeleton from one of the skeletons in the scene
+			skeleton = GetItemFromList(scene->skeletons,skeleton_num);
 	}
 	return skeleton;
-
-	//Student get(list<Student> _list, int _i) {
-	//	list<Student>::iterator it = _list.begin();
-	//	for (int i = 0; i < _i; i++) {
-	//		++it;
-	//	}
-	//	return *it;
-	//}
 }
 
 gef::Skeleton* ModelMesh::GetItemFromList(std::list<gef::Skeleton*> List, int position)
 {
+	//Returns a specific item from a certain position in the given list
 	std::list<gef::Skeleton*>::iterator it = List.begin();
 	for (int i = 0; i < position; i++) {
 	++it;

@@ -1,9 +1,5 @@
 #pragma once
-//#include "BlendTree.h"
 #include "BlendNode.h"
-
-//class BlendNode;
-//class BlendTree;
 
 class OutputNode : public BlendNode
 {
