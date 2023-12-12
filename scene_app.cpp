@@ -728,15 +728,15 @@ void SceneApp::Init()
 	std::string ske_anim_1 = "stand";
 	std::string ske_anim_2 = "walk";
 
-	Sprite_character_ = new Character();
-	Sprite_character_->SetWhichAnimation(ske_anim_1);
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
-	Sprite_character_->LoadCharacter(sprite_name_, &platform_,pos,0.40f);
+
+	Sprite_character_ = new Character();
+	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
+
+	Sprite_character_->SetWhichAnimation(ske_anim_1);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
 	Sprite_character_->SetWhichAnimation(ske_anim_2);
-	pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
-	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
 	sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
@@ -748,7 +748,6 @@ void SceneApp::Init()
 	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
 	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
-
 	Sprite_character_2_->Update(sprite_name_2_, 0);
 
 	//std::string model_scene_name = this_s + "/" + this_s + ".scn";

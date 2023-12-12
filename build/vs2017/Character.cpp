@@ -5,10 +5,8 @@
 #include "load_json.h"
 
 Character::Character() :
-	sprite_texture_(NULL),sprite_(NULL)
+	sprite_texture_(NULL),sprite_(NULL),Transform(NULL),WhichAnim_(NULL)
 {
-	Transform = NULL;
-	WhichAnim_ = NULL;
 }
 
 Character::~Character()
@@ -43,11 +41,24 @@ void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, 
 
 	sprite_->set_texture(sprite_texture_);
 
-	Sprite_anim* new_sprite;
-	new_sprite = new Sprite_anim();
-	new_sprite->Load_sprite_and_texture_3(tex_string, rapidjson_doc_tex, rapidjson_doc_ske);
+	Parse_the_ske_and_tex_docs_(tex_string);
+}
 
-	delete new_sprite;
+void Character::Parse_the_ske_and_tex_docs_(std::string tex_string)
+{
+	std::string tex_string_temp = tex_string + "_tex.json";
+
+	char* JSON_Doc = LoadJSON(tex_string_temp.c_str());
+	std::ifstream ifs(tex_string_temp.c_str());
+	rapidjson::IStreamWrapper isw(ifs);
+	rapidjson_doc_tex.ParseStream(isw);
+
+	tex_string_temp = tex_string + "_ske.json";
+
+	char* JSON_Doc_2 = LoadJSON(tex_string_temp.c_str());
+	std::ifstream ifs2(tex_string_temp.c_str());
+	rapidjson::IStreamWrapper isw2(ifs2);
+	rapidjson_doc_ske.ParseStream(isw2);
 }
 
 void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
@@ -67,17 +78,8 @@ void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 	{
 		animations.insert(std::make_pair(tex_string, new_animantion));
 	}
-}
 
-std::string Character::SetAnimationName(std::string name, std::string anim_name)
-{
-	name = name + "_" + anim_name;
-	return name;
-}
-
-void Character::SetWhichAnimation(std::string tex_string)
-{
-	WhichAnim_ = new std::string(tex_string);
+	
 }
 
 void Character::Update(std::string tex_string, int frame)
@@ -127,4 +129,15 @@ gef::Sprite* Character::Render(std::string tex_string, std::string part)
 	animations.at(tex_string)->Sprite_Render(sprite_, NewTransform, part,Position);
 	Transform = &NewTransform;
 	return sprite_;
+}
+
+std::string Character::SetAnimationName(std::string name, std::string anim_name)
+{
+	name = name + "_" + anim_name;
+	return name;
+}
+
+void Character::SetWhichAnimation(std::string tex_string)
+{
+	WhichAnim_ = new std::string(tex_string);
 }

@@ -73,8 +73,6 @@ void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std
 	int temp;
 	temp = ske_array[0]["frameRate"].GetInt();
 	FrameRate = temp;
-	temp = ske_array[0]["animation"][0]["duration"].GetInt();
-	Duration = temp;
 
 	//Checks the type of animation
 	if (test_string.find("Sheet") != std::string::npos)
@@ -83,6 +81,9 @@ void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std
 		Sheet_Sprite_anim* new_sheet;
 		new_sheet = new Sheet_Sprite_anim();
 		sprite_animation_ = new_sheet;
+
+		temp = ske_array[0]["animation"][0]["duration"].GetInt();
+		Duration = temp;
 
 		//Calls the appropriate setup
 		type_ = test_string;
@@ -93,6 +94,20 @@ void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std
 		Skeletal_Sprite_anim* new_sheet;
 		new_sheet = new Skeletal_Sprite_anim();
 		sprite_animation_ = new_sheet;
+
+		//temp = ske_array[0]["animation"][0]["duration"].GetInt();
+		//Duration = temp;
+
+		for (int i = 0; i < ske_array[0]["animation"].Size(); i++)
+		{
+			std::string new_name = ske_array[0]["animation"][i]["name"].GetString();
+			if (new_name.find(*WhichAnim1) != std::string::npos)
+			{
+				temp = ske_array[0]["animation"][i]["duration"].GetInt();
+				Duration = temp;
+				break;
+			}
+		}
 
 		type_ = test_string;
 		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_,scale_);

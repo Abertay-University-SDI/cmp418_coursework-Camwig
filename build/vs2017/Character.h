@@ -3,6 +3,8 @@
 #include "Anim_manager.h"
 #include <maths/vector2.h>
 #include <graphics/sprite_renderer.h>
+#include "rapidjson\document.h"
+#include "rapidjson/istreamwrapper.h"
 
 namespace gef
 {
@@ -29,8 +31,10 @@ public:
 	void SetAnimation(std::string& tex_string, gef::Platform* platform_);
 	//Updates the given animation
 	void UpdateAnimation(float frame_time, std::string sprite_name_);
-
+	//Sets the name of the animation and returns the variable
 	std::string SetAnimationName(std::string name,std::string anim_name);
+	//Loads and parses the data from the tex and ske file
+	void Parse_the_ske_and_tex_docs_(std::string);
 private:
 	float Scale;
 	int frame;

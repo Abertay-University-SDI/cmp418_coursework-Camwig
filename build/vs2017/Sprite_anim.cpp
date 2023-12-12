@@ -1,9 +1,5 @@
 #include "Sprite_anim.h"
 
-#include <fstream>
-#include "load_texture.h"
-#include "load_json.h"
-
 Sprite_anim::Sprite_anim()
 {
 
@@ -21,28 +17,28 @@ Sprite_anim::~Sprite_anim()
 //	sprite_ = SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document);
 //}
 
-void Sprite_anim::Load_sprite_and_texture_3(std::string tex_string, rapidjson::Document& rapidjson_doc_tex, rapidjson::Document& rapidjson_doc_ske)
-{
-	//We can then move this to the sprite sheet version and load the tex
-	
-	//Will need to put and output alot of this stuff
-
-	std::string tex_string_temp = tex_string + "_tex.json";
-
-	char* JSON_Doc = LoadJSON(tex_string_temp.c_str());
-	std::ifstream ifs(tex_string_temp.c_str());
-	rapidjson::IStreamWrapper isw(ifs);
-	//rapidjson::Document rapidjson_doc_tex;
-	rapidjson_doc_tex.ParseStream(isw);
-
-	tex_string_temp = tex_string + "_ske.json";
-
-	char* JSON_Doc_2 = LoadJSON(tex_string_temp.c_str());
-	std::ifstream ifs2(tex_string_temp.c_str());
-	rapidjson::IStreamWrapper isw2(ifs2);
-	//rapidjson::Document rapidjson_doc_ske;
-	rapidjson_doc_ske.ParseStream(isw2);
-}
+//void Sprite_anim::Load_sprite_and_texture_3(std::string tex_string, rapidjson::Document& rapidjson_doc_tex, rapidjson::Document& rapidjson_doc_ske)
+//{
+//	//We can then move this to the sprite sheet version and load the tex
+//	
+//	//Will need to put and output alot of this stuff
+//
+//	std::string tex_string_temp = tex_string + "_tex.json";
+//
+//	char* JSON_Doc = LoadJSON(tex_string_temp.c_str());
+//	std::ifstream ifs(tex_string_temp.c_str());
+//	rapidjson::IStreamWrapper isw(ifs);
+//	//rapidjson::Document rapidjson_doc_tex;
+//	rapidjson_doc_tex.ParseStream(isw);
+//
+//	tex_string_temp = tex_string + "_ske.json";
+//
+//	char* JSON_Doc_2 = LoadJSON(tex_string_temp.c_str());
+//	std::ifstream ifs2(tex_string_temp.c_str());
+//	rapidjson::IStreamWrapper isw2(ifs2);
+//	//rapidjson::Document rapidjson_doc_ske;
+//	rapidjson_doc_ske.ParseStream(isw2);
+//}
 
 TextureAtlas* Sprite_anim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_document)
 {
