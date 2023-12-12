@@ -59,20 +59,39 @@ void Anim_manager::Sprite_Render(gef::Sprite* sprite_, gef::Matrix33& transform,
 //2D Sprite Animation Setup
 void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string& type_, std::string* WhichAnim1, float scale_)
 {
-	if (WhichAnim1 != NULL)
-	{
-		//Defines the animation that is to be loaded if there are multiple in the one Ske
-		WhichAnim_ = new std::string(*WhichAnim1);
-	}
 
 	//Gets the type of sprite animation that is being performed
 	const rapidjson::Value& ske_array = ske_document["armature"];
 	std::string test_string = ske_array[0]["type"].GetString();
 
-	//Gets the Framerate and duration
+	//Get the Framerate
 	int temp;
 	temp = ske_array[0]["frameRate"].GetInt();
 	FrameRate = temp;
+
+	if (WhichAnim1 != NULL)
+	{
+		//Defines the animation that is to be loaded if there are multiple in the one Ske
+		WhichAnim_ = new std::string(*WhichAnim1);
+
+		//If we have a specific animation out of many from the same file get the duration
+		//of that specific animation
+		for (int i = 0; i < ske_array[0]["animation"].Size(); i++)
+		{
+			std::string new_name = ske_array[0]["animation"][i]["name"].GetString();
+			if (new_name.find(*WhichAnim_) != std::string::npos)
+			{
+				temp = ske_array[0]["animation"][i]["duration"].GetInt();
+				Duration = temp;
+				break;
+			}
+		}
+	}
+	else
+	{
+		temp = ske_array[0]["animation"][0]["duration"].GetInt();
+		Duration = temp;
+	}
 
 	//Checks the type of animation
 	if (test_string.find("Sheet") != std::string::npos)
@@ -81,9 +100,6 @@ void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std
 		Sheet_Sprite_anim* new_sheet;
 		new_sheet = new Sheet_Sprite_anim();
 		sprite_animation_ = new_sheet;
-
-		temp = ske_array[0]["animation"][0]["duration"].GetInt();
-		Duration = temp;
 
 		//Calls the appropriate setup
 		type_ = test_string;
@@ -94,20 +110,6 @@ void Anim_manager::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std
 		Skeletal_Sprite_anim* new_sheet;
 		new_sheet = new Skeletal_Sprite_anim();
 		sprite_animation_ = new_sheet;
-
-		//temp = ske_array[0]["animation"][0]["duration"].GetInt();
-		//Duration = temp;
-
-		for (int i = 0; i < ske_array[0]["animation"].Size(); i++)
-		{
-			std::string new_name = ske_array[0]["animation"][i]["name"].GetString();
-			if (new_name.find(*WhichAnim1) != std::string::npos)
-			{
-				temp = ske_array[0]["animation"][i]["duration"].GetInt();
-				Duration = temp;
-				break;
-			}
-		}
 
 		type_ = test_string;
 		sprite_ = sprite_animation_->SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document, Position, bone_parts, WhichAnim_,scale_);
