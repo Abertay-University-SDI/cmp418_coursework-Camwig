@@ -55,20 +55,46 @@ void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* p
 	//--------------------------------------
 
 	// get the first skeleton in the scene
-	skeleton = model_mesh_->CreateSkeleton(&Model_scene, Skeleton_num);
+	//skeleton = model_mesh_->CreateSkeleton(&Model_scene, Skeleton_num);
 
-	if (&skeleton)
-	{
-		player_ = new gef::SkinnedMeshInstance(*skeleton);
-		blended_pose = player_->bind_pose();
-		curr_pose = &player_->bind_pose();
-		player_->set_mesh(mesh_);
-	}
+	//if (&skeleton)
+	//{
+	//	player_ = new gef::SkinnedMeshInstance(*skeleton);
+	//	blended_pose = player_->bind_pose();
+	//	curr_pose = &player_->bind_pose();
+	//	player_->set_mesh(mesh_);
+	//}
 
 	// animated model is scaled down to match the size of the physics ragdoll
 	//gef::Matrix44 player_transform;
 	//player_transform.Scale(gef::Vector4(scale, scale, scale));
 	//player_->set_transform(player_transform);
+
+	//--------------------------------------
+
+	skeleton = GetFirstSkeleton(&Model_scene);
+
+	if (skeleton)
+	{
+		player_ = new gef::SkinnedMeshInstance(*skeleton);
+		player_->set_mesh(mesh_);
+		player_->UpdateBoneMatrices(player_->bind_pose());
+
+		// output skeleton joint names
+		for (int joint_num = 0; joint_num < skeleton->joints().size(); ++joint_num)
+		{
+			std::string bone_name;
+			Model_scene.string_id_table.Find(skeleton->joint(joint_num).name_id, bone_name);
+		}
+
+		// animated model is scaled down to match the size of the physics ragdoll
+		gef::Matrix44 player_transform;
+		const float scale = 0.01f;
+		player_transform.Scale(gef::Vector4(scale, scale, scale));
+		player_->set_transform(player_transform);
+	}
+
+	//--------------------------------------
 
 	if (&player_)
 	{
@@ -106,32 +132,6 @@ void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* p
 		player_->set_transform(player_transform);
 	}
 
-	//--------------------------------------
-
-	//skeleton = *GetFirstSkeleton(Model_scene);
-
-	//if (&skeleton)
-	//{
-	//	player_ = new gef::SkinnedMeshInstance(skeleton);
-	//	player_->set_mesh(mesh_);
-	//	player_->UpdateBoneMatrices(player_->bind_pose());
-
-	//	// output skeleton joint names
-	//	for (int joint_num = 0; joint_num < skeleton.joints().size(); ++joint_num)
-	//	{
-	//		std::string bone_name;
-	//		Model_scene->string_id_table.Find(skeleton.joint(joint_num).name_id, bone_name);
-	//	}
-
-	//	// animated model is scaled down to match the size of the physics ragdoll
-	//	gef::Matrix44 player_transform;
-	//	const float scale = 0.01f;
-	//	player_transform.Scale(gef::Vector4(scale, scale, scale));
-	//	player_->set_transform(player_transform);
-	//}
-
-	//--------------------------------------
-
 
 	char* model_file_path_ = new char[model_scene_name.length()];
 
@@ -164,7 +164,9 @@ void ThreeDimensional_Character::AnimUpdate(float frametime, std::string anim_na
 
 void ThreeDimensional_Character::AddBlendTree(std::string tree_name)
 {
-	BlendTree* temp_tree = new BlendTree;
+	//Sometimes fails here on release
+	BlendTree* temp_tree = new BlendTree(player_->bind_pose());
+	//temp_tree->Init(player_->bind_pose());
 	Map_o_blendtrees_.insert(std::make_pair(tree_name,*temp_tree));
 	
 	delete temp_tree;
@@ -197,6 +199,21 @@ void ThreeDimensional_Character::InitBlendTree(std::string tree_name, std::strin
 
 		Map_o_blendtrees_.at(tree_name).Start();
 	}
+}
+
+gef::Skeleton* ThreeDimensional_Character::GetFirstSkeleton(gef::Scene* scene)
+{
+	gef::Skeleton* skeleton = NULL;
+	if (scene)
+	{
+		// check to see if there is a skeleton in the the scene file
+		// if so, pull out the bind pose and create an array of matrices
+		// that wil be used to store the bone transformations
+		if (scene->skeletons.size() > 0)
+			skeleton = scene->skeletons.front();
+	}
+
+	return skeleton;
 }
 
 void ThreeDimensional_Character::UpdateCurrentPoseBoneMatrices_()

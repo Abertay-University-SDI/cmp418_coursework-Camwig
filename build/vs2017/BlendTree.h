@@ -8,7 +8,7 @@
 class BlendTree
 {
 public:
-	BlendTree();
+	BlendTree(const gef::SkeletonPose& bind_pose_);
 	~BlendTree();
 	void Init(const gef::SkeletonPose& pose_);
 	bool Update(float deltaTime);

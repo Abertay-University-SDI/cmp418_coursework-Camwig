@@ -35,6 +35,8 @@ public:
 	std::string SetAnimationName(std::string name,std::string anim_name);
 	//Loads and parses the data from the tex and ske file
 	void Parse_the_ske_and_tex_docs_(std::string);
+
+	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
 private:
 	float Scale;
 	int frame;
@@ -50,5 +52,6 @@ private:
 	std::map<std::string, gef::Matrix33> Transforms_for_bone_;
 	gef::Matrix33* Transform;
 	std::string* WhichAnim_;
+	gef::Skeleton* skeleton;
 };
 

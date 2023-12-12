@@ -1,8 +1,12 @@
 #include "BlendTree.h"
 
-BlendTree::BlendTree() : 
-	output_(this)
+BlendTree::BlendTree(const gef::SkeletonPose& bind_pose_) :
+	output_(NULL)
 {
+	variables.clear();
+	Init(bind_pose_);
+
+	output_ = this;
 }
 
 BlendTree::~BlendTree()

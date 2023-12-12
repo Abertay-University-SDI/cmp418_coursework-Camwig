@@ -39,6 +39,8 @@ public:
 	//void UpdateRagdoll(bool is_ragdoll_simulating_, std::string anim_name);
 	//
 
+	gef::Skeleton* GetFirstSkeleton(gef::Scene* scene);
+
 	void SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_);
 	void CallUpdateRagdoll(bool is_ragdoll_simulating_);
 
