@@ -35,22 +35,27 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 }
 
 //IN CHARACTER!!!
-void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name)
+void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name,int Skeleton_num)
 {
 	model_name_ = model_name;
 	std::string model_scene_name = model_name + "/" + model_name + ".scn";
+
+	model_mesh_ = new ModelMesh();
+
+	Model_scene.ReadSceneFromFile(*platform_, model_scene_name.c_str());
+	Model_scene.CreateMaterials(*platform_);
 
 	anim_ = new Anim_manager;
 
 	//blend_tree_ = new BlendTree;
 
 	// if there is mesh data in the scene, create a mesh to draw from the first mesh
-	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);//GetFirstMesh(model_scene_);
+	mesh_ = model_mesh_->CreateMeshData(&Model_scene, *platform_);//GetFirstMesh(model_scene_);
 
 	//--------------------------------------
 
 	// get the first skeleton in the scene
-	skeleton = ModelMesh_->CreateSkeleton(Model_scene);
+	skeleton = model_mesh_->CreateSkeleton(&Model_scene, Skeleton_num);
 
 	if (&skeleton)
 	{
@@ -101,12 +106,12 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 	anim_model_.Model_Name_ = model_name_;
 	anim_model_.Model_PathWay_ = model_file_path_;
 
-	mesh_ = ModelMesh_->CreateMeshData(Model_scene, *platform_);
+	mesh_ = model_mesh_->CreateMeshData(&Model_scene, *platform_);
 }
 
-void ThreeDimensional_Character::Init(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name)
+void ThreeDimensional_Character::Init(gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name)
 {
-	anim_->SetupAnim(ModelMesh_, Model_scene, platform_,anim_name,*skeleton,player_,anim_model_, speed_);
+	anim_->SetupAnim(model_mesh_, Model_scene, platform_,anim_name,*skeleton,player_,anim_model_, speed_);
 }
 
 void ThreeDimensional_Character::TreeUpdate(float frametime, std::string tree_name)

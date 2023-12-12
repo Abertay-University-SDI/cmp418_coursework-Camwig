@@ -346,6 +346,7 @@ private:
 	bool is_ragdoll_simulating_;
 
 	ThreeDimensional_Character* character_;
+	ThreeDimensional_Character* character_2;
 
 	ModelMesh* model_mesh_;
 

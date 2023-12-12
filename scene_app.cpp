@@ -752,20 +752,22 @@ void SceneApp::Init()
 
 	//std::string model_scene_name = this_s + "/" + this_s + ".scn";
 
-	model_mesh_ = new ModelMesh;
+	//model_mesh_ = new ModelMesh;
 
 	model_scene_ = new gef::Scene();
 	//model_scene_->ReadSceneFromFile(platform_, model_scene_name.c_str());
-	model_scene_->ReadSceneFromFile(platform_, model_mesh_->modelToLoad);
+	//model_scene_->ReadSceneFromFile(platform_, model_mesh_->modelToLoad);
 
 	// we do want to render the data stored in the scene file so lets create the materials from the material data present in the scene file
-	model_scene_->CreateMaterials(platform_);
+	//model_scene_->CreateMaterials(platform_);
 
 	character_ = new ThreeDimensional_Character();
+	int skel_num = 0;
+	character_->Setup(*model_scene_, &platform_, this_s, skel_num);
 
-	character_->Setup(model_mesh_, model_scene_, &platform_, this_s);
-	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad3);
-	character_->Init(model_mesh_, model_scene_, &platform_, AnimToLoad);
+
+	character_->Init(model_scene_, &platform_, AnimToLoad3);
+	character_->Init(model_scene_, &platform_, AnimToLoad);
 
 	character_->AddBlendTree(tree_name_);
 	character_->InitBlendTree(tree_name_,AnimToLoad,AnimToLoad3);

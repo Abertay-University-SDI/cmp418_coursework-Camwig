@@ -26,10 +26,10 @@ public:
 	ThreeDimensional_Character::ThreeDimensional_Character();
 	ThreeDimensional_Character::~ThreeDimensional_Character();
 
-	void Setup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string model_name);
+	void Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name, int Skeleton_num);
 	void InitBlendTree(std::string tree_name,std::string Anim1_name_, std::string Anim2_name_);
 
-	void Init(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
+	void Init(gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
 	void TreeUpdate(float frametime, std::string tree_name);
 	void AnimUpdate(float frametime, std::string anim_name);
 
@@ -47,6 +47,7 @@ public:
 
 	void UpdateCurrentPoseBoneMatrices_();
 
+	ModelMesh* model_mesh_;
 	class gef::Mesh* mesh_;
 
 	gef::SkinnedMeshInstance* player_;

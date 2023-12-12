@@ -39,16 +39,11 @@ private:
 	float Scale;
 	int frame;
 	float animation_timer_;
-
 	gef::Texture* sprite_texture_;
 	gef::Vector2 Position;
 	rapidjson::Document rapidjson_doc_tex;
 	rapidjson::Document rapidjson_doc_ske;
-	
-
 	std::map<std::string, Anim_manager*> animations;
-
-
 	gef::Sprite* sprite_;
 	std::string Type;
 	std::vector<std::string> bone_parts;
