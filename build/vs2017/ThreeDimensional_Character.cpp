@@ -84,9 +84,20 @@ void ThreeDimensional_Character::Setup(gef::Scene& Model_scene, gef::Platform* p
 
 		player_scale.Scale(gef::Vector4(scale, scale, scale, 1.0f));
 
-		player_rotate.RotationX(gef::DegToRad(Rotation.x()/*0.0f*/));
-		player_rotate.RotationY(gef::DegToRad(Rotation.y()/*0.0f*/));
-		player_rotate.RotationZ(gef::DegToRad(Rotation.z()/*0.0f*/));
+		if (Rotation.x() != 0.0f)
+		{
+			player_rotate.RotationX(gef::DegToRad(Rotation.x()));
+		}
+
+		if (Rotation.y() != 0.0f)
+		{
+			player_rotate.RotationY(gef::DegToRad(Rotation.y()));
+		}
+
+		if (Rotation.z() != 0.0f)
+		{
+			player_rotate.RotationZ(gef::DegToRad(Rotation.z()));
+		}
 
 		player_translate.SetTranslation(gef::Vector4(Translation.x(), Translation.y(), Translation.z(), Translation.z()/*25.0f, -25.0f, -100.0f, 1.0f*/));
 

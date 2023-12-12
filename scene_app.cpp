@@ -764,7 +764,7 @@ void SceneApp::Init()
 	character_ = new ThreeDimensional_Character();
 
 	int skel_num = 0;
-	gef::Vector4 Rot = gef::Vector4(0.0f,45.0f,0.0f,0.0f);
+	gef::Vector4 Rot = gef::Vector4(0.0f,0.0f,0.0f,0.0f);
 	gef::Vector4 New_pos = gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	character_->Setup(*model_scene_, &platform_, this_s, skel_num,Rot,New_pos);
