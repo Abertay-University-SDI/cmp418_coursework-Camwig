@@ -382,7 +382,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Anim.cpp" />
+    <ClCompile Include="Anim_manager.cpp" />
     <ClCompile Include="gef_debug_drawer.cpp" />
     <ClCompile Include="primitive_builder.cpp" />
     <ClCompile Include="primitive_renderer.cpp" />
@@ -649,7 +649,7 @@
     <ClInclude Include="..\..\load_json.h" />
     <ClInclude Include="..\..\load_texture.h" />
     <ClInclude Include="..\..\scene_app.h" />
-    <ClInclude Include="Anim.h" />
+    <ClInclude Include="Anim_manager.h" />
     <ClInclude Include="gef_debug_drawer.h" />
     <ClInclude Include="primitive_builder.h" />
     <ClInclude Include="primitive_renderer.h" />

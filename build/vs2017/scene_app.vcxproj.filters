@@ -84,7 +84,7 @@
     <ClCompile Include="..\..\load_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Anim.cpp">
+    <ClCompile Include="Anim_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animation_Parser.cpp">
@@ -635,7 +635,7 @@
     <ClInclude Include="..\..\load_texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Anim.h">
+    <ClInclude Include="Anim_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation_Parser.h">

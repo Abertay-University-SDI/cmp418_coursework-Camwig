@@ -359,6 +359,9 @@ private:
 	const char* AnimToLoad3 = "xbot/xbot@idle.scn";
 	const char* AnimToLoad = "ybot/ybot@walking_inplace.scn";
 	const char* tree_name_ = "Idle_to_walk";
+
+	std::string sprite_anim;
+	std::string sprite_anim_2_;
 };
 
 #endif // _ANIMATED_MESH_APP_H

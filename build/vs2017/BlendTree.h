@@ -1,15 +1,9 @@
 #pragma once
-//#include "BlendNode.h"
 #include <map>
 #include <string>
 #include <animation/skeleton.h>
 #include <vector>
 #include "OutputNode.h"
-//#include "BlendNode.h"
-
-//class BlendTree;
-//class OutputNode;
-//class BlendNode;
 
 class BlendTree
 {
@@ -18,12 +12,13 @@ public:
 	~BlendTree();
 	void Init(const gef::SkeletonPose& pose_);
 	bool Update(float deltaTime);
-	void Cleanup();
 	void Start();
 
+	//Output node
 	OutputNode output_;
+	//binded pose
 	gef::SkeletonPose bind_pose;
-
+	//Map of variables
 	std::map<std::string, float> variables;
 
 };

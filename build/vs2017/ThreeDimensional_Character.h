@@ -15,7 +15,7 @@
 #include "ClipNode.h"
 #include "Linear2Blend.h"*/
 
-#include "Anim.h"
+#include "Anim_manager.h"
 
 //Temporary for testing
 //#include "ragdoll.h"
@@ -64,7 +64,7 @@ public:
 
 	float speed_;
 
-	Anim* anim_;
+	Anim_manager* anim_;
 
 	float scale;
 

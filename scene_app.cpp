@@ -726,18 +726,33 @@ void SceneApp::Init()
 	sprite_name_ = "Dragon";
 
 	Sprite_character_ = new Character();
-	Sprite_character_->SetWhichAnimation("walk");
-	gef::Vector2 size = gef::Vector2(256.0f, 512.0f);
+	Sprite_character_->SetWhichAnimation("stand");
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
-	Sprite_character_->LoadCharacter(sprite_name_, &platform_, size,pos,0.40f);
+	Sprite_character_->LoadCharacter(sprite_name_, &platform_,pos,0.40f);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
-	Sprite_character_->Update(sprite_name_, 0);
+
+	Sprite_character_->SetWhichAnimation("walk");
+	pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
+	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
+	Sprite_character_->SetAnimation(sprite_name_, &platform_);
+
+	sprite_anim = sprite_name_ + "_stand";
+	sprite_anim_2_ = sprite_name_ + "_walk";
+
+	Sprite_character_->Update(sprite_anim_2_, 0);
+
+	//Sprite_character_->SetWhichAnimation("stand");
+	//pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
+	//Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
+	//Sprite_character_->SetAnimation(sprite_name_, &platform_);
+	//Sprite_character_->Update(sprite_name_, 0);
 
 	Sprite_character_2_ = new Character();
-	size = gef::Vector2(256.0f, 512.0f);
+	//Sprite_character_->SetWhichAnimation("attack");
 	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
-	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, size, pos, 0.40f);
+	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
+
 	Sprite_character_2_->Update(sprite_name_2_, 0);
 
 	//std::string model_scene_name = this_s + "/" + this_s + ".scn";
@@ -916,7 +931,7 @@ bool SceneApp::Update(float frame_time)
 		}
 	}
 
-	Sprite_character_->UpdateAnimation(frame_time, sprite_name_);
+	Sprite_character_->UpdateAnimation(frame_time, sprite_anim_2_);
 	Sprite_character_2_->UpdateAnimation(frame_time, sprite_name_2_);
 
 	//	if (input_manager_)
@@ -1022,7 +1037,7 @@ void SceneApp::Render()
 	// draw 2D sprites here
 	sprite_renderer_->Begin(false);
 
-	Sprite_character_->RenderAnimation(sprite_name_,sprite_renderer_);
+	Sprite_character_->RenderAnimation(sprite_anim_2_,sprite_renderer_);
 	Sprite_character_2_->RenderAnimation(sprite_name_2_, sprite_renderer_);
 
 	DrawHUD();

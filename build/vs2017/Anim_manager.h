@@ -10,11 +10,11 @@ namespace gef
 	class Platform;
 }
 
-class Anim
+class Anim_manager
 {
 public:
-	Anim();
-	~Anim();
+	Anim_manager();
+	~Anim_manager();
 
 	//The 2D animation uses the same kind animation but blend trees, ragdolls and standard 3D animation all update diffrently so overloaded functions
 	//were utilised.

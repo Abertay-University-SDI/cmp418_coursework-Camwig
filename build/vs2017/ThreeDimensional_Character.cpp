@@ -40,7 +40,7 @@ void ThreeDimensional_Character::Setup(ModelMesh* ModelMesh_, gef::Scene* Model_
 	model_name_ = model_name;
 	std::string model_scene_name = model_name + "/" + model_name + ".scn";
 
-	anim_ = new Anim;
+	anim_ = new Anim_manager;
 
 	//blend_tree_ = new BlendTree;
 

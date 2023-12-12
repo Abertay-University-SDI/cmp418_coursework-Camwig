@@ -8,11 +8,6 @@ BlendNode::BlendNode(BlendTree* _tree) :
 		OutputPose_ = tree_->bind_pose;
 }
 
-//BlendNode::~BlendNode()
-//{
-//
-//}
-
 bool BlendNode::Update(float deltaTime)
 {
 	// initialise check that all inputs are valid
@@ -47,8 +42,10 @@ void BlendNode::SetInput(int InputNum, BlendNode* BlendNode)
 
 void BlendNode::Start()
 {
+	//Loops through every input node 
 	for (int input_num = 0; input_num < inputs_.size(); input_num++)
 	{
+		//Starts the node intialisation
 		BlendNodeInput& input = inputs_[input_num];
 		if (input.node)
 			input.node->Start();
@@ -58,6 +55,7 @@ void BlendNode::Start()
 
 void BlendNode::SetVariable(int variable_num , const std::string& variable)
 {
+	//Loops through the variable vector and adds the variable to the vector
 	if (variable.size() > 0 && variable_num < variables_.size())
 	{
 		variables_[variable_num] = variable;
