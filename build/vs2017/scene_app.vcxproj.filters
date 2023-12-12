@@ -87,9 +87,6 @@
     <ClCompile Include="Anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Anim_Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Animation_Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -641,9 +638,6 @@
     <ClInclude Include="Anim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Anim_Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Animation_Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -660,9 +654,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Skeletal_Sprite_anim.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimatedModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThisHereAnimation.h">

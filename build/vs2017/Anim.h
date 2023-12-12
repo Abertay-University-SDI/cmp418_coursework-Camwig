@@ -1,14 +1,9 @@
 #pragma once
 
-
 #include "Sheet_Sprite_anim.h"
 #include "Skeletal_Sprite_anim.h"
 #include "ThisHereAnimation.h"
 #include "ragdoll.h"
-//#include <graphics/sprite.h>
-
-//#include "rapidjson\document.h"
-//#include "rapidjson/istreamwrapper.h"
 
 namespace gef
 {
@@ -21,45 +16,46 @@ public:
 	Anim();
 	~Anim();
 
-	//void Init(std::string, gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, int frame);
-	
-	//TextureAtlas* ReadTextureAtlasFromJSON(rapidjson::Document& tex_document);
-	//TexData* ReadSubtextureFromJSON(const rapidjson::Value&);
-	//void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int);
+	//The 2D animation uses the same kind animation but blend trees, ragdolls and standard 3D animation all update diffrently so overloaded functions
+	//were utilised.
 
-	//void Load_sprite_and_texture_(gef::Platform*, gef::Sprite*);
-	//void Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string tex_string);
-	//TextureAtlas* text_atlas;
-
+	//2D Animation
 	void Update(int frame_, gef::Sprite* sprite_,gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_);
+	//BlendTree 3D Animation
 	void Update(float frameTime_, BlendTree& blend_tree, gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_);
-	void Update(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, const gef::SkeletonPose* curr_pose);
+	//Standard 3D Animation
 	void Update(float frameTime_, gef::SkinnedMeshInstance& player_, AnimatedModel_new& anim_model, std::string anim_name);
+	//Ragdoll 3D Animation
+	void Update(bool is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_, const gef::SkeletonPose* curr_pose);
 
-	//void Setup_2D_anim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string);
-	//void SetupAnimSheet2D(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document);
-
+	//2D Animation
 	void SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string& type_,std::string* WhichAnim,float scale_);
-	/*ModelMesh *,                        gef::Scene *,            gef::Platform *,          std::string,           gef::Skeleton,            AnimatedModel, gef::SkinnedMeshInstance, float)*/
+	//3D Animation (Both Blendtress and standard 3D animation use the same Setup)
 	void SetupAnim(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model, float speed_);
+	//Ragdoll 3D Animation
 	void SetupAnim(btDiscreteDynamicsWorld* dynamics_world_, std::string model_name, bool& is_ragdoll_simulating_, gef::SkinnedMeshInstance* player_);
 
+	//2D Sprite Render which is needed as Sprite animation needs to perform extra steps before rendering to screen
+	void Sprite_Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position);
 
-	void Render(gef::Sprite* sprite_, gef::Matrix33& transform, std::string part, gef::Vector2 Position);
+	//Getters and setters for private functions
+
+	float GetFrameRate();
+	void SetFrameRate(float new_framerate_);
+
+	float GetDuration();
+	void SetDuration(float new_duration_);
+
+	std::string* GetWhichAnim();
+	void SetWhichAnim(std::string new_WhichAnim_);
+
+private:
+	Sprite_anim* sprite_animation_;
+	ThisHereAnimation* ThreeD_animation_;
+	Ragdoll* ragdoll_;
 
 	float FrameRate;
 	float Duration;
 	std::string* WhichAnim_;
-private:
-	//gef::Texture* sprite_texture_;
-	Sprite_anim* sprite_animation_;
-	ThisHereAnimation* ThreeD_animation_;
-	Ragdoll* ragdoll_;
-	gef::Matrix33* Sprite_transform_;
-	std::vector<std::string>* Bone_parts;
-	//void Setup_2D_anim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string);
-	//int frame_;
-
-	//gef::Sprite* sprite;
 };
 

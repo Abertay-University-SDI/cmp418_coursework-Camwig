@@ -98,10 +98,6 @@ gef::Vector2 Animation_Parser::lerp(gef::Vector2 start_pos, gef::Vector2 end_pos
 	float x = (1.f - time) * start_pos.x + time * end_pos.x;
 	float y = (1.f - time) * start_pos.y + time * end_pos.y;
 
-	//other method that doesnt work aswell
-	//float x = start_pos.x + time *(end_pos.x - start_pos.x);
-	//float y = start_pos.y + time *(end_pos.y - start_pos.y);
-
 	//return lerp values
 	return gef::Vector2(x, y);
 }

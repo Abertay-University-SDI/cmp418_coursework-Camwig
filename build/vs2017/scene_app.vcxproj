@@ -389,7 +389,6 @@
     <ClCompile Include="ragdoll.cpp" />
     <ClCompile Include="ThisHereAnimation.cpp" />
     <ClCompile Include="Animation_Parser.cpp" />
-    <ClCompile Include="Anim_Sprite.cpp" />
     <ClCompile Include="BlendNode.cpp" />
     <ClCompile Include="BlendTree.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -651,14 +650,12 @@
     <ClInclude Include="..\..\load_texture.h" />
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Anim.h" />
-    <ClInclude Include="AnimatedModel.h" />
     <ClInclude Include="gef_debug_drawer.h" />
     <ClInclude Include="primitive_builder.h" />
     <ClInclude Include="primitive_renderer.h" />
     <ClInclude Include="ragdoll.h" />
     <ClInclude Include="ThisHereAnimation.h" />
     <ClInclude Include="Animation_Parser.h" />
-    <ClInclude Include="Anim_Sprite.h" />
     <ClInclude Include="BlendNode.h" />
     <ClInclude Include="BlendTree.h" />
     <ClInclude Include="Character.h" />

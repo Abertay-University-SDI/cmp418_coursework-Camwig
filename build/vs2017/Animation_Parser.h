@@ -47,7 +47,5 @@ public:
 
 	gef::Vector2 lerp(gef::Vector2, gef::Vector2,float);
 	float lerp(float,float,float);
-
-	void CalculateWorldBoneTransform(Animation*, int);
 };
 

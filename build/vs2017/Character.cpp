@@ -63,9 +63,9 @@ void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 
 	new_animantion->SetupAnim(platform_, sprite_, tex_string, rapidjson_doc_tex, rapidjson_doc_ske, Position, bone_parts, Type, WhichAnim_,Scale);
 
-	if (new_animantion->WhichAnim_ != NULL)
+	if (new_animantion->GetWhichAnim() != NULL)
 	{
-		tex_string = tex_string + "_" + *new_animantion->WhichAnim_;
+		tex_string = tex_string + "_" + *new_animantion->GetWhichAnim();
 		animations.insert(std::make_pair(tex_string, new_animantion));
 	}
 	else
@@ -90,14 +90,14 @@ void Character::UpdateAnimation(float frame_time, std::string sprite_name_)
 {
 	animation_timer_ += frame_time;
 
-	if (animation_timer_ >= (1.f / /*anim->FrameRate*/animations.at(sprite_name_)->FrameRate))
+	if (animation_timer_ >= (1.f / /*anim->FrameRate*/animations.at(sprite_name_)->GetFrameRate()))
 	{
 		frame++;
 		animation_timer_ = 0;
 	}
 
 	//Also need to set this to the animation duration
-	if (frame >= /*anim->Duration*/animations.at(sprite_name_)->Duration)
+	if (frame >= /*anim->Duration*/animations.at(sprite_name_)->GetDuration())
 	{
 		frame = 0;
 	}
@@ -134,7 +134,7 @@ gef::Sprite* Character::Render(std::string tex_string, std::string part)
 	//return sprite_;
 	gef::Matrix33 NewTransform;
 	//gef::Sprite new_sprite;
-	animations.at(tex_string)->Render(sprite_, NewTransform, part,Position);
+	animations.at(tex_string)->Sprite_Render(sprite_, NewTransform, part,Position);
 	Transform = &NewTransform;
 	return sprite_;
 }
