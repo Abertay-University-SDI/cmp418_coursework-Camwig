@@ -677,9 +677,6 @@
     <ClInclude Include="OutputNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayableAnim.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="motion_clip_player.h">
       <Filter>Header Files</Filter>
     </ClInclude>

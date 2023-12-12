@@ -664,7 +664,6 @@
     <ClInclude Include="ModelMesh.h" />
     <ClInclude Include="motion_clip_player.h" />
     <ClInclude Include="OutputNode.h" />
-    <ClInclude Include="PlayableAnim.h" />
     <ClInclude Include="Sheet_Sprite_anim.h" />
     <ClInclude Include="Skeletal_Sprite_anim.h" />
     <ClInclude Include="Sprite_anim.h" />
