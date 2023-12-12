@@ -69,6 +69,12 @@ void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 	}
 }
 
+std::string Character::SetAnimationName(std::string name, std::string anim_name)
+{
+	name = name + "_" + anim_name;
+	return name;
+}
+
 void Character::SetWhichAnimation(std::string tex_string)
 {
 	WhichAnim_ = new std::string(tex_string);

@@ -29,6 +29,8 @@ public:
 	void SetAnimation(std::string& tex_string, gef::Platform* platform_);
 	//Updates the given animation
 	void UpdateAnimation(float frame_time, std::string sprite_name_);
+
+	std::string SetAnimationName(std::string name,std::string anim_name);
 private:
 	float Scale;
 	int frame;

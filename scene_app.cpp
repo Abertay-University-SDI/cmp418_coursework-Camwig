@@ -725,30 +725,26 @@ void SceneApp::Init()
 	sprite_name_2_ = "boy-attack";	
 	sprite_name_ = "Dragon";
 
+	std::string ske_anim_1 = "stand";
+	std::string ske_anim_2 = "walk";
+
 	Sprite_character_ = new Character();
-	Sprite_character_->SetWhichAnimation("stand");
+	Sprite_character_->SetWhichAnimation(ske_anim_1);
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
 	Sprite_character_->LoadCharacter(sprite_name_, &platform_,pos,0.40f);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
-	Sprite_character_->SetWhichAnimation("walk");
+	Sprite_character_->SetWhichAnimation(ske_anim_2);
 	pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
 	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
-	sprite_anim = sprite_name_ + "_stand";
-	sprite_anim_2_ = sprite_name_ + "_walk";
+	sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
+	sprite_anim_2_ = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_2);;
 
 	Sprite_character_->Update(sprite_anim_2_, 0);
 
-	//Sprite_character_->SetWhichAnimation("stand");
-	//pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
-	//Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
-	//Sprite_character_->SetAnimation(sprite_name_, &platform_);
-	//Sprite_character_->Update(sprite_name_, 0);
-
 	Sprite_character_2_ = new Character();
-	//Sprite_character_->SetWhichAnimation("attack");
 	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
 	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
