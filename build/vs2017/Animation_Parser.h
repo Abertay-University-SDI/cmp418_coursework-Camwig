@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-
+//Struct Defining the Translation Keys
 struct TranslationKey
 {
 	float time_to_next_key;
@@ -15,6 +15,7 @@ struct TranslationKey
 	gef::Vector2 translation;
 };
 
+//Struct defining the Rotation Keys
 struct RotationKey
 {
 	float time_to_next_key;
@@ -22,6 +23,7 @@ struct RotationKey
 	float rotation;
 };
 
+//Struct Defining the BoneKeys
 struct BoneKey
 {
 	std::string name;
@@ -29,6 +31,7 @@ struct BoneKey
 	std::vector<RotationKey*> rotation_keys;
 };
 
+//Struct Defining the animation
 struct Animation
 {
 	float duration;
