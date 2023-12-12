@@ -135,7 +135,9 @@ void TwoDimensional_Character::RenderAnimation(std::string sprite_name_,gef::Spr
 		for (auto part : bone_parts)
 		{
 			//Draws the sprite
-			sprite_renderer_->DrawSprite(*Render(sprite_name_, part), *Transform);
+			sprite_ = Render(sprite_name_, part);
+			gef::Matrix33 this_trans = *Transform;
+			sprite_renderer_->DrawSprite(*sprite_, this_trans);
 		}
 	}
 }

@@ -70,8 +70,8 @@ void SceneApp::Init()
 	Sprite_character_->Update(sprite_anim_2_, 0);
 
 	Sprite_character_2_ = new TwoDimensional_Character();
-	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
-	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos, 0.40f);
+	gef::Vector2 pos_2 = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
+	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos_2, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
 	Sprite_character_2_->Update(sprite_name_2_, 0);
 
