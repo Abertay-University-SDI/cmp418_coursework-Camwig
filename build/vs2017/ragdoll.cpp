@@ -3,8 +3,6 @@
 #include <btBulletWorldImporter.h>
 #include <system/debug_log.h>
 
-//extern std::string model_name;
-
 Ragdoll::Ragdoll() :
 	scale_factor_(1.0f)
 {
@@ -27,7 +25,7 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 	btBulletWorldImporter* fileLoader = new btBulletWorldImporter(dynamics_world);
 
 	std::string ragdoll_filename;
-	ragdoll_filename = physics_filename;/*model_name + "/ragdoll.bullet";*/
+	ragdoll_filename = physics_filename;
 	fileLoader->loadFile(ragdoll_filename.c_str());
 
 	int numRigidBodies = fileLoader->getNumRigidBodies();
@@ -35,8 +33,6 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 	{
 		btCollisionObject* obj = fileLoader->getRigidBodyByIndex(i);
 		btRigidBody* body = btRigidBody::upcast(obj);
-
-		// properties
 
 		// The Blender object name
 		std::string rb_name(fileLoader->getNameForPointer(body));
@@ -51,12 +47,12 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 		gef::DebugOut("  get position = (%4.3f,%4.3f,%4.3f)\n",
 			body->getCenterOfMassPosition().getX(),
 			body->getCenterOfMassPosition().getY(),
-			body->getCenterOfMassPosition().getZ());			// Blender CoM
+			body->getCenterOfMassPosition().getZ());// Blender CoM
 		if (body->getInvMass() == 0)
 			gef::DebugOut("  static object\n");
 		else
 		{
-			gef::DebugOut("  mass = %4.3f\n", 1 / body->getInvMass());		// Blender Mass
+			gef::DebugOut("  mass = %4.3f\n", 1 / body->getInvMass());// Blender Mass
 		}
 		gef::DebugOut("\n");
 
@@ -70,8 +66,7 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 				if (joint_num != -1)
 				{
 					bone_rbs_[joint_num] = body;
-
-					// CALCULATE THE BONE TO RIGID BODY OFFSET MATRIX HERE
+					//Calculates the rigid body offset matrix
 
 					//Get Bone world transform
 					gef::Matrix44 anim_bone_world_transform_mtx = bind_pose_.global_pose()[joint_num];
@@ -87,7 +82,6 @@ void Ragdoll::Init(const gef::SkeletonPose & bind_pose, btDiscreteDynamicsWorld*
 					gef::Matrix44 inv_anim_bone_world_local_transform_mtx;
 					inv_anim_bone_world_local_transform_mtx.AffineInverse(anim_bone_world_transform_mtx);
 
-					//RB_off = RB_WT * B_WT^-1
 					bone_rb_offset_matrices_[joint_num] = rb_world_transform_mtx * inv_anim_bone_world_local_transform_mtx;
 					
 
@@ -115,14 +109,8 @@ void Ragdoll::UpdatePoseFromRagdoll()
 		btRigidBody* bone_rb = bone_rbs_[bone_num];
 		if (bone_rb)
 		{
-			// REPLACE THIS LINE BELOW TO CALCULATE THE BONE LOCAL TRANSFORM
-			// BASED ON THE RIGID BODY WORLD TRANSFORM
-			//anim_bone_local_transform = bind_pose_.local_pose()[bone_num].GetMatrix();
 
 			//Local Bone Transform from a ragdoll physics body
-
-			//Get Bone world transform local position
-			//anim_bone_local_transform = bind_pose_.local_pose()[bone_num].GetMatrix();
 			
 			//Get Rigid body world transform
 			btTransform rb_world_transform = bone_rb->getCenterOfMassTransform();
@@ -188,7 +176,7 @@ void Ragdoll::UpdateRagdollFromPose()
 		btRigidBody* bone_rb = bone_rbs_[bone_num];
 		if (bone_rb)
 		{
-			// CALCULATE THE RIGID BODY WORLD TRANSFORM BASED ON THE CURRENT SKELETON POSE
+			//Calculate the Rigid body world transform based off the current skeleton pose
 
 			//Get Bone world transform
 			gef::Matrix44 anim_bone_world_transform_mtx = pose_.global_pose()[bone_num];
@@ -196,6 +184,7 @@ void Ragdoll::UpdateRagdollFromPose()
 
 			anim_bone_world_transform_mtx.SetTranslation(anim_bone_world_position * scale_factor_);
 
+			//Get the offset matrix
 			gef::Matrix44 offset_mtx;
 			offset_mtx = bone_rb_offset_matrices_[bone_num];
 
@@ -213,7 +202,6 @@ void Ragdoll::InitRagdoll(btDiscreteDynamicsWorld* dynamics_world_, std::string 
 {
 	if (player_->bind_pose().skeleton())
 	{
-		//ragdoll_ = new Ragdoll();
 		set_scale_factor(0.01f);
 
 		std::string ragdoll_filename;
@@ -236,10 +224,7 @@ void Ragdoll::UpdateRagdoll(bool is_ragdoll_simulating_, gef::SkinnedMeshInstanc
 		}
 		else
 		{
-			//Should be current animation
-			//Just pass it the current pose from animation
 			set_pose(*curr_pose);
-			//--------------------------
 			UpdateRagdollFromPose();
 		}
 	}
