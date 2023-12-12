@@ -90,7 +90,7 @@
     <ClCompile Include="Animation_Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
+    <ClCompile Include="TwoDimensional_Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sheet_Sprite_anim.cpp">
@@ -641,7 +641,7 @@
     <ClInclude Include="Animation_Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
+    <ClInclude Include="TwoDimensional_Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sheet_Sprite_anim.h">

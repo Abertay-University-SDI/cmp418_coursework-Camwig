@@ -1,15 +1,15 @@
-#include "Character.h"
+#include "TwoDimensional_Character.h"
 
 #include <fstream>
 #include "load_texture.h"
 #include "load_json.h"
 
-Character::Character() :
+TwoDimensional_Character::TwoDimensional_Character() :
 	sprite_texture_(NULL),sprite_(NULL),Transform(NULL),WhichAnim_(NULL)
 {
 }
 
-Character::~Character()
+TwoDimensional_Character::~TwoDimensional_Character()
 {
 	delete sprite_texture_;
 	sprite_texture_ = NULL;
@@ -24,7 +24,7 @@ Character::~Character()
 	WhichAnim_ = NULL;
 }
 
-void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, gef::Vector2 position_, float scale_)
+void TwoDimensional_Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, gef::Vector2 position_, float scale_)
 {
 	//Loads and sets up every variable
 	animation_timer_ = 0;
@@ -46,7 +46,7 @@ void Character::LoadCharacter(std::string tex_string, gef::Platform* platform_, 
 	Parse_the_ske_and_tex_docs_(tex_string);
 }
 
-void Character::Parse_the_ske_and_tex_docs_(std::string tex_string)
+void TwoDimensional_Character::Parse_the_ske_and_tex_docs_(std::string tex_string)
 {
 	//Parses the documents
 
@@ -63,7 +63,7 @@ void Character::Parse_the_ske_and_tex_docs_(std::string tex_string)
 	rapidjson_doc_ske.ParseStream(isw2);
 }
 
-void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
+void TwoDimensional_Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 {
 	Anim_manager* new_animantion;
 	new_animantion = new Anim_manager();
@@ -86,13 +86,13 @@ void Character::SetAnimation(std::string& tex_string, gef::Platform* platform_)
 	}
 }
 
-void Character::Update(std::string tex_string, int frame)
+void TwoDimensional_Character::Update(std::string tex_string, int frame)
 {
 	//Calls a particular animation to be updated
 	animations.at(tex_string)->Update(frame, sprite_,Position, Transforms_for_bone_);
 }
 
-void Character::UpdateAnimation(float frame_time, std::string sprite_name_)
+void TwoDimensional_Character::UpdateAnimation(float frame_time, std::string sprite_name_)
 {
 	//Inciments the animation timer
 	animation_timer_ += frame_time;
@@ -114,7 +114,7 @@ void Character::UpdateAnimation(float frame_time, std::string sprite_name_)
 	Update(sprite_name_, frame);
 }
 
-void Character::RenderAnimation(std::string sprite_name_,gef::SpriteRenderer* sprite_renderer_)
+void TwoDimensional_Character::RenderAnimation(std::string sprite_name_,gef::SpriteRenderer* sprite_renderer_)
 {
 	//Checks the type of animation being played
 
@@ -140,7 +140,7 @@ void Character::RenderAnimation(std::string sprite_name_,gef::SpriteRenderer* sp
 	}
 }
 
-gef::Sprite* Character::Render(std::string tex_string, std::string part)
+gef::Sprite* TwoDimensional_Character::Render(std::string tex_string, std::string part)
 {
 	//Updates the sprite and the transform
 	gef::Matrix33 NewTransform;
@@ -149,13 +149,13 @@ gef::Sprite* Character::Render(std::string tex_string, std::string part)
 	return sprite_;
 }
 
-std::string Character::SetAnimationName(std::string name, std::string anim_name)
+std::string TwoDimensional_Character::SetAnimationName(std::string name, std::string anim_name)
 {
 	name = name + "_" + anim_name;
 	return name;
 }
 
-void Character::SetWhichAnimation(std::string tex_string)
+void TwoDimensional_Character::SetWhichAnimation(std::string tex_string)
 {
 	WhichAnim_ = new std::string(tex_string);
 }

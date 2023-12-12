@@ -11,11 +11,11 @@ namespace gef
 	class SpriteRenderer;
 }
 
-class Character
+class TwoDimensional_Character
 {
 public:
-	Character();
-	~Character();
+	TwoDimensional_Character();
+	~TwoDimensional_Character();
 
 	//Sets up the character
 	void LoadCharacter(std::string,gef::Platform*,gef::Vector2 position_,float scale_);

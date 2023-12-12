@@ -391,7 +391,7 @@
     <ClCompile Include="Animation_Parser.cpp" />
     <ClCompile Include="BlendNode.cpp" />
     <ClCompile Include="BlendTree.cpp" />
-    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="TwoDimensional_Character.cpp" />
     <ClCompile Include="ClipNode.cpp" />
     <ClCompile Include="Linear2Blend.cpp" />
     <ClCompile Include="ModelMesh.cpp" />
@@ -658,7 +658,7 @@
     <ClInclude Include="Animation_Parser.h" />
     <ClInclude Include="BlendNode.h" />
     <ClInclude Include="BlendTree.h" />
-    <ClInclude Include="Character.h" />
+    <ClInclude Include="TwoDimensional_Character.h" />
     <ClInclude Include="ClipNode.h" />
     <ClInclude Include="Linear2Blend.h" />
     <ClInclude Include="ModelMesh.h" />

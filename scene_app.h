@@ -248,7 +248,7 @@
 #include "gef_debug_drawer.h"
 
 #include "ThreeDimensional_Character.h"
-#include "Character.h"
+#include "TwoDimensional_Character.h"
 
 #include "btBulletDynamicsCommon.h"
 //#include "ragdoll.h"
@@ -350,8 +350,8 @@ private:
 
 	ModelMesh* model_mesh_;
 
-	Character* Sprite_character_;
-	Character* Sprite_character_2_;
+	TwoDimensional_Character* Sprite_character_;
+	TwoDimensional_Character* Sprite_character_2_;
 
 	std::string this_s;
 	std::string sprite_name_;

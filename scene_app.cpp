@@ -730,7 +730,7 @@ void SceneApp::Init()
 
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
 
-	Sprite_character_ = new Character();
+	Sprite_character_ = new TwoDimensional_Character();
 	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
 
 	Sprite_character_->SetWhichAnimation(ske_anim_1);
@@ -744,7 +744,7 @@ void SceneApp::Init()
 
 	Sprite_character_->Update(sprite_anim_2_, 0);
 
-	Sprite_character_2_ = new Character();
+	Sprite_character_2_ = new TwoDimensional_Character();
 	pos = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
 	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
