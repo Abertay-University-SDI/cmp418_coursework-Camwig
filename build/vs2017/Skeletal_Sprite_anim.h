@@ -1,13 +1,8 @@
 #pragma once
 #include "Sprite_anim.h"
-
-//#include <maths/matrix33.h>
-//#include <math.h>
-//#include <string>
-//#include "maths/math_utils.h"
-//#include <maths/vector2.h>
 #include <Animation_Parser.h>
 
+//Struct to hold the definition of skin slots
 struct SkinSlot
 {
 	std::string name_;
@@ -18,7 +13,7 @@ struct SkinSlot
 
 	gef::Matrix33 transform_m_;
 
-	//Can probably fix the build trnsforms to one thing but we will see
+	//Function to Build the transform of the skin slot
 	void BuildTransform()
 	{
 		gef::Matrix33 rotation_m;
@@ -35,18 +30,22 @@ struct SkinSlot
 	}
 };
 
+//Struct to hold the definition of Bones
 struct Bone
 {
 	Bone* parent_;
 	std::string name_;
 	std::string parent_name_;
+
 	float x_;
 	float y_;
 	float rot_;
+
 	gef::Matrix33 local_transform_m;
 	gef::Matrix33 New_local_transform_m;
 	gef::Matrix33 world_transform_m;
 
+	//Function to Build the transform of the Bones
 	void BuildLocalTransform()
 	{
 		gef::Matrix33 rotation_m;
@@ -69,65 +68,33 @@ public:
 	Skeletal_Sprite_anim();
 	~Skeletal_Sprite_anim();
 
-	//void Init(/*gef::Texture*, gef::Platform**/);
-
-	//void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, TextureAtlas*, std::string);
-
+	//Functions to setup the bones,skinslots and animation of the skeletal sprite
 	std::map<std::string, SkinSlot> ReadSkinSlotsDataFromJSON(rapidjson::Document&);
 	std::map<std::string, Bone> ReadBonesFromJSON(rapidjson::Document&);
-
 	void SetParentsOfBones(std::map<std::string, Bone>*);
-
-	//void BuildWorldTransforms(std::map<std::string, Bone>*);
-
-	//TextureAtlas* ReadTextureAtlasFromJSON(rapidjson::Document& tex_document);
-	//TexData* ReadSubtextureFromJSON(const rapidjson::Value&);
-
-	//
 	void CalculateWorldBoneTransform(Animation*, int);
-	//void AnimUpdate(float);
-
 	std::map<std::string, Animation> ReadAnimationDataFromJSON(rapidjson::Document&);
 
 	std::vector<std::string> ReadInOrder(rapidjson::Document&);
-
-	//float elapsed_time;
-	float sprite_speed;
-
-	//std::map<std::string, Animation> new_anim;
-
-	Animation_Parser* anim_pars;
-
-	gef::Matrix33 rig_transform_m_;
-	gef::Matrix33 combined_transform_m_;
-
-	//const float scale = 0.5f;
-
-	//void RenderUpdate(const gef::Vector2, gef::Sprite&, const std::string, gef::Matrix33&, gef::Matrix33&, gef::Matrix33&, gef::Matrix33&);
-
-	std::map<std::string, SkinSlot> skin_slots;
-	std::map<std::string, Bone> bones_;
-
-	std::vector<std::string> bone_parts1;
-	//void SetupRig(gef::Vector2);
-
-	//std::map<std::string, Animation> new_anim;
-
-	std::map<std::string, gef::Matrix33> Transforms_for_bone_1;
 	void DeleteTransforms();
 
-
-
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
-	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1,float scale_) override;
-	gef::Sprite* Render(gef::Sprite* sprite,gef::Matrix33& transform, std::string part, gef::Vector2 Position) override;
+	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1, float scale_) override;
+	gef::Sprite* Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position) override;
 
 private:
-	gef::Texture* sprite_texture_;
-	TextureAtlas* text_atlas1;
-	//TextureAtlas new_tex;
+	TextureAtlas* text_atlas;
+	//Map of animations
 	std::map<std::string, Animation> new_anim;
-	//std::string parts[];
+	//Animation name to be played
 	std::string WhichAnim_;
+
+	Animation_Parser* anim_pars;
+	gef::Matrix33 rig_transform_m_;
+	gef::Matrix33 combined_transform_m_;
+	std::map<std::string, SkinSlot> skin_slots;
+	std::map<std::string, Bone> bones_;
+	std::vector<std::string> bone_parts_;
+	std::map<std::string, gef::Matrix33> Transforms_for_bone;
 };
 

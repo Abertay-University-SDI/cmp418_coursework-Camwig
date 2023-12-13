@@ -7,33 +7,13 @@
 
 Skeletal_Sprite_anim::Skeletal_Sprite_anim()
 {
-	//text_atlas = new TextureAtlas;
+	text_atlas = new TextureAtlas;
 }
 Skeletal_Sprite_anim::~Skeletal_Sprite_anim()
 {
-	//delete text_atlas;
-	//text_atlas = NULL;
+	delete text_atlas;
+	text_atlas = NULL;
 }
-
-//void Skeletal_Sprite_anim::Init(/*gef::Texture* sprite_texture_, gef::Platform* platform_*/)
-//{
-//	//std::string parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
-//
-//	//for (auto i : parts)
-//	//{
-//	//	bone_parts.push_back(i);
-//	//}
-//
-//	anim_pars = new Animation_Parser;
-//
-//	skin_slots = ReadSkinSlotsDataFromJSON(doc_dragon_ske);
-//	bones_ = ReadBonesFromJSON(doc_dragon_ske);
-//
-//	//Does not like it returning it this way
-//	new_anim = ReadAnimationDataFromJSON(doc_dragon_ske);
-//
-//	text_atlas = *ReadTextureAtlasFromJSON(rapidjson_doc);
-//}
 
 std::map <std::string, SkinSlot> Skeletal_Sprite_anim::ReadSkinSlotsDataFromJSON(rapidjson::Document& ske_document)
 {
@@ -93,7 +73,6 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 				}
 
 				bKey->name = anim_bones_array[it]["name"].GetString();
-				//Need a nested loop
 
 				if (anim_bones_array[it].HasMember("translateFrame"))
 				{
@@ -101,10 +80,8 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 
 					for (int it2 = 0; it2 < anim_bones_trans_array.Size(); ++it2)
 					{
-						//Issue also here!
 						TranslationKey* trans_key = anim_pars->ReadTranslationKeyDataFromJSON(anim_bones_trans_array[it2]);
 
-						//Issue here abouts
 						bKey->translation_keys.push_back(trans_key);
 
 					}
@@ -117,13 +94,6 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 					trans_key->translation = gef::Vector2(0, 0);
 					bKey->translation_keys.push_back(trans_key);
 				}
-
-				//Do it again for rotation keys
-
-				//Error here for some reason?
-				//Seems to have issues redefining it
-				//But doesnt have the same problem as the ither one though
-				//Its because there is no rotation data its not a constant
 
 
 				if (anim_bones_array[it].HasMember("rotateFrame"))
@@ -198,7 +168,6 @@ std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::D
 		delete bone;
 	}
 
-	//BuildWorldTransforms(&bones);
 	SetParentsOfBones(&bones);
 
 	return bones;
@@ -228,14 +197,9 @@ void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 			name = bone_.first;
 			for (auto i : *bones)
 			{
-				//Changes with the pointer changing
 				if (i.first == parent_name)
 				{
-					//Bone* b = new Bone;
-					//b = *i.second;
-					//bone_.second.parent_ = i.second;
 					bones->at(name).parent_ = &bones->at(i.first);
-					//break;
 				}
 			}
 		}
@@ -246,53 +210,33 @@ void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 		if (bone_.second.parent_name_ != "none")
 		{
 			bones->at(bone_.first).world_transform_m = bones->at(bone_.first).local_transform_m * bones->at(bone_.first).parent_->local_transform_m;
-			//bone_.second.world_transform_m = bone_.second.local_transform_m * bone_.second.parent_->local_transform_m;
 		}
 		else
 		{
 			bones->at(bone_.first).world_transform_m = bones->at(bone_.first).local_transform_m;
-			//bone_.second.world_transform_m = bone_.second.local_transform_m;
 		}
 	}
 }
 
 void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int current_frame)
 {
-	/*Un sure how this has been setup so unsure how to continue*/
-
-	//Is this correct?
-
-	//only get key start times if anim is valid
 	if (anim != NULL)
 	{
 		//Set intial start time to 0
 		float start_time_T = 0.f;
 
-		//Set intial start time to 0
 		float start_time_R = 0.f;
-
-
-		//Start times are not being added properly
 
 		//Loop through each of the bone keys
 		for (int i = 0; i < anim->bone_keys.size(); i++)
 		{
 			//check if bone has translation or rotation
 
-			//How does current frame relate?
-
-
 			for (int j = 0; j < anim->bone_keys[i]->translation_keys.size(); j++)
 			{
-				//if (anim->bone_keys[i]->translation_keys.size() > current_frame)
-				//{
-					//	if (anim->bone_keys[i]->translation_keys[current_frame] != NULL)
-					//	{
-							//set each bone 
+				//set each bone 
 				anim->bone_keys[i]->translation_keys[j]->start_time = start_time_T;
 				start_time_T += anim->bone_keys[i]->translation_keys[j]->time_to_next_key;
-				//	}
-			//}
 			}
 
 			start_time_T = 0.0f;
@@ -300,53 +244,17 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 
 			for (int l = 0; l < anim->bone_keys[i]->rotation_keys.size(); l++)
 			{
-				//if (anim->bone_keys[i]->rotation_keys.size() > current_frame)
-				//{
-
-				//	if (anim->bone_keys[i]->rotation_keys[current_frame] != NULL)
-				//	{
-						//set each bone 
+				//set each bone 
 				anim->bone_keys[i]->rotation_keys[l]->start_time = start_time_R;
 				start_time_R += anim->bone_keys[i]->rotation_keys[l]->time_to_next_key;
-				//	}
-				//}
 			}
 
 			start_time_R = 0.0f;
 		}
-
-
-		////Loop through each of the bone keys
-		//for (int i = 0; i < anim->bone_keys.size(); i++)
-		//{
-		//	//check if bone has translation or rotation
-
-		//	for (int j = 0; j < anim->bone_keys[i]->rotation_keys.size(); j++)
-		//	{
-		//		//if (anim->bone_keys[i]->rotation_keys.size() > current_frame)
-		//		//{
-
-		//		//	if (anim->bone_keys[i]->rotation_keys[current_frame] != NULL)
-		//		//	{
-		//				//set each bone 
-		//		anim->bone_keys[i]->rotation_keys[j]->start_time = start_time_R;
-		//		start_time_R += anim->bone_keys[i]->rotation_keys[j]->time_to_next_key;
-		//		//	}
-		//		//}
-		//	}
-
-		//	start_time_R = 0.0f;
-		//}
 	}
 
-	////Look at the video for the rest going from 30 mins onward etc
-
-	//What is sprite_anim->bones
 	for (auto& bone : bones_)
 	{
-
-		//Bone* bone = new Bone();
-
 
 		gef::Matrix33 translation, rotation;
 		translation.SetIdentity();
@@ -360,15 +268,6 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 		translation.SetTranslation(gef::Vector2(localX, localY));
 		bone.second.local_transform_m = rotation * translation;
 
-
-
-
-		/*Going to get down the rest and ask later how he set it up*/
-
-		//Only porceed if anim is valid
-
-
-
 		if (anim != NULL)
 		{
 			//loop through all bone keys in the animatiom
@@ -380,9 +279,7 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 					//calculate rotation from rotation keys
 					for (int currKey = 0; currKey < bKey->rotation_keys.size(); currKey++)
 					{
-						//if (bKey->rotation_keys[currKey] != NULL)
-						//{
-							//loop through all rotation keys
+						//loop through all rotation keys
 						int nextKey = currKey >= bKey->rotation_keys.size() - 1 ? 0 : currKey + 1;
 						if (current_frame >= bKey->rotation_keys[currKey]->start_time && current_frame < bKey->rotation_keys[nextKey]->start_time)
 						{
@@ -390,20 +287,17 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 							float time = (current_frame - bKey->rotation_keys[currKey]->start_time) / (bKey->rotation_keys[nextKey]->start_time - bKey->rotation_keys[currKey]->start_time);
 							localRot += (anim_pars->lerp(bKey->rotation_keys[currKey]->rotation, bKey->rotation_keys[nextKey]->rotation, time));
 						}
-						//End of cycle
+						//End of loop
 						else if (currKey == nextKey)
 						{
 							localRot += bKey->rotation_keys[currKey]->rotation;
 						}
-						//}
 					}
 
 					//Calculate translation from translation keys
 					for (int currKey = 0; currKey < bKey->translation_keys.size(); currKey++)
 					{
 						//loop through all rotation keys
-						//if (bKey->translation_keys[currKey]!=NULL)
-						//{
 						int nextKey = currKey >= bKey->translation_keys.size() - 1 ? 0 : currKey + 1;
 						if (current_frame >= bKey->translation_keys[currKey]->start_time && current_frame < bKey->translation_keys[nextKey]->start_time)
 						{
@@ -415,13 +309,12 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 							localX += lerp_anim_pos.x;
 							localY += lerp_anim_pos.y;
 						}
-						//end of cycle
+						//end of loop
 						else if (currKey == nextKey)
 						{
 							localX += bKey->translation_keys[currKey]->translation.x;
 							localY += bKey->translation_keys[currKey]->translation.y;
 						}
-						//}
 					}
 
 					break;
@@ -429,6 +322,7 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 				}
 			}
 		}
+		//Set the bones local transform and rotation values
 		rotation.Rotate(gef::DegToRad(localRot));
 		translation.SetTranslation(gef::Vector2(localX, localY));
 		bone.second.New_local_transform_m = rotation * translation;
@@ -446,24 +340,7 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 		}
 	}
 
-	//return bones_;
-
 }
-
-//void Skeletal_Sprite_anim::RenderUpdate(const gef::Vector2 sprite_pos_, gef::Sprite& sprite_, const std::string part, gef::Matrix33& sprite_offset_transform_m, gef::Matrix33& world_bone_transforming_m, gef::Matrix33& sub_texture_transform_m, gef::Matrix33& local_home_transform_m)
-//{
-//	sprite_offset_transform_m = skin_slots.at(part).transform_m_;
-//	world_bone_transforming_m = bones_.at(part).world_transform_m;
-//	std::string part_name = skin_slots.at(part).part_name_;
-//	sub_texture_transform_m = text_atlas.subtex_atlas.at(part_name).transform_m_;
-//	local_home_transform_m = bones_.at(part).local_transform_m;
-//
-//	SetSpriteSizeAndPositionForFrame(&sprite_, sprite_pos_.x, sprite_pos_.y, &text_atlas, part_name);
-//
-//
-//	//sprite_renderer_->DrawSprite(sprite_, sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_);
-//
-//}
 
 void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
@@ -471,10 +348,7 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 	CalculateWorldBoneTransform(&new_anim.at(WhichAnim_), frame);
 
-
-	//Below is for render!!!!!!!!---------------------------------------------
-
-	for (auto part : bone_parts1)
+	for (auto part : bone_parts_)
 	{
 		gef::Matrix33 sprite_offset_transform_m;
 		gef::Matrix33 world_bone_transforming_m;
@@ -484,27 +358,22 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
 		world_bone_transforming_m = bones_.at(part).world_transform_m;
 		std::string part_name = skin_slots.at(part).part_name_;
-		//part_name = "parts/" + part_name;
 
-		//Problem this doesnt seem to remeber everything it does before hand!
-		sub_texture_transform_m = text_atlas1->subtex_atlas.at(part_name).transform_m_;
-		//-------------------------------------------------------------------
+		sub_texture_transform_m = text_atlas->subtex_atlas.at(part_name).transform_m_;
 
 		local_home_transform_m = bones_.at(part).local_transform_m;
 		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
-		Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
+		Transforms_for_bone.insert(std::make_pair(part_name, tmp_transform_));
 	
-		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas1, part_name);
+		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas, part_name);
 	}
-	Transforms_for_bone_ = Transforms_for_bone_1;
+	Transforms_for_bone_ = Transforms_for_bone;
 	DeleteTransforms();;
 	
 }
 
 gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
 {
-	//transform = gef::Matrix33();
-
 	gef::Matrix33 sprite_offset_transform_m;
 	gef::Matrix33 world_bone_transforming_m;
 	gef::Matrix33 sub_texture_transform_m;
@@ -513,69 +382,32 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 	sprite_offset_transform_m = skin_slots.at(part).transform_m_;
 	world_bone_transforming_m = bones_.at(part).world_transform_m;
 	std::string part_name = skin_slots.at(part).part_name_;
-	//part_name = "parts/" + part_name;
 
-	//Problem this doesnt seem to remeber everything it does before hand!
-	sub_texture_transform_m = text_atlas1->subtex_atlas.at(part_name).transform_m_;
-	//-------------------------------------------------------------------
+	sub_texture_transform_m = text_atlas->subtex_atlas.at(part_name).transform_m_;
 
 	local_home_transform_m = bones_.at(part).local_transform_m;
 	gef::Matrix33 Result = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
 	transform = Result;
-	//Transforms_for_bone_1.insert(std::make_pair(part_name, tmp_transform_));
 
-	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas1, part_name);
+	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas, part_name);
 
 	return sprite;
 }
 
-//void Skeletal_Sprite_anim::SetupRig(gef::Vector2 sprite_pos_)
-//{
-//	rig_transform_m_.SetIdentity();
-//	rig_transform_m_.Scale(gef::Vector2(scale, scale));
-//	rig_transform_m_.SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
-//}
-
 gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1, float scale_)
 {
-	//This is also the drawing order crap
-	//I think the order is in the slot stuff
 
 	if (WhichAnim1 != NULL)
 	{
 		WhichAnim_ = *WhichAnim1;
 	}
-	
-
-	//parts[] = { "tailTip","armUpperL","armL","handL","legL","body","tail","clothes","hair","head","eyeL","eyeR","legR","armUpperR","armR","handR","beardL","beardR" };
-
-	//for (auto i : parts)
-	//{
-	//	bone_parts1.push_back(i);
-	//	bone_parts.push_back(i);
-	//}
 
 	std::vector<std::string> new_parts = ReadInOrder(ske_document);
 
 	auto it = std::next(new_parts.begin(), new_parts.size());
-	std::move(new_parts.begin(), it, std::back_inserter(bone_parts1));
-	//std::move(new_parts.begin(), it, std::back_inserter(bone_parts));
+	std::move(new_parts.begin(), it, std::back_inserter(bone_parts_));
 
-	bone_parts = bone_parts1;
-
-	//for(auto it : std::next(new_parts.begin(),new_parts.size()))
-
-	/*std::vector<Foo> v1, v2;
-
-	// populate v1 with at least 17 elements...
-
-	auto it = std::next(v1.begin(), 17);
-
-	std::move(v1.begin(), it, std::back_inserter(v2));  // ##
-
-	v1.erase(v1.begin(), it);*/
-
-	//bone_parts = bone_parts1;
+	bone_parts = bone_parts_;
 
 	new_parts.erase(new_parts.begin(),it);
 
@@ -583,35 +415,21 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 	scale = scale_;
 	SetupRig(&rig_transform_m_, Position, scale);
 
-	std::string tex_string_temp = tex_string + "_tex.png";
-
-	//sprite_texture_ = CreateTextureFromPNG(tex_string_temp.c_str(), *platform_);
-	//sprite_->set_texture(sprite_texture_);
+	//std::string tex_string_temp = tex_string + "_tex.png";
 
 	anim_pars = new Animation_Parser;
 
 	skin_slots = ReadSkinSlotsDataFromJSON(ske_document);
 	bones_ = ReadBonesFromJSON(ske_document);
 
-	//Does not like it returning it this way
 	new_anim = ReadAnimationDataFromJSON(ske_document);
 
-	text_atlas1 = ReadTextureAtlasFromJSON(tex_document);
-
-
-	//new_tex = *text_atlas1;
-
-	//for (auto i : bones_)
-	//{
-	//	bone_parts1.push_back(i.first);
-	//}
-
-	//bone_parts = &bone_parts1;
+	text_atlas = ReadTextureAtlasFromJSON(tex_document);
 
 	return sprite_;
 }
 
 void Skeletal_Sprite_anim::DeleteTransforms()
 {
-	Transforms_for_bone_1.clear();
+	Transforms_for_bone.clear();
 }
