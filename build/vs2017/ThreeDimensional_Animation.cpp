@@ -1,14 +1,14 @@
-#include "ThisHereAnimation.h"
+#include "ThreeDimensional_Animation.h"
 
-ThisHereAnimation::ThisHereAnimation()
+ThreeDimensional_Animation::ThreeDimensional_Animation()
 {
 }
 
-ThisHereAnimation::~ThisHereAnimation()
+ThreeDimensional_Animation::~ThreeDimensional_Animation()
 {
 }
 
-gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
+gef::Animation* ThreeDimensional_Animation::LoadAnimation(const char* anim_scene_filename, const char* anim_name, gef::Platform& platform_)
 {
 	gef::Animation* anim = NULL;
 
@@ -60,7 +60,7 @@ gef::Animation* ThisHereAnimation::LoadAnimation(const char* anim_scene_filename
 //	anim_model_->Model_PathWay_ = model_file_path_;
 //}
 
-void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name,std::string anim_name,gef::Skeleton& skeleton_,gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model,float speed_)
+void ThreeDimensional_Animation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string tex_name,std::string anim_name,gef::Skeleton& skeleton_,gef::SkinnedMeshInstance* player_, AnimatedModel_new& anim_model,float speed_)
 {
 	MotionClipPlayer* new_anim_player_ = new MotionClipPlayer;
 	gef::Animation* new_anim = new gef::Animation;
@@ -110,18 +110,18 @@ void ThisHereAnimation::SetAnimation(ModelMesh* ModelMesh_, gef::Scene* Model_sc
 	//play_anim_ = NULL;
 }
 
-void ThisHereAnimation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel_new& anim_model, gef::SkinnedMeshInstance& player_, float speed_)
+void ThreeDimensional_Animation::CallAnimationSetup(ModelMesh* ModelMesh_, gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name, gef::Skeleton& skeleton_, AnimatedModel_new& anim_model, gef::SkinnedMeshInstance& player_, float speed_)
 {
 	SetAnimation(ModelMesh_, Model_scene, platform_, anim_name, anim_name, skeleton_, &player_,anim_model,speed_);
 }
 
-void ThisHereAnimation::Update(float frameTime_, gef::SkinnedMeshInstance& player_, AnimatedModel_new& anim_model,std::string anim_name)
+void ThreeDimensional_Animation::Update(float frameTime_, gef::SkinnedMeshInstance& player_, AnimatedModel_new& anim_model,std::string anim_name)
 {
 	anim_model.Anim_map.at(anim_name).Anim_player_.Update(frameTime_, player_.bind_pose());
 }
 
 
-void ThisHereAnimation::Update(float frameTime_, BlendTree& blend_tree,gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_)
+void ThreeDimensional_Animation::Update(float frameTime_, BlendTree& blend_tree,gef::SkinnedMeshInstance& player_, gef::SkeletonPose& blended_pose, float speed_)
 {
 	//IN CHARACTER!!!---------------------
 	if (&player_)

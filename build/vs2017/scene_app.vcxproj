@@ -387,7 +387,7 @@
     <ClCompile Include="primitive_builder.cpp" />
     <ClCompile Include="primitive_renderer.cpp" />
     <ClCompile Include="ragdoll.cpp" />
-    <ClCompile Include="ThisHereAnimation.cpp" />
+    <ClCompile Include="ThreeDimensional_Animation.cpp" />
     <ClCompile Include="Animation_Parser.cpp" />
     <ClCompile Include="BlendNode.cpp" />
     <ClCompile Include="BlendTree.cpp" />
@@ -654,7 +654,7 @@
     <ClInclude Include="primitive_builder.h" />
     <ClInclude Include="primitive_renderer.h" />
     <ClInclude Include="ragdoll.h" />
-    <ClInclude Include="ThisHereAnimation.h" />
+    <ClInclude Include="ThreeDimensional_Animation.h" />
     <ClInclude Include="Animation_Parser.h" />
     <ClInclude Include="BlendNode.h" />
     <ClInclude Include="BlendTree.h" />

@@ -105,7 +105,7 @@
     <ClCompile Include="Skeletal_Sprite_anim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThisHereAnimation.cpp">
+    <ClCompile Include="ThreeDimensional_Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlendNode.cpp">
@@ -656,7 +656,7 @@
     <ClInclude Include="Skeletal_Sprite_anim.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ThisHereAnimation.h">
+    <ClInclude Include="ThreeDimensional_Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlendNode.h">

@@ -2,7 +2,7 @@
 
 #include "Sheet_Sprite_anim.h"
 #include "Skeletal_Sprite_anim.h"
-#include "ThisHereAnimation.h"
+#include "ThreeDimensional_Animation.h"
 #include "ragdoll.h"
 
 namespace gef
@@ -51,7 +51,7 @@ public:
 
 private:
 	Sprite_anim* sprite_animation_;
-	ThisHereAnimation* ThreeD_animation_;
+	ThreeDimensional_Animation* ThreeD_animation_;
 	Ragdoll* ragdoll_;
 
 	float FrameRate;
