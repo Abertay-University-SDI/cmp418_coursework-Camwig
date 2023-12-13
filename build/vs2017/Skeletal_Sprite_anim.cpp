@@ -17,6 +17,7 @@ Skeletal_Sprite_anim::~Skeletal_Sprite_anim()
 
 std::map <std::string, SkinSlot> Skeletal_Sprite_anim::ReadSkinSlotsDataFromJSON(rapidjson::Document& ske_document)
 {
+	//Reads the skin slots data from the ske file
 	const rapidjson::Value& slots_array = ske_document["armature"][0]["skin"][0]["slot"];
 
 	std::map<std::string, SkinSlot> slots;
@@ -50,6 +51,7 @@ std::map <std::string, SkinSlot> Skeletal_Sprite_anim::ReadSkinSlotsDataFromJSON
 
 std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON(rapidjson::Document& ske_document)
 {
+	//Reads the animation data from the ske file
 	const rapidjson::Value& anims_array = ske_document["armature"][0]["animation"];
 
 	std::map<std::string, Animation> anims;
@@ -59,35 +61,36 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 		Animation* anim = new Animation();
 		anim->name = anims_array[anim_num]["name"].GetString();
 		anim->duration = anims_array[anim_num]["duration"].GetFloat();
+		//Checks if the current element has bones
 		if (anims_array[anim_num].HasMember("bone"))
 		{
+			//Loops through each bone of the current element
 			const rapidjson::Value& anim_bones_array = ske_document["armature"][0]["animation"][anim_num]["bone"];
 
 			for (int it = 0; it < anim_bones_array.Size(); ++it)
 			{
 				BoneKey* bKey = new BoneKey;
 
-				if (anim_bones_array[it]["name"].GetString() == NULL)
-				{
-					int i = 0;
-				}
-
+				//Gets the bone keys name
 				bKey->name = anim_bones_array[it]["name"].GetString();
 
+				//If the bone key has a translation frame get that
 				if (anim_bones_array[it].HasMember("translateFrame"))
 				{
 					const rapidjson::Value& anim_bones_trans_array = ske_document["armature"][0]["animation"][anim_num]["bone"][it]["translateFrame"];
 
+					//For each of the bone keys translation frames
 					for (int it2 = 0; it2 < anim_bones_trans_array.Size(); ++it2)
 					{
 						TranslationKey* trans_key = anim_pars->ReadTranslationKeyDataFromJSON(anim_bones_trans_array[it2]);
-
+						//Adds the translation keys to the bone
 						bKey->translation_keys.push_back(trans_key);
 
 					}
 				}
-				else
+				else //If no translation frames were found
 				{
+					//Set them default values
 					TranslationKey* trans_key = new TranslationKey;
 					trans_key->start_time = 0.0f;
 					trans_key->time_to_next_key = 0.0f;
@@ -95,20 +98,22 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 					bKey->translation_keys.push_back(trans_key);
 				}
 
-
+				//If the bone key has a rotation frame get that
 				if (anim_bones_array[it].HasMember("rotateFrame"))
 				{
 					const rapidjson::Value& anim_bones_rot_array = ske_document["armature"][0]["animation"][anim_num]["bone"][it]["rotateFrame"];
 
+					//For each of the bone keys rotation frames
 					for (int it3 = 0; it3 < anim_bones_rot_array.Size(); ++it3)
 					{
 						RotationKey* rot_key = anim_pars->ReadRotationKeyDataFromJSON(anim_bones_rot_array[it3]);
-
+						//Adds the rotation keys to the bone
 						bKey->rotation_keys.push_back(rot_key);
 					}
 				}
-				else
+				else //If no rotation frames were found
 				{
+					//Set them default values
 					RotationKey* rot_key = new RotationKey;
 					rot_key->rotation = 0.0f;
 					rot_key->start_time = 0.0f;
@@ -116,9 +121,10 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 					bKey->rotation_keys.push_back(rot_key);
 				}
 
+				//Add the bone key to the animation
 				anim->bone_keys.push_back(bKey);
 			}
-
+			//Push the animation to the map
 			anims.insert(std::make_pair(anim->name, *anim));
 
 			delete anim;
@@ -130,12 +136,14 @@ std::map<std::string, Animation> Skeletal_Sprite_anim::ReadAnimationDataFromJSON
 
 std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::Document& ske_document)
 {
+	//Reads the bones from the ske document
 	const rapidjson::Value& bones_array = ske_document["armature"][0]["bone"];
 
 	std::map<std::string, Bone> bones;
 
 	for (int bone_num = 0; bone_num < (int)bones_array.Size(); ++bone_num)
 	{
+		//Set each of the bones variable in accordance to the file
 		Bone* bone = new Bone();
 		bone->name_ = bones_array[bone_num]["name"].GetString();
 
@@ -145,6 +153,7 @@ std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::D
 		}
 		else
 		{
+			//If no value was found give it a default one
 			bone->parent_name_ = "none";
 		}
 
@@ -162,12 +171,15 @@ std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::D
 
 		}
 
+		//Build the bones local transform
 		bone->BuildLocalTransform();
+		//Insert the bone into the mape
 		bones.insert(std::make_pair(bone->name_, *bone));
 
 		delete bone;
 	}
 
+	//Set the parent of each bone
 	SetParentsOfBones(&bones);
 
 	return bones;
@@ -175,12 +187,14 @@ std::map<std::string, Bone> Skeletal_Sprite_anim::ReadBonesFromJSON(rapidjson::D
 
 std::vector<std::string> Skeletal_Sprite_anim::ReadInOrder(rapidjson::Document& ske_document)
 {
-	const rapidjson::Value& bones_array = ske_document["armature"][0]["slot"];
+	const rapidjson::Value& slots_array = ske_document["armature"][0]["slot"];
 
 	std::vector<std::string> newVec;
-	for (int bone_num = 0; bone_num < (int)bones_array.Size(); ++bone_num)
+	//For each of the slots
+	for (int slot_num = 0; slot_num < (int)slots_array.Size(); ++slot_num)
 	{
-		newVec.push_back(bones_array[bone_num]["name"].GetString());
+		//add the name of it to the vector in the correct order of drawing
+		newVec.push_back(slots_array[slot_num]["name"].GetString());
 	}
 
 	return newVec;
@@ -190,6 +204,7 @@ void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 {
 	for (auto bone_ : *bones)
 	{
+		//If the bone has a parent
 		if (bone_.second.parent_name_ != "none");
 		{
 			std::string parent_name, name;
@@ -197,8 +212,10 @@ void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 			name = bone_.first;
 			for (auto i : *bones)
 			{
+				//If the bones parent is found
 				if (i.first == parent_name)
 				{
+					//Set that bone to be the parent of the correct bone
 					bones->at(name).parent_ = &bones->at(i.first);
 				}
 			}
@@ -209,6 +226,7 @@ void Skeletal_Sprite_anim::SetParentsOfBones(std::map<std::string, Bone>* bones)
 	{
 		if (bone_.second.parent_name_ != "none")
 		{
+			//Set the world transform of the bones with parents to be based off their parents transfor
 			bones->at(bone_.first).world_transform_m = bones->at(bone_.first).local_transform_m * bones->at(bone_.first).parent_->local_transform_m;
 		}
 		else
@@ -333,8 +351,10 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 	{
 		for (auto& child_bone : bones_)
 		{
+			//If the bone has a child
 			if (bone.second.name_ == child_bone.second.parent_name_)
 			{
+				//Update the bones child based off its new transform
 				child_bone.second.world_transform_m = child_bone.second.New_local_transform_m * bone.second.world_transform_m;
 			}
 		}
@@ -344,19 +364,13 @@ void Skeletal_Sprite_anim::CalculateWorldBoneTransform(Animation* anim, int curr
 
 void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_)
 {
-	SetupRig(&rig_transform_m_,position_, scale);
-
+	//Calculate the bone transforms based of the animation and the frame
 	CalculateWorldBoneTransform(&new_anim.at(WhichAnim_), frame);
-
-	for (auto part : bone_parts_)
-	{
-		std::string part_name = skin_slots.at(part).part_name_;
-		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas, part_name);
-	}
 }
 
 gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
 {
+	//Set the transform for the current bone being rendered
 	gef::Matrix33 sprite_offset_transform_m;
 	gef::Matrix33 world_bone_transforming_m;
 	gef::Matrix33 sub_texture_transform_m;
@@ -372,6 +386,7 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 	gef::Matrix33 Result = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
 	transform = Result;
 
+	//Sets the position,rotation and size of the bone sprite being rendered
 	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas, part_name);
 
 	return sprite;
@@ -379,27 +394,31 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 
 gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1, float scale_)
 {
-
+	//If the character has a specific animation to play
 	if (WhichAnim1 != NULL)
 	{
+		//Sets it to the same name
 		WhichAnim_ = *WhichAnim1;
 	}
 
+	//Gets the correct order of the parts
 	std::vector<std::string> new_parts = ReadInOrder(ske_document);
 
 	auto it = std::next(new_parts.begin(), new_parts.size());
 	std::move(new_parts.begin(), it, std::back_inserter(bone_parts_));
 
+	//Sets them to the bone parts
 	bone_parts = bone_parts_;
 
 	new_parts.erase(new_parts.begin(),it);
 
-
 	scale = scale_;
+	//Sets up the rig and its transform
 	SetupRig(&rig_transform_m_, Position, scale);
 
 	anim_pars = new Animation_Parser;
 
+	//Reads all the appropriate date
 	skin_slots = ReadSkinSlotsDataFromJSON(ske_document);
 	bones_ = ReadBonesFromJSON(ske_document);
 
