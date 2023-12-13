@@ -187,12 +187,12 @@ bool SceneApp::Update(float frame_time)
 
 			//Checks if the speed is exceeding the walking animation speed and if it is not increase the speed
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				character_->speed_ = (character_->speed_ >= character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
+				character_->SetSpeed((character_->GetSpeed() >= character_->GetAnimMinSpeed(AnimToLoad)/*anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_*/) ? character_->GetAnimMinSpeed(AnimToLoad) : character_->GetSpeed() + 0.02f * multiplier);
 			}
 
 			//Checks if the character speed is at least greater than zero and if it is decrease the speed
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {
-				character_->speed_ = (character_->speed_ <= 0) ? 0 : character_->speed_ - 0.02f * multiplier;
+				character_->SetSpeed((character_->GetSpeed() <= 0) ? 0 : character_->GetSpeed() - 0.02f * multiplier);
 			}
 		}
 	}
@@ -202,7 +202,7 @@ bool SceneApp::Update(float frame_time)
 	Sprite_character_2_->UpdateAnimation(frame_time, sprite_name_2_);
 
 	//Update the 3D Character if its player is not null
-	if (character_->player_)
+	if (character_->GetPlayer())
 	{
 		//Update the blend tree animation
 		character_->TreeUpdate(frame_time, tree_name_);
@@ -234,9 +234,9 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	//Draw the 3D Character mesh
-	if (character_->player_)
+	if (character_->GetPlayer())
 	{
-		renderer_3d_->DrawSkinnedMesh(*character_->player_, character_->player_->bone_matrices());
+		renderer_3d_->DrawSkinnedMesh(*character_->GetPlayer(), character_->GetPlayer()->bone_matrices());
 	}
 
 	renderer_3d_->DrawMesh(floor_gfx_);

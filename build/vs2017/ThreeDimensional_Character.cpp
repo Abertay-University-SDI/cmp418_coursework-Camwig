@@ -230,3 +230,35 @@ void ThreeDimensional_Character::CallUpdateRagdoll(bool is_ragdoll_simulating_)
 {
 	anim_->Update(is_ragdoll_simulating_, player_, curr_pose);
 }
+
+float ThreeDimensional_Character::GetAnimMinSpeed(std::string anim_name)
+{
+	return anim_model_.Anim_map.at(anim_name).Anim_min_speed_;
+}
+void ThreeDimensional_Character::SetAnimMinSpeed(std::string anim_name,float new_speed)
+{
+	anim_model_.Anim_map.at(anim_name).Anim_min_speed_ = new_speed;
+}
+
+float ThreeDimensional_Character::GetAnimMaxSpeed(std::string anim_name)
+{
+	return anim_model_.Anim_map.at(anim_name).Anim_max_speed_;
+}
+void ThreeDimensional_Character::SetAnimMaxSpeed(std::string anim_name, float new_speed)
+{
+	anim_model_.Anim_map.at(anim_name).Anim_max_speed_ = new_speed;
+}
+
+gef::SkinnedMeshInstance* ThreeDimensional_Character::GetPlayer()
+{
+	return player_;
+}
+
+float ThreeDimensional_Character::GetSpeed()
+{
+	return speed_;
+}
+void ThreeDimensional_Character::SetSpeed(float new_speed)
+{
+	speed_ = new_speed;
+}
