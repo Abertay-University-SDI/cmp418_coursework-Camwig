@@ -350,26 +350,9 @@ void Skeletal_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 
 
 	for (auto part : bone_parts_)
 	{
-		gef::Matrix33 sprite_offset_transform_m;
-		gef::Matrix33 world_bone_transforming_m;
-		gef::Matrix33 sub_texture_transform_m;
-		gef::Matrix33 local_home_transform_m;
-
-		sprite_offset_transform_m = skin_slots.at(part).transform_m_;
-		world_bone_transforming_m = bones_.at(part).world_transform_m;
 		std::string part_name = skin_slots.at(part).part_name_;
-
-		sub_texture_transform_m = text_atlas->subtex_atlas.at(part_name).transform_m_;
-
-		local_home_transform_m = bones_.at(part).local_transform_m;
-		gef::Matrix33 tmp_transform_ = sub_texture_transform_m * sprite_offset_transform_m * world_bone_transforming_m * rig_transform_m_;
-		Transforms_for_bone.insert(std::make_pair(part_name, tmp_transform_));
-	
 		SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, 0, text_atlas, part_name);
 	}
-	Transforms_for_bone_ = Transforms_for_bone;
-	DeleteTransforms();;
-	
 }
 
 gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)
@@ -415,8 +398,6 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 	scale = scale_;
 	SetupRig(&rig_transform_m_, Position, scale);
 
-	//std::string tex_string_temp = tex_string + "_tex.png";
-
 	anim_pars = new Animation_Parser;
 
 	skin_slots = ReadSkinSlotsDataFromJSON(ske_document);
@@ -427,9 +408,4 @@ gef::Sprite* Skeletal_Sprite_anim::SetupAnimation(gef::Platform* platform_, gef:
 	text_atlas = ReadTextureAtlasFromJSON(tex_document);
 
 	return sprite_;
-}
-
-void Skeletal_Sprite_anim::DeleteTransforms()
-{
-	Transforms_for_bone.clear();
 }

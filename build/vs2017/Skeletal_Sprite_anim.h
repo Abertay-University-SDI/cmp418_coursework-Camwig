@@ -76,7 +76,6 @@ public:
 	std::map<std::string, Animation> ReadAnimationDataFromJSON(rapidjson::Document&);
 
 	std::vector<std::string> ReadInOrder(rapidjson::Document&);
-	void DeleteTransforms();
 
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_, std::map<std::string, gef::Matrix33>& Transforms_for_bone_) override;
 	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts, std::string* WhichAnim1, float scale_) override;
@@ -95,6 +94,5 @@ private:
 	std::map<std::string, SkinSlot> skin_slots;
 	std::map<std::string, Bone> bones_;
 	std::vector<std::string> bone_parts_;
-	std::map<std::string, gef::Matrix33> Transforms_for_bone;
 };
 
