@@ -93,9 +93,10 @@ void SceneApp::Init()
 	int skel_num = 0;
 	gef::Vector4 Rot = gef::Vector4(0.0f,0.0f,0.0f,0.0f);
 	gef::Vector4 New_pos = gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	float scale_ = 0.01f;
 
 	//Sets up the 3D Character
-	character_->Setup(*model_scene_, &platform_, Model_name_, skel_num,Rot,New_pos);
+	character_->Setup(*model_scene_, &platform_, Model_name_, skel_num, scale_,Rot,New_pos);
 
 	//Intialise the animations for the 3D Character
 	character_->Init(model_scene_, &platform_, AnimToLoad3);

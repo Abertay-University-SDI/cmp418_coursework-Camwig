@@ -9,7 +9,7 @@ public:
 	ThreeDimensional_Character::~ThreeDimensional_Character();
 
 	//Setup functions for the character animation,blend tree and ragdoll
-	void Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name, int Skeleton_num,gef::Vector4 Rotation, gef::Vector4 Translation);
+	void Setup(gef::Scene& Model_scene, gef::Platform* platform_, std::string model_name, int Skeleton_num, float scale_, gef::Vector4 Rotation, gef::Vector4 Translation);
 	void InitBlendTree(std::string tree_name,std::string Anim1_name_, std::string Anim2_name_);
 	void Init(gef::Scene* Model_scene, gef::Platform* platform_, std::string anim_name);
 	void SetupRagdoll(bool& is_ragdoll_simulating, btDiscreteDynamicsWorld* dynamics_world_);
@@ -25,7 +25,7 @@ public:
 	//Function to add a blend tree to the character
 	void AddBlendTree(std::string tree_name);
 
-	//Getters and setters for certain functions
+	//Getters and setters for certain variables
 	float GetAnimMinSpeed(std::string anim_name);
 	void SetAnimMinSpeed(std::string anim_name, float new_speed);
 	float GetAnimMaxSpeed(std::string anim_name);
@@ -33,6 +33,8 @@ public:
 	gef::SkinnedMeshInstance* GetPlayer();
 	float GetSpeed();
 	void SetSpeed(float new_speed);
+	//float GetScale();
+	//void SetScale(float new_scale);
 
 private:
 	gef::SkeletonPose blended_pose;
