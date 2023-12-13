@@ -38,6 +38,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 
 void SceneApp::Init()
 {
+	//Create the intitial variables
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
 	input_manager_ = gef::InputManager::Create(platform_);
@@ -46,15 +47,19 @@ void SceneApp::Init()
 	SetupCamera();
 	SetupLights();
 
-	this_s = "xbot";
+	//Declares the name of each animated character
+	Model_name_ = "xbot";
 	sprite_name_2_ = "boy-attack";	
 	sprite_name_ = "Dragon";
 
+	//Sets the name of each of the skeletal animations for the dragon character
 	std::string ske_anim_1 = "stand";
 	std::string ske_anim_2 = "walk";
 
+	//Sets the position of the character on screen
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
 
+	//Sets up the sprite character
 	Sprite_character_ = new TwoDimensional_Character();
 	Sprite_character_->LoadCharacter(sprite_name_, &platform_, pos, 0.40f);
 
@@ -64,31 +69,39 @@ void SceneApp::Init()
 	Sprite_character_->SetWhichAnimation(ske_anim_2);
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
+	//Declares the sprite animation names
 	sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
 	sprite_anim_2_ = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_2);;
 
+	//Intialise this character at the intial frame zero
 	Sprite_character_->Update(sprite_anim_2_, 0);
 
+	//Sets up the second sprite character
 	Sprite_character_2_ = new TwoDimensional_Character();
 	gef::Vector2 pos_2 = gef::Vector2(platform_.width() * 0.75f, platform_.height() * 0.5f);
 	Sprite_character_2_->LoadCharacter(sprite_name_2_, &platform_, pos_2, 0.40f);
 	Sprite_character_2_->SetAnimation(sprite_name_2_, &platform_);
 	Sprite_character_2_->Update(sprite_name_2_, 0);
 
+	//Intialises the scene
 	model_scene_ = new gef::Scene();
 
+	//Intialises the 3D Character
 	character_ = new ThreeDimensional_Character();
 
+	//Declares what skeleton in the scene the character should use along with their position and rotation
 	int skel_num = 0;
 	gef::Vector4 Rot = gef::Vector4(0.0f,0.0f,0.0f,0.0f);
 	gef::Vector4 New_pos = gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
-	character_->Setup(*model_scene_, &platform_, this_s, skel_num,Rot,New_pos);
+	//Sets up the 3D Character
+	character_->Setup(*model_scene_, &platform_, Model_name_, skel_num,Rot,New_pos);
 
-
+	//Intialise the animations for the 3D Character
 	character_->Init(model_scene_, &platform_, AnimToLoad3);
 	character_->Init(model_scene_, &platform_, AnimToLoad);
 
+	//Intialises the Blend tree in the character
 	character_->AddBlendTree(tree_name_);
 	character_->InitBlendTree(tree_name_,AnimToLoad,AnimToLoad3);
 
@@ -98,11 +111,14 @@ void SceneApp::Init()
 	InitPhysicsWorld();
 	CreateRigidBodies();
 
+	//Setup the ragdoll of the 3D Character after the physics of the world have been created
 	character_->SetupRagdoll(is_ragdoll_simulating_, dynamics_world_);
 }
 
 void SceneApp::CleanUp()
 {
+	//Cleans up the scene
+
 	CleanUpRigidBodies();
 
 	CleanUpPhysicsWorld();
@@ -139,6 +155,7 @@ void SceneApp::CleanUp()
 
 bool SceneApp::Update(float frame_time)
 {
+	//Sets the fps counter
 	fps_ = 1.0f / frame_time;
 
 	// read input devices
@@ -156,6 +173,7 @@ bool SceneApp::Update(float frame_time)
 		gef::Keyboard* keyboard = input_manager_->keyboard();
 		if (keyboard)
 		{
+			//Sets if the ragdoll is simulating
 			if (keyboard->IsKeyPressed(gef::Keyboard::KC_SPACE))
 			{
 				is_ragdoll_simulating_ = !is_ragdoll_simulating_;
@@ -167,28 +185,36 @@ bool SceneApp::Update(float frame_time)
 				multiplier = 5.f;
 			}
 
+			//Checks if the speed is exceeding the walking animation speed and if it is not increase the speed
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
 				character_->speed_ = (character_->speed_ >= character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_) ? character_->anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_ : character_->speed_ + 0.02f * multiplier;
 			}
 
+			//Checks if the character speed is at least greater than zero and if it is decrease the speed
 			if (keyboard->IsKeyDown(keyboard->KC_S)) {
 				character_->speed_ = (character_->speed_ <= 0) ? 0 : character_->speed_ - 0.02f * multiplier;
 			}
 		}
 	}
 
+	//Update the 2D Characters
 	Sprite_character_->UpdateAnimation(frame_time, sprite_anim_2_);
 	Sprite_character_2_->UpdateAnimation(frame_time, sprite_name_2_);
 
-	// update the current animation that is playing
+	//Update the 3D Character if its player is not null
 	if (character_->player_)
 	{
+		//Update the blend tree animation
 		character_->TreeUpdate(frame_time, tree_name_);
+		//Updates the players current poses bone matrices
 		character_->UpdateCurrentPoseBoneMatrices_();
 	}
+
+	//Update the physics world and rigid bodies
 	UpdatePhysicsWorld(frame_time);
 	UpdateRigidBodies();
 
+	//Update the ragodll of the 3D Character
 	character_->CallUpdateRagdoll(is_ragdoll_simulating_);
 
 	return true;
@@ -207,7 +233,7 @@ void SceneApp::Render()
 	// draw meshes here
 	renderer_3d_->Begin();
 
-	// draw the player, the pose is defined by the bone matrices
+	//Draw the 3D Character mesh
 	if (character_->player_)
 	{
 		renderer_3d_->DrawSkinnedMesh(*character_->player_, character_->player_->bone_matrices());
@@ -222,7 +248,7 @@ void SceneApp::Render()
 	renderer_3d_->End();
 
 	sprite_renderer_->Begin(false);
-
+	//Draw the 2D Character sprites
 	Sprite_character_->RenderAnimation(sprite_anim_2_,sprite_renderer_);
 	Sprite_character_2_->RenderAnimation(sprite_name_2_, sprite_renderer_);
 
@@ -395,7 +421,6 @@ void SceneApp::CreateRigidBodies()
 		floor_gfx_.set_transform(btTransform2Matrix(groundTransform));
 	}
 
-	//	if(0)
 	{
 		//create a dynamic rigidbody
 

@@ -36,10 +36,13 @@ public:
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
+
 private:
 	void InitFont();
 	void CleanUpFont();
 	void DrawHUD();
+
+	//Setup and update functions for the scene
 	void SetupLights();
 	void SetupCamera();
 
@@ -51,6 +54,7 @@ private:
 	void CleanUpRigidBodies();
 	void UpdateRigidBodies();
 
+	//Declarations of variables needed for running the 3D scene
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Renderer3D* renderer_3d_;
 	gef::InputManager* input_manager_;
@@ -60,6 +64,7 @@ private:
 
 	gef::Scene* model_scene_;
 
+	//Camera variable declarations
 	gef::Vector4 camera_eye_;
 	gef::Vector4 camera_lookat_;
 	gef::Vector4 camera_up_;
@@ -67,6 +72,7 @@ private:
 	float near_plane_;
 	float far_plane_;
 
+	//Dynamic rigid body scene variables for the floor and the sphere
 	PrimitiveBuilder* primitive_builder_;
 	PrimitiveRenderer* primitive_renderer_;
 
@@ -84,14 +90,13 @@ private:
 	gef::Mesh* sphere_mesh_;
 	gef::MeshInstance sphere_gfx_;
 
+	//Declaration for character variables
 	ThreeDimensional_Character* character_;
-
-	ModelMesh* model_mesh_;
 
 	TwoDimensional_Character* Sprite_character_;
 	TwoDimensional_Character* Sprite_character_2_;
 
-	std::string this_s;
+	std::string Model_name_;
 	std::string sprite_name_;
 	std::string sprite_name_2_;
 
