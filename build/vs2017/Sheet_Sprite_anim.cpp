@@ -22,7 +22,7 @@ void Sheet_Sprite_anim::Update(int frame, gef::Sprite* sprite_, gef::Vector2 pos
 {
 	//Update the given frame of animation
 	std::string name = string_name_ + std::to_string(frame);
-	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y, frame,text_atlas, name);
+	SetSpriteSizeAndPositionForFrame(sprite_, position_.x, position_.y,text_atlas, name);
 }
 
 gef::Sprite* Sheet_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& transform, std::string part, gef::Vector2 Position)

@@ -387,7 +387,7 @@ gef::Sprite* Skeletal_Sprite_anim::Render(gef::Sprite* sprite, gef::Matrix33& tr
 	transform = Result;
 
 	//Sets the position,rotation and size of the bone sprite being rendered
-	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, 0, text_atlas, part_name);
+	SetSpriteSizeAndPositionForFrame(sprite, Position.x, Position.y, text_atlas, part_name);
 
 	return sprite;
 }

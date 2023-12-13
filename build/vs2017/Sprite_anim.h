@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+//Struct to define the Texture data
 struct TexData
 {
 	const char* name_;
@@ -24,6 +25,7 @@ struct TexData
 	gef::Matrix33 translate_m_;
 	gef::Matrix33 scale_m_;
 
+	//Build the transform of the data
 	void BuildTransform()
 	{
 		transform_m_.SetIdentity();
@@ -40,6 +42,7 @@ struct TexData
 	}
 };
 
+//Struct to define the Texture atlas
 struct TextureAtlas
 {
 	const char* name_;
@@ -50,30 +53,26 @@ struct TextureAtlas
 	std::map<std::string, TexData> subtex_atlas;
 };
 
-//Should really be derived from Anim
 class Sprite_anim
 {
 public:
 	Sprite_anim();
 	~Sprite_anim();
 
+	//Functions that remain consistent
 	TextureAtlas* ReadTextureAtlasFromJSON(rapidjson::Document&);
 	TexData* ReadSubtextureFromJSON(const rapidjson::Value&);
-	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, int, TextureAtlas*, std::string);
+	void SetSpriteSizeAndPositionForFrame(gef::Sprite*, float, float, TextureAtlas*, std::string);
+	void SetupRig(gef::Matrix33* rig_transform_m_, gef::Vector2 sprite_pos_, float scale);
 
-	virtual gef::Sprite* Load_sprite_and_texture_2(gef::Platform*, gef::Sprite*, std::string);
+	//Functions that may need to be overwritten based off which type of animation is being played
 	virtual gef::Sprite* SetupAnimation(gef::Platform*, gef::Sprite*, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string* WhichAnim1, float scale_);
-
-	//void Load_sprite_and_texture_3(std::string, rapidjson::Document&, rapidjson::Document&);
-
 	virtual void Update(int frame, gef::Sprite* sprite_, gef::Vector2 position_,std::map<std::string, gef::Matrix33>& Transforms_for_bone_);
 	virtual gef::Sprite* Render(gef::Sprite* sprite);
 	virtual gef::Sprite* Render(gef::Sprite* sprite, gef::Matrix33& transform,std::string part, gef::Vector2 Position);
-	//std::map<gef::Sprite*, gef::Matrix33> Render(gef::Sprite* sprite_);
-	//virtual gef::Sprite* Render(gef::Sprite* sprite);
 
-	void SetupRig(gef::Matrix33* rig_transform_m_, gef::Vector2 sprite_pos_, float scale);
-
+	//Both skeletal and sprite make use of scale
+	//Could add more overlapping variables here
 	float scale;
 
 };

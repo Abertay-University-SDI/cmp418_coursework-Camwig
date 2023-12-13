@@ -11,70 +11,21 @@ Sprite_anim::~Sprite_anim()
 
 }
 
-//void Sprite_anim::SetupAnim(gef::Platform* platform_, gef::Sprite* sprite_, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document)
-//{
-//	Load_sprite_and_texture_3(tex_string, tex_document, ske_document);
-//	sprite_ = SetupAnimation(platform_, sprite_, tex_string, tex_document, ske_document);
-//}
-
-//void Sprite_anim::Load_sprite_and_texture_3(std::string tex_string, rapidjson::Document& rapidjson_doc_tex, rapidjson::Document& rapidjson_doc_ske)
-//{
-//	//We can then move this to the sprite sheet version and load the tex
-//	
-//	//Will need to put and output alot of this stuff
-//
-//	std::string tex_string_temp = tex_string + "_tex.json";
-//
-//	char* JSON_Doc = LoadJSON(tex_string_temp.c_str());
-//	std::ifstream ifs(tex_string_temp.c_str());
-//	rapidjson::IStreamWrapper isw(ifs);
-//	//rapidjson::Document rapidjson_doc_tex;
-//	rapidjson_doc_tex.ParseStream(isw);
-//
-//	tex_string_temp = tex_string + "_ske.json";
-//
-//	char* JSON_Doc_2 = LoadJSON(tex_string_temp.c_str());
-//	std::ifstream ifs2(tex_string_temp.c_str());
-//	rapidjson::IStreamWrapper isw2(ifs2);
-//	//rapidjson::Document rapidjson_doc_ske;
-//	rapidjson_doc_ske.ParseStream(isw2);
-//}
-
 TextureAtlas* Sprite_anim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_document)
 {
-	//These need to be put in sheet and skeletal respectively
-
-
-	//TextureAtlas* tex_atlas = new TextureAtlas();
-	//tex_atlas->name_ = tex_document["name"].GetString();
-	////Something to with this?
-	//tex_atlas->width_ = tex_document["width"].GetFloat();
-	//tex_atlas->height_ = tex_document["height"].GetFloat();
-	/////--------------------------------------------
-
-	//const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
-	//for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
-	//{
-	//	TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
-	//	tex_atlas->subtextures.push_back(*texdata);
-	//	delete texdata;
-	//}
-
-	//return tex_atlas;
-
+	//Give the texture atlas the data read from the tex document
 	TextureAtlas* tex_atlas = new TextureAtlas();
 	tex_atlas->name_ = tex_document["name"].GetString();
 	tex_atlas->width_ = tex_document["width"].GetFloat();
 	tex_atlas->height_ = tex_document["height"].GetFloat();
 
 	const rapidjson::Value& subtexture_array = tex_document["SubTexture"];
+	//Loop through the subtextures of the texture atlas
 	for (int subtex_num = 0; subtex_num < (int)subtexture_array.Size(); ++subtex_num)
 	{
+		//Read the subtexture data and add them to the texture atlas
 		TexData* texdata = ReadSubtextureFromJSON(subtexture_array[subtex_num]);
-		//tex_atlas->subtextures.push_back(*texdata);
-
 		tex_atlas->subtex_atlas.insert(std::make_pair(texdata->name_, *texdata));
-
 		delete texdata;
 	}
 
@@ -83,6 +34,7 @@ TextureAtlas* Sprite_anim::ReadTextureAtlasFromJSON(rapidjson::Document& tex_doc
 
 TexData* Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_array)
 {
+	//Read the texture from the tex document to define the subtexture atlas
 	TexData* subTextData = new TexData;
 	subTextData->name_ = subtecture_array["name"].GetString();
 	subTextData->width_ = subtecture_array["width"].GetFloat();
@@ -96,6 +48,7 @@ TexData* Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_
 	}
 	else
 	{
+		//If the subtexture does not hold any data for this variable set it to zero
 		subTextData->frame_x_ = 0;
 	}
 
@@ -126,14 +79,15 @@ TexData* Sprite_anim::ReadSubtextureFromJSON(const rapidjson::Value& subtecture_
 		subTextData->frame_height_ = subTextData->height_;
 	}
 
+	//Build the transform of the sub texture
 	subTextData->BuildTransform();
 
 	return subTextData;
 }
 
-void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, std::string subtext_)
+void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float screen_x, float screen_y, TextureAtlas* texture_atlas, std::string subtext_)
 {
-
+	//Read the data from the subtexture based off the part given
 	float width = texture_atlas->subtex_atlas.at(subtext_).width_;
 	float height = texture_atlas->subtex_atlas.at(subtext_).height_;
 	float x = texture_atlas->subtex_atlas.at(subtext_).x_;
@@ -143,6 +97,7 @@ void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float sc
 	float frame_x = texture_atlas->subtex_atlas.at(subtext_).frame_x_;
 	float frame_y = texture_atlas->subtex_atlas.at(subtext_).frame_y_;
 
+	//Set the sprites values such as it size and uv position
 	sprite->set_width(width);
 	sprite->set_height(height);
 	sprite->set_uv_width(width / texture_atlas->width_);
@@ -155,15 +110,19 @@ void Sprite_anim::SetSpriteSizeAndPositionForFrame(gef::Sprite* sprite, float sc
 	float sprite_x = width * 0.5f - (frame_width * 0.5f + frame_x);
 	float sprite_y = height * 0.5f - (frame_height * 0.5f + frame_y);
 
-	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
+	//Set the spites new position
 	sprite->set_position(gef::Vector4(screen_x + sprite_x, screen_y + sprite_y, 0.0f));
 }
 
-gef::Sprite* Sprite_anim::Load_sprite_and_texture_2(gef::Platform*, gef::Sprite* sprite, std::string)
+void Sprite_anim::SetupRig(gef::Matrix33* rig_transform_m_, gef::Vector2 sprite_pos_, float scale)
 {
-	return sprite;
+	//Setup the rig transform based off the scale and position
+	rig_transform_m_->SetIdentity();
+	rig_transform_m_->Scale(gef::Vector2(scale, scale));
+	rig_transform_m_->SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
 }
 
+//Functions to be overloaded based of the type of animation
 gef::Sprite* Sprite_anim::SetupAnimation(gef::Platform*, gef::Sprite* sprite, std::string tex_string, rapidjson::Document& tex_document, rapidjson::Document& ske_document, gef::Vector2 Position, std::vector<std::string>& bone_parts,std::string* WhichAnim1, float scale_)
 {
 	return sprite;
@@ -182,18 +141,3 @@ gef::Sprite* Sprite_anim::Render(gef::Sprite* sprite,gef::Matrix33& transform, s
 {
 	return sprite;
 }
-
-void Sprite_anim::SetupRig(gef::Matrix33* rig_transform_m_,gef::Vector2 sprite_pos_,float scale)
-{
-	//gef::Matrix33 rig_transform_m_;
-
-	rig_transform_m_->SetIdentity();
-	rig_transform_m_->Scale(gef::Vector2(scale, scale));
-	rig_transform_m_->SetTranslation(gef::Vector2(sprite_pos_.x, sprite_pos_.y));
-}
-
-
-//Dont know why this wouldnt work?
-//Does not work with string!!!! FUN
-//template void Sprite_anim::SetSpriteSizeAndPositionForFrame<int>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, int subtext_);
-//template void Sprite_anim::SetSpriteSizeAndPositionForFrame<char*>(gef::Sprite* sprite, float screen_x, float screen_y, int frame, TextureAtlas* texture_atlas, char* subtext_);
