@@ -8,7 +8,6 @@ Sheet_Sprite_anim::Sheet_Sprite_anim()
 {
 	//Initialise the variables that need to be
 	text_atlas = new TextureAtlas;
-	RighasbeenSet = false;
 }
 
 Sheet_Sprite_anim::~Sheet_Sprite_anim()

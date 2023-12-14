@@ -28,6 +28,5 @@ private:
 
 	std::string string_name_;
 	gef::Matrix33 rig_transform_m_;
-	bool RighasbeenSet;
 };
 
