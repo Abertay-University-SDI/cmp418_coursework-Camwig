@@ -20,9 +20,6 @@ ThreeDimensional_Character::~ThreeDimensional_Character()
 	delete mesh_;
 	mesh_ = NULL;
 
-	delete skeleton;
-	skeleton = NULL;
-
 	delete anim_;
 	anim_ = NULL;
 
