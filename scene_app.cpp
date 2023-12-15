@@ -50,11 +50,11 @@ void SceneApp::Init()
 	//Declares the name of each animated character
 	Model_name_ = "xbot";
 	sprite_name_2_ = "boy-attack";	
-	sprite_name_ = "Dragon";
+	sprite_name_ = "Bicycle";
 
 	//Sets the name of each of the skeletal animations for the dragon character
 	std::string ske_anim_1 = "stand";
-	std::string ske_anim_2 = "walk";
+	std::string ske_anim_2 = "bicycle";
 
 	//Sets the position of the character on screen
 	gef::Vector2 pos = gef::Vector2(platform_.width() * 0.25f, platform_.height() * 0.5f);
@@ -70,7 +70,7 @@ void SceneApp::Init()
 	Sprite_character_->SetAnimation(sprite_name_, &platform_);
 
 	//Declares the sprite animation names
-	sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
+	//sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
 	sprite_anim_2_ = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_2);;
 
 	//Intialise this character at the intial frame zero

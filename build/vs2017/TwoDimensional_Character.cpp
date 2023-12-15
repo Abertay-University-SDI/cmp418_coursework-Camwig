@@ -132,6 +132,8 @@ void TwoDimensional_Character::RenderAnimation(std::string sprite_name_,gef::Spr
 	else
 	{
 		//Loops through the bone parts of the character
+
+		//Bone parts is wrong
 		for (auto part : bone_parts)
 		{
 			//Draws the sprite
