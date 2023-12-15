@@ -179,7 +179,7 @@ bool SceneApp::Update(float frame_time)
 
 			//Checks if the speed is exceeding the walking animation speed and if it is not increase the speed
 			if (keyboard->IsKeyDown(keyboard->KC_W)) {
-				character_->SetSpeed((character_->GetSpeed() >= character_->GetAnimMinSpeed(AnimToLoad)/*anim_model_.Anim_map.at(AnimToLoad).Anim_min_speed_*/) ? character_->GetAnimMinSpeed(AnimToLoad) : character_->GetSpeed() + 0.02f * multiplier);
+				character_->SetSpeed((character_->GetSpeed() >= character_->GetAnimMinSpeed(AnimToLoad)) ? character_->GetAnimMinSpeed(AnimToLoad) : character_->GetSpeed() + 0.02f * multiplier);
 			}
 
 			//Checks if the character speed is at least greater than zero and if it is decrease the speed
