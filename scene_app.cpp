@@ -71,7 +71,7 @@ void SceneApp::Init()
 
 	//Declares the sprite animation names
 	sprite_anim = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_1);
-	sprite_anim_2_ = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_2);;
+	sprite_anim_2_ = Sprite_character_->SetAnimationName(sprite_name_, ske_anim_2);
 
 	//Intialise this character at the intial frame zero
 	Sprite_character_->Update(sprite_anim_2_, 0);
